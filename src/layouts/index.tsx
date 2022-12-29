@@ -1,0 +1,23 @@
+import { useDisclosure, VStack } from "@chakra-ui/react"
+import { ReactNode } from "react"
+
+import Header from "./components/Header"
+import Sidebar from "./components/Sidebar"
+
+type Props = {
+  children: ReactNode | JSX.Element
+}
+
+export default function Layouts(props: Props) {
+  const disclosure = useDisclosure();
+
+  return (
+    <section className="flex w-full min-w-full">
+      <Sidebar disclosure={disclosure} />
+      <VStack alignItems={'stretch'} w={{ lg: "calc(100% - 16rem)", base: "full" }} className="m-0 lg:ml-64">
+        <Header disclosure={disclosure} />
+        {props.children}
+      </VStack>
+    </section>
+  )
+};
