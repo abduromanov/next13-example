@@ -11,7 +11,7 @@ export default async function login(
 ) {
   try {
     const data = await directus.items('anggota').readByQuery({
-      fields: ['idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'password'],
+      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'password'],
       limit: 1,
       filter: {
         idAnggota: {

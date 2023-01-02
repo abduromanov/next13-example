@@ -1,5 +1,5 @@
 import { Box, Card, CardBody, CardHeader, Grid, GridItem, Heading, HStack, StackDivider, Text, VStack } from "@chakra-ui/react";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { A11y, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -7,11 +7,11 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-type TStaticProps = {
+type TPageProps = {
   pageTitle: string
 }
 
-export const getStaticProps: GetStaticProps<TStaticProps> = async () => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   return {
     props: {
       pageTitle: 'Home'
