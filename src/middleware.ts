@@ -8,7 +8,7 @@ export const config = {
 export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
-  if (!req.cookies.get('anggota')) {
+  if (!req.cookies.get('anggota') && !req.nextUrl.pathname.startsWith('/auth')) {
     url.pathname = '/auth/login'
 
     return NextResponse.redirect(url);
