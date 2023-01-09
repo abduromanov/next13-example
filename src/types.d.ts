@@ -18,7 +18,7 @@ export interface AuthPropsType {
   isAdmin?: boolean;
 }
 
-export type TAnggota = {
+export interface TAnggota {
   id: string;
   idAnggota: string;
   nama: string;

@@ -1,26 +1,31 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useQuery } from "@tanstack/react-query";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { QueryKey, useMutation, useQuery } from "@tanstack/react-query";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const query = <ApiRequest, ApiResponse = any>(
   url: string,
+  defaultQueryKey: QueryKey = [""],
   queryOptions?: any,
-  defaultQueryKey?: any,
 ) => {
   // const headers = {};
 
-  const get = (data: AxiosRequestConfig) => {
+  const get = (initialData?: Record<string, any>, config?: AxiosRequestConfig) => {
     return useQuery(
       defaultQueryKey,
-      () => {
-        return axios.get<ApiRequest, AxiosResponse<ApiResponse>>(url, { ...data });
+      () => axios.get<ApiRequest, ApiResponse>(url, { ...config?.data }),
+      {
+        initialData: initialData,
+        ...queryOptions
       },
-      { ...queryOptions },
     )
   }
 
-  const post = (data: ApiRequest) => {
-    return axios.post<ApiRequest, AxiosResponse<ApiResponse>>(url, { ...data });
+  const post = () => {
+    return useMutation<AxiosResponse<ApiResponse>, AxiosError, ApiRequest, unknown>(
+      (values: ApiRequest) => {
+        return axios.post<ApiRequest, AxiosResponse<ApiResponse>>(url, values);
+      },
+    )
   }
 
   return { get, post }

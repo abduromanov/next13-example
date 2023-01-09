@@ -12,6 +12,8 @@ import { NextPageWithLayout } from "@/pages/_app";
 import { doLogin, TLoginRequest } from "@/services/api/commands/auth.command";
 import validators from "@/services/utils/validators";
 
+import logo from "../../../../public/circle.png";
+
 type TStaticProps = {
   pageTitle: string
 }
@@ -29,20 +31,23 @@ export default function Page() {
   const router = useRouter();
   const toast = useToast();
 
-  const loginHandler = (values: TLoginRequest) => {
-    return doLogin().post(values)
-      .then(res => {
-        Cookies.set('anggota', JSON.stringify(res.data));
+  const postMutation = doLogin().post();
+
+  const submitHandler = (values: TLoginRequest) => {
+    postMutation.mutate(values, {
+      onSuccess(data) {
+        Cookies.set('anggota', JSON.stringify(data.data));
         router.push('/');
-      })
-      .catch(() => {
+      },
+      onError() {
         toast({
           position: 'top',
           status: 'error',
           variant: 'top-accent',
           title: 'Kombinasi ID Anggota dan Password tidak cocok',
         });
-      });
+      },
+    })
   }
 
   return (
@@ -58,7 +63,7 @@ export default function Page() {
           >
             <Stack spacing="6">
               <Stack spacing={"6"} textAlign="center" alignItems={'center'}>
-                <Image src={require('@/../public/circle.png')} alt="" className="max-w-[70%]" priority />
+                <Image src={logo} alt="" className="max-w-[70%]" priority />
                 <Heading size={useBreakpointValue({ base: 'xs', md: 'sm' })}>
                   {process.env.APP_NAME}
                 </Heading>
@@ -82,7 +87,7 @@ export default function Page() {
               <HStack justify="space-between">
                 <Checkbox defaultChecked>Remember me</Checkbox>
               </HStack>
-              <Button colorScheme="brand" isLoading={form.formState.isSubmitting} onClick={form.handleSubmit(loginHandler)}>Masuk</Button>
+              <Button colorScheme="brand" isLoading={form.formState.isSubmitting} onClick={form.handleSubmit(submitHandler)}>Masuk</Button>
             </Stack>
           </Box>
         </Stack>
