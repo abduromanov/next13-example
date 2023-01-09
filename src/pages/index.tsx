@@ -7,24 +7,47 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-type TPageProps = {
-  pageTitle: string
+import { doAnggota } from "@/services/api/commands/anggota.command";
+
+import { TAnggota } from "@/types";
+
+interface TPageProps {
+  pageTitle: string;
+  anggota: TAnggota;
 }
 
-export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async ({ req }) => {
+  const anggota: TAnggota = JSON.parse(req.cookies.anggota || '');
+
   return {
     props: {
-      pageTitle: 'Home'
+      pageTitle: 'Home',
+      anggota: anggota,
     }
   }
 }
 
-export default function Page() {
+export default function Page(pageProps: TPageProps) {
+  const anggotaQuery = doAnggota().get(
+    pageProps.anggota,
+    {
+      data: {
+        id: pageProps.anggota.id
+      },
+    }
+  );
+
+  const anggota = anggotaQuery.data;
+
+  if (anggotaQuery.isLoading) {
+    return <Text>Loading...</Text>
+  }
+
   return (
     <VStack px={8} spacing={8}>
       <VStack>
-        <Heading>Selamat Datang, User</Heading>
-        <Text>No. Anggota: 019231230</Text>
+        <Heading>Selamat Datang, {anggota?.nama}</Heading>
+        <Text>No. Anggota: {anggota?.idAnggota}</Text>
       </VStack>
       <Grid templateColumns={{ base: '100% 1fr', lg: 'repeat(6, 1fr)' }} gap={{ base: 0, lg: 8 }}>
         <GridItem colSpan={4}>
@@ -68,7 +91,7 @@ export default function Page() {
               <VStack divider={<StackDivider />} align={'stretch'} spacing={4}>
                 <HStack justifyContent={'space-between'}>
                   <Text>Alamat</Text>
-                  <Text>Jl. Raya Bekasi</Text>
+                  <Text>{anggota?.alamat}</Text>
                 </HStack>
                 <HStack justifyContent={'space-between'}>
                   <Text>Pinjaman Murobahah</Text>

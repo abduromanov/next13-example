@@ -9,11 +9,15 @@ export default async function handler(
   res: NextApiResponse<TResponse | TAnggota>
 ) {
   try {
+    if (!req.body.id) {
+      return res.status(404);
+    }
+
     const data: TAnggota = await directus.items('anggota').readOne(req.body.id, {
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'password'],
+      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status'],
     });
 
-    res.status(200).json(data)
+    res.status(200).json({ data: data })
   } catch (error: any) {
     return res.status(error.response.status).json(error);
   }

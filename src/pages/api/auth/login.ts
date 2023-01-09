@@ -7,7 +7,7 @@ import { TAnggota, TResponse } from "@/types";
 
 export default async function login(
   req: NextApiRequest,
-  res: NextApiResponse<TResponse | TAnggota>,
+  res: NextApiResponse<TResponse | Partial<TAnggota>>,
 ) {
   try {
     const data = await directus.items('anggota').readByQuery({
@@ -20,14 +20,14 @@ export default async function login(
       }
     });
 
-    const dataAnggota: TAnggota = _.head(data.data);
+    const dataAnggota: Partial<TAnggota> = _.head(data.data);
     const isPasswordTrue = await directus.utils.hash.verify(req.body.password, dataAnggota?.password || '');
 
     if (data.data?.length === 0 || !isPasswordTrue) {
       return res.status(404).json({})
     }
 
-    _.unset(dataAnggota, 'password');
+    delete dataAnggota?.password;
 
     return res.status(200).json(dataAnggota);
   } catch (error: any) {
