@@ -19,7 +19,7 @@ export interface AuthPropsType {
 }
 
 export interface TAnggota {
-  id: string;
+  id: number;
   idAnggota: string;
   nama: string;
   alamat: string;
