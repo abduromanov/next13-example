@@ -8,14 +8,15 @@ type Props = {
   tanggal: any,
   tipe: any,
   nominal: any,
-  keterangan: any
+  keterangan: any,
+  key: any
 }
-export default function TableComp(props: Props) {
+export default function TableMutasi(props: Props) {
   return (
     <Tr>
       <Td>{props.tanggal}</Td>
       <Td>{props.tipe}</Td>
-      <Td isNumeric>{props.nominal}</Td>
+      <Td>{props.nominal}</Td>
       <Td>{props.keterangan}</Td>
     </Tr>
 
