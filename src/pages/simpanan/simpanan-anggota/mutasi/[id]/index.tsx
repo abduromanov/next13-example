@@ -1,9 +1,8 @@
 import {
-  Badge,
   Box,
   Button,
   ButtonGroup,
-  Card, CardBody, CardHeader, Center, Divider, Flex, Heading, HStack, Input,
+  Card, CardBody, CardHeader, Center, Divider, Flex, Heading, HStack, Icon, Input,
   InputGroup,
   Select,
   Skeleton,
@@ -33,41 +32,35 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   }
 }
 
-const BadgeTipe = (tipe: any) => {
-  if (tipe == 'debit') {
-    return <Badge colorScheme='green'>{tipe}</Badge>
-  } else {
-    return <Badge colorScheme='purple'>{tipe}</Badge>
-  }
-}
+
 const dataSimpanan = [{
   tanggal: '15/10/2022',
   tipe: 'debit',
-  Nominal: '10.000',
+  nominal: '10.000',
   saldo: '30.000',
   keterangan: 'masuk pertama'
 }, {
   tanggal: '15/10/2022',
   tipe: 'kredit',
-  Nominal: '210.000',
+  nominal: '210.000',
   saldo: '30.000',
   keterangan: 'masuk kedua'
 }, {
   tanggal: '15/10/2022',
   tipe: 'debit',
-  Nominal: '20.000',
+  nominal: '20.000',
   saldo: '40.000',
   keterangan: 'masuk ketiga'
 }, {
   tanggal: '15/10/2022',
   tipe: 'debit',
-  Nominal: '20.000',
+  nominal: '20.000',
   saldo: '40.000',
   keterangan: 'masuk ketiga'
 }, {
   tanggal: '15/10/2022',
   tipe: 'debit',
-  Nominal: '20.000',
+  nominal: '20.000',
   saldo: '40.000',
   keterangan: 'masuk ketiga'
 }]
@@ -108,8 +101,8 @@ export default function PageMutasi() {
         <Spacer />
         <Box>
           <ButtonGroup gap='2'>
-            <Button colorScheme='teal'><PlusIcon width='15px' />&nbsp;Debit</Button>
-            <Button colorScheme='yellow'><PlusIcon width='15px' />&nbsp;Kredit</Button>
+            <Button colorScheme='teal'><Icon as={PlusIcon} />&nbsp;Debit</Button>
+            <Button colorScheme='yellow'><Icon as={PlusIcon} />&nbsp;Kredit</Button>
           </ButtonGroup>
         </Box>
       </Flex>
@@ -179,7 +172,7 @@ export default function PageMutasi() {
             </Thead>
             <Tbody>
               {dataSimpanan.map((item, index) => (
-                <TableMutasi key={index} tanggal={item.tanggal} tipe={BadgeTipe(item.tipe)} nominal={item.Nominal} keterangan={item.keterangan} />
+                <TableMutasi key={index} item={item} />
               ))}
             </Tbody>
           </Table>

@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, CardHeader, Divider, Flex, Heading, Input, InputGroup, InputLeftElement, Spacer, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
+import { Box, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Spacer, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 
@@ -67,9 +67,9 @@ export default function PageSimpanan() {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents='none'>
-                    <MagnifyingGlassIcon color="gray" width='25px' />
+                    <Icon as={MagnifyingGlassIcon} color='gray' />
                   </InputLeftElement>
-                  <Input placeholder="cari berdasarkan nama" />
+                  <Input placeholder="cari berdasarkan nama" focusBorderColor="teal.100" />
                 </InputGroup>
               </Box>
             </Flex>
@@ -89,7 +89,7 @@ export default function PageSimpanan() {
                 </Thead>
                 <Tbody>
                   {anggota.map((item, index) => (
-                    <TableSimpananAnggota href={`/simpanan/simpanan-anggota/mutasi/${item.id}`} key={index} nama={item.nama} id={item.id} alamat={item.alamat} totSimpanan={item.totSimpanan} />
+                    <TableSimpananAnggota key={index} item={item} />
                   ))}
                 </Tbody>
               </Table>

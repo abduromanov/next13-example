@@ -1,4 +1,5 @@
 import {
+  Icon,
   Td,
   Tooltip,
   Tr
@@ -8,24 +9,19 @@ import Link from 'next/link'
 
 
 type Props = {
-  nama: any,
-  id: any,
-  alamat: any,
-  totSimpanan: any,
-  key: any,
-  href: any
+  item: any,
 }
 export default function TableSimpananAnggota(props: Props) {
   return (
     <Tr>
-      <Td>{props.nama}</Td>
-      <Td>{props.id}</Td>
-      <Td>{props.alamat}</Td>
-      <Td>{props.totSimpanan}</Td>
+      <Td>{props.item.nama}</Td>
+      <Td>{props.item.id}</Td>
+      <Td>{props.item.alamat}</Td>
+      <Td>{props.item.totSimpanan}</Td>
       <Td>
-        <Link href={props.href} >
+        <Link href={`/simpanan/simpanan-anggota/mutasi/${props.item.id}`} >
           <Tooltip hasArrow label='lihat mutasi' fontSize='xs'>
-            <EyeIcon width='20px' color="teal" />
+            <Icon as={EyeIcon} color="teal" />
           </Tooltip>
         </Link>
       </Td>
