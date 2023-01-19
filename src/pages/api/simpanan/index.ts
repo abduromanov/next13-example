@@ -2,15 +2,15 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
-import { TAnggota, TResponse } from "@/types";
+import { TResponse, TSimpanan } from "@/types";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<TResponse | TAnggota>
+  res: NextApiResponse<TResponse | TSimpanan>
 ) {
   try {
-    const data = await directus.items('anggota').readByQuery({
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status'],
+    const data = await directus.items('mutasiTabungan').readByQuery({
+      fields: ['*'],
       meta: '*',
       ...req.query,
     });
