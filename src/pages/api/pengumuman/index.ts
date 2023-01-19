@@ -9,10 +9,14 @@ export default async function handler(
   res: NextApiResponse<TResponse | TAnggota>
 ) {
   try {
-    const data = await directus.items('anggota').readByQuery({
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status'],
-      meta: '*',
-      ...req.query,
+    const data = await directus.items('pengumuman').readByQuery({
+      fields: ['image'],
+      meta: 'filter_count',
+      filter: {
+        active: {
+          _eq: true
+        }
+      }
     });
 
     return res.status(200).json(data);

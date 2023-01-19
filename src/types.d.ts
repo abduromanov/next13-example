@@ -31,3 +31,85 @@ export interface TAnggota {
   isPasswordBaru: boolean;
   tglDihapus: string;
 };
+
+export interface TMemberRelations {
+  mutasiTabungan?: TSimpanan[];
+  // murobahah?: TMurobahah[];
+};
+
+export interface TSimpanan {
+  id: number;
+  idAnggota: number;
+  catatan: string;
+  jenisTabungan: 'wajib' | 'khusus' | 'sukarela';
+  saldo: number;
+  nominal: number;
+  saldo: number;
+  tglDibuat: string;
+  tglDiubah: string;
+}
+
+export interface TMurobahah {
+  id: string;
+  pembiayaan: string;
+  pinjaman: number;
+  totalPinjaman: number;
+  totalMargin: number;
+  dp: number;
+  total: number;
+  cicilan: number;
+  margin: number;
+  tenor: number;
+  tglMulai: string;
+  tglSelesai: string;
+  lunas: boolean;
+}
+
+export interface TMurobahahRelations {
+  anggota: Partial<TAnggota>;
+  mutasiMurobahah: Partial<TMutasiMurobahah>[];
+};
+
+export interface TMutasiMurobahah {
+  tglBayar: string;
+  cicilan: number;
+  margin: number;
+  total: number;
+  isBulat: boolean;
+  tenorTerbayar: number;
+  bulanTidakSesuai: number;
+};
+
+export interface TMutasiMurobahahRelations {
+  murobahah: TMurobahah;
+};
+
+export interface TSyirkah {
+  id: number;
+  tglDibuat: string;
+  namaBc: string;
+  modalAwal: number;
+  modalHamasah: number;
+  tglMulai: string;
+  tglSelesai: string;
+};
+
+export interface TMutasiSyirkah {
+  id: number;
+  tglDibuat: string;
+  modalAwal: number;
+  modalHamasah: number;
+  totalRO: number;
+  bonus: number;
+  bonusBersih: number;
+  bagiHasil: number;
+  pajakBonus: number;
+  tglBayar: string;
+  presentaseBonus: number;
+  catatan: string;
+};
+
+export interface TSyirkahRelations {
+  anggota: Partial<TAnggota>;
+  mutasiSyirkah: Partial<TMutasiSyirkah>[];
+};

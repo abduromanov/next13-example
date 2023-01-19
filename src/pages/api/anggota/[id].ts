@@ -17,8 +17,8 @@ export default async function handler(
       fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status'],
     });
 
-    res.status(200).json(data)
+    return res.status(200).json(data)
   } catch (error: any) {
-    return res.status(error.response.status).json(error);
+    return res.status(error.response?.status || 500).json(error);
   }
 };
