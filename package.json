@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ajna/pagination": "^1.4.19",
     "@chakra-ui/react": "^2.4.1",
     "@directus/sdk": "^10.3.0",
     "@emotion/react": "^11.10.5",
