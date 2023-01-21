@@ -20,6 +20,16 @@ const query = <ApiRequest, ApiResponse = any>(
     )
   }
 
+  const paginate = (page: number, config?: AxiosRequestConfig) => {
+    return useQuery(
+      [...defaultQueryKey, page],
+      () => {
+        return axios.get<ApiRequest, AxiosResponse<ApiResponse>>(url, config)
+      },
+      queryOptions,
+    )
+  }
+
   const post = () => {
     return useMutation<AxiosResponse<ApiResponse>, AxiosError, ApiRequest, unknown>(
       (values: ApiRequest) => {
@@ -28,7 +38,7 @@ const query = <ApiRequest, ApiResponse = any>(
     )
   }
 
-  return { get, post }
+  return { get, paginate, post }
 };
 
 export default query;

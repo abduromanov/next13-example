@@ -18,7 +18,7 @@ export default function Header(props: Props) {
   }
 
   return (
-    <HStack justifyContent={'space-between'} p={4} mb={8} borderBottomWidth={1}>
+    <HStack justifyContent={'space-between'} p={4} mb={8} borderBottomWidth={1} shadow='sm'>
       <IconButton as={Bars3Icon} aria-label={"menu"} p={2} colorScheme={'brand'} className={'cursor-pointer'} onClick={props.disclosure.onToggle} />
       <Menu closeOnSelect strategy="absolute">
         <MenuButton
