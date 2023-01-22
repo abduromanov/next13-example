@@ -7,16 +7,26 @@ const query = <ApiRequest, ApiResponse = any>(
   defaultQueryKey: QueryKey = [""],
   queryOptions?: any,
 ) => {
-  // const headers = {};
-
   const get = (initialData?: Record<string, any>, config?: AxiosRequestConfig) => {
     return useQuery(
       defaultQueryKey,
-      () => axios.get<ApiRequest, ApiResponse>(url, { ...config?.data }),
+      () => {
+        return axios.get<ApiRequest, AxiosResponse<ApiResponse>>(url, config)
+      },
       {
         initialData: initialData,
         ...queryOptions
       },
+    )
+  }
+
+  const paginate = (page: number, config?: AxiosRequestConfig) => {
+    return useQuery(
+      [...defaultQueryKey, page],
+      () => {
+        return axios.get<ApiRequest, AxiosResponse<ApiResponse>>(url, config)
+      },
+      queryOptions,
     )
   }
 
@@ -28,7 +38,7 @@ const query = <ApiRequest, ApiResponse = any>(
     )
   }
 
-  return { get, post }
+  return { get, paginate, post }
 };
 
 export default query;
