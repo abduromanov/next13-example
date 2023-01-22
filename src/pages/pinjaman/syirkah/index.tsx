@@ -5,6 +5,8 @@ import { GetServerSideProps } from "next"
 import BreadcrumbSection from "@/components/BreadcrumbSection"
 import TableSyirkah from "@/components/Tables/TableSyirkah"
 
+import TablePagination from "@/layouts/components/TablePagination"
+
 type TPageProps = {
   pageTitle: string
 }
@@ -107,7 +109,7 @@ export default function PageSyirkah() {
           </CardHeader>
           <CardBody mt={-5}>
             <TableContainer p={3} boxShadow='md'>
-              <Table size='sm'>
+              <Table size='sm' mb={5}>
                 <Thead>
                   <Tr>
                     <Th>Nama BC</Th>
@@ -126,6 +128,7 @@ export default function PageSyirkah() {
                   ))}
                 </Tbody>
               </Table>
+              <TablePagination />
             </TableContainer>
           </CardBody>
         </Card>
