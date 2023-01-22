@@ -5,6 +5,8 @@ import { GetServerSideProps } from "next"
 import BreadcrumbSection from "@/components/BreadcrumbSection"
 import TableMurobahah from "@/components/Tables/TableMurobahah"
 
+import TablePagination from "@/layouts/components/TablePagination"
+
 
 type TPageProps = {
   pageTitle: string
@@ -123,7 +125,7 @@ export default function PageMurobahah() {
           </CardHeader>
           <CardBody>
             <TableContainer p={3} boxShadow='md'>
-              <Table size='sm'>
+              <Table size='sm' mb={5}>
                 <Thead>
                   <Tr>
                     <Th>Nama Anggota</Th>
@@ -142,6 +144,7 @@ export default function PageMurobahah() {
                   ))}
                 </Tbody>
               </Table>
+              <TablePagination />
             </TableContainer>
           </CardBody>
         </Card>
