@@ -92,7 +92,7 @@ export default function PageMutasi() {
       <Box>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
-      <Flex pl='8' pr='8'>
+      <Flex px='8'>
         <Box>
           {anggotaQuery.isLoading ? (<Skeleton width="100px" height="10px" />) :
             (<Text fontSize='xl'>{anggota?.nama} - {anggota?.idAnggota}</Text>)
