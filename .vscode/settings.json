@@ -7,5 +7,9 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#2ca07f",
+    "titleBar.activeForeground": "#000000"
   }
 }

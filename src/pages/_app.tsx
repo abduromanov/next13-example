@@ -23,9 +23,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     defaultOptions: {
       queries: {
         cacheTime: 3600,
-        refetchInterval: 3600,
         refetchOnWindowFocus: false,
-      }
+        retry: false,
+      },
     }
   }));
   const customTheme = extendTheme(theme);

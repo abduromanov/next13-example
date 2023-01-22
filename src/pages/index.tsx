@@ -7,7 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-import { doAnggota } from "@/services/api/commands/anggota.command";
+import { doAnggotaDetail } from "@/services/api/commands/anggota.command";
 
 import { TAnggota } from "@/types";
 
@@ -28,16 +28,11 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({ req }
 }
 
 export default function Page(pageProps: TPageProps) {
-  const anggotaQuery = doAnggota().get(
+  const anggotaQuery = doAnggotaDetail(pageProps.anggota.id).get(
     pageProps.anggota,
-    {
-      data: {
-        id: pageProps.anggota.id
-      },
-    }
   );
 
-  const anggota = anggotaQuery.data;
+  const anggota = anggotaQuery.data?.data;
 
   if (anggotaQuery.isLoading) {
     return <Text>Loading...</Text>
