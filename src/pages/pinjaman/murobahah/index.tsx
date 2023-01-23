@@ -84,7 +84,7 @@ export default function PageMurobahah() {
         <Box>
           <BreadcrumbSection data={breadcrumbData} />
         </Box>
-        <Card boxShadow='md'>
+        <Card boxShadow='md' mx={5}>
           <CardHeader>
             <Flex mb={3}>
               <Box>
@@ -124,7 +124,7 @@ export default function PageMurobahah() {
             </Flex>
           </CardHeader>
           <CardBody>
-            <TableContainer p={3} boxShadow='md'>
+            <TableContainer p={3}>
               <Table size='sm' mb={5}>
                 <Thead>
                   <Tr>
