@@ -90,7 +90,7 @@ export default function PageSyirkah() {
         <Box>
           <BreadcrumbSection data={breadcrumbData} />
         </Box>
-        <Card>
+        <Card boxShadow='md' mx={5}>
           <CardHeader>
             <Flex mb={3}>
               <Box>
@@ -114,7 +114,7 @@ export default function PageSyirkah() {
             </Box>
           </CardHeader>
           <CardBody mt={-5}>
-            <TableContainer p={3} boxShadow='md'>
+            <TableContainer p={3}>
               <Table size='sm' mb={5}>
                 <Thead>
                   <Tr>
