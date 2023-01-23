@@ -20,6 +20,7 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 }
 
 const dataSyirkah = [{
+  id: 1,
   namaBC: 'makan malam',
   namaAnggota: 'admin',
   idAnggota: '123456789',
@@ -28,6 +29,7 @@ const dataSyirkah = [{
   tglMulai: 'Rp.27.800.000',
   tglSelesai: '30 September 2022',
 }, {
+  id: 2,
   namaBC: 'makan malam',
   namaAnggota: 'admin',
   idAnggota: '123456789',
@@ -36,6 +38,7 @@ const dataSyirkah = [{
   tglMulai: 'Rp.27.800.000',
   tglSelesai: '30 September 2022',
 }, {
+  id: 3,
   namaBC: 'makan malam',
   namaAnggota: 'admin',
   idAnggota: '123456789',
@@ -44,6 +47,7 @@ const dataSyirkah = [{
   tglMulai: 'Rp.27.800.000',
   tglSelesai: '30 September 2022',
 }, {
+  id: 4,
   namaBC: 'makan malam',
   namaAnggota: 'admin',
   idAnggota: '123456789',
@@ -52,6 +56,7 @@ const dataSyirkah = [{
   tglMulai: 'Rp.27.800.000',
   tglSelesai: '30 September 2022',
 }, {
+  id: 5,
   namaBC: 'makan malam',
   namaAnggota: 'admin',
   idAnggota: '123456789',
@@ -60,6 +65,7 @@ const dataSyirkah = [{
   tglMulai: 'Rp.27.800.000',
   tglSelesai: '30 September 2022',
 }, {
+  id: 6,
   namaBC: 'makan malam',
   namaAnggota: 'admin',
   idAnggota: '123456789',

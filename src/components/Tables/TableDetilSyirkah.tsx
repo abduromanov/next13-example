@@ -8,7 +8,7 @@ import {
   Td,
   Tr
 } from '@chakra-ui/react'
-import { DocumentTextIcon, EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
 
@@ -17,30 +17,30 @@ type Props = {
 }
 
 
-export default function TableSyirkah(props: Props) {
+export default function TableDetilSyirkah(props: Props) {
   return (
     <Tr>
-      <Td>{props.item.namaBC}</Td>
-      <Td>{props.item.namaAnggota}</Td>
-      <Td>{props.item.idAnggota}</Td>
-      <Td>{props.item.modalAwal}</Td>
-      <Td>{props.item.modalHamasah}</Td>
-      <Td>{props.item.tglMulai}</Td>
-      <Td>{props.item.tglSelesai}</Td>
+      <Td>{props.item.tgl}</Td>
+      <Td>{props.item.modAwal}</Td>
+      <Td>{props.item.modHamasah}</Td>
+      <Td>{props.item.bonBersih}</Td>
+      <Td>{props.item.presentasiBagiHasil}</Td>
+      <Td>{props.item.bagiHasilHamasah}</Td>
+      <Td>{props.item.catatan}</Td>
       <Td>
         <Menu>
           <MenuButton as={IconButton} icon={<EllipsisVerticalIcon />} variant='outline' />
           <MenuList>
             <Link href={`/pinjaman/syirkah/${props.item.id}`}>
-              <MenuItem><Icon as={DocumentTextIcon} />&nbsp;Detail Syirkah</MenuItem>
+              <MenuItem><Icon as={PencilSquareIcon} />&nbsp;Edit Data</MenuItem>
             </Link>
             <Link href={`/pinjaman/syirkah/${props.item.id}`}>
               <MenuItem><Icon as={TrashIcon} color='red' />&nbsp;Hapus</MenuItem>
             </Link>
           </MenuList>
-        </Menu>
-      </Td>
-    </Tr>
+        </Menu >
+      </Td >
+    </Tr >
   )
 }
 
