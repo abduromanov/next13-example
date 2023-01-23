@@ -5,6 +5,8 @@ import { GetServerSideProps } from "next"
 import BreadcrumbSection from "@/components/BreadcrumbSection"
 import TableDetilSyirkah from "@/components/Tables/TableDetilSyirkah"
 
+import TablePagination from "@/layouts/components/TablePagination"
+
 
 type TPageProps = {
   pageTitle: string
@@ -121,8 +123,8 @@ export default function PageDetailSyirkah() {
               </VStack>
             </CardHeader>
             <CardBody>
-              <TableContainer>
-                <Table size='sm'>
+              <TableContainer pb={3}>
+                <Table size='sm' mb={5}>
                   <Thead>
                     <Tr>
                       <Th>Tanggal</Th>
@@ -141,11 +143,11 @@ export default function PageDetailSyirkah() {
                     ))}
                   </Tbody>
                 </Table>
+                <TablePagination />
               </TableContainer>
             </CardBody>
           </Card>
         </VStack>
-
       </Box>
     </>
   )
