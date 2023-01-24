@@ -21,6 +21,7 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 }
 
 const dataMurobahah = [{
+  id: 1,
   nama: 'admin',
   idanggota: '123456789',
   pembiayaan: 'cicil rumah',
@@ -29,6 +30,7 @@ const dataMurobahah = [{
   tglMulaiCicilan: '30 September 2022',
   lunas: true
 }, {
+  id: 2,
   nama: 'admin',
   idanggota: '123456789',
   pembiayaan: 'jajan seblak',
@@ -37,6 +39,7 @@ const dataMurobahah = [{
   tglMulaiCicilan: '31 September 2022',
   lunas: true
 }, {
+  id: 3,
   nama: 'juragan',
   idanggota: '0999',
   pembiayaan: 'jajan cilung',
@@ -45,6 +48,7 @@ const dataMurobahah = [{
   tglMulaiCicilan: '30 Oktober 2022',
   lunas: true
 }, {
+  id: 4,
   nama: 'dodi',
   idanggota: '112233',
   pembiayaan: 'jajan cilok',
@@ -53,6 +57,7 @@ const dataMurobahah = [{
   tglMulaiCicilan: '30 Januari 2022',
   lunas: true
 }, {
+  id: 5,
   nama: 'didan',
   idanggota: '9090',
   pembiayaan: 'bayar pajak',
@@ -61,6 +66,7 @@ const dataMurobahah = [{
   tglMulaiCicilan: '20 September 2022',
   lunas: true
 }, {
+  id: 6,
   nama: 'lilik',
   idanggota: '898767',
   pembiayaan: 'jajan cimol',
@@ -92,7 +98,7 @@ export default function PageMurobahah() {
               </Box>
               <Spacer />
               <Box>
-                <Button colorScheme='teal'><Icon as={PlusIcon} />&nbsp;Tambah Pinjaman</Button>
+                <Button colorScheme='teal' variant='ghost'><Icon as={PlusIcon} />&nbsp;Tambah Pinjaman</Button>
               </Box>
             </Flex>
             <Divider />
