@@ -110,7 +110,7 @@ export default function PageDetailMurobahah() {
             <Button variant='ghost' colorScheme='teal'><Icon as={PlusIcon} />&nbsp;Tambah Pembayaran</Button>
           </Box>
         </Flex>
-        <SimpleGrid spacing={5} templateColumns='repeat(auto-fill, minmax(350px, 1fr))'>
+        <SimpleGrid spacing={5} templateColumns='repeat(auto-fill, minmax(500px, 1fr))' m={5}>
           <Card >
             <CardHeader>
               <Box mb={3}>
@@ -135,11 +135,11 @@ export default function PageDetailMurobahah() {
                   <Text fontWeight='bold' >Pinjaman</Text>
                   <Text>{rincianCicilan.pinjaman}</Text>
                 </HStack>
-                <HStack >
+                <HStack spacing={56}>
                   <Text fontWeight='bold' >Margin</Text>
                   <Text >{rincianCicilan.margin}</Text>
                 </HStack>
-                <HStack >
+                <HStack spacing={64}>
                   <Text fontWeight='bold' >DP</Text>
                   <Text>{rincianCicilan.dp}</Text>
                 </HStack>
@@ -148,18 +148,18 @@ export default function PageDetailMurobahah() {
             <Divider />
             <CardFooter>
               <VStack alignItems='start'>
-                <HStack>
+                <HStack spacing={60}>
                   <Text fontWeight='bold'>Total</Text>
                   <Text>{rincianCicilan.total}</Text>
                 </HStack>
-                <HStack>
+                <HStack spacing='235px'>
                   <Text fontWeight='bold'>Tenor</Text>
                   <Text>{rincianCicilan.tenor}</Text>
                 </HStack>
               </VStack>
             </CardFooter>
           </Card>
-          <Card>
+          {/* <Card>
             <CardHeader>
               <Box>
                 <Heading size='md'>Cicilan Perbulan</Heading>
@@ -185,10 +185,10 @@ export default function PageDetailMurobahah() {
                 <Text>{rincianCicilan.cicilanPerbulan.total}</Text>
               </HStack>
             </CardFooter>
-          </Card>
+          </Card> */}
         </SimpleGrid>
 
-        <Card boxShadow='md' mx={5}>
+        <Card boxShadow='md' mx={5} my={7}>
           <CardHeader>
             <Heading size='md' mb={3}>Rincian Pembayaran</Heading>
             <Divider />
