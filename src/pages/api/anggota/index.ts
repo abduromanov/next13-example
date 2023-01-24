@@ -10,8 +10,13 @@ export default async function handler(
 ) {
   try {
     const data = await directus.items('anggota').readByQuery({
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status'],
+      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'tglDibuat', 'tglDihapus'],
       meta: '*',
+      filter: {
+        tglDihapus: {
+          _null: true
+        }
+      },
       ...req.query,
     });
 

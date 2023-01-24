@@ -1,40 +1,28 @@
 import { Pagination, PaginationContainer, PaginationNext, PaginationPage, PaginationPageGroup, PaginationPrevious, PaginationSeparator, usePagination } from "@ajna/pagination";
 import { Flex, HStack, Icon, Select, Text } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
 
 type Props = {
-  total?: number;
+  pagination: ReturnType<typeof usePagination>;
 }
 
-export default function TablePagination(props: Props) {
-  const [perPage, setPerPage] = useState<number>(10);
-
-  const pagination = usePagination({
-    total: props.total,
-    limits: {
-      inner: 3,
-      outer: 3
-    },
-    initialState: {
-      pageSize: perPage,
-      currentPage: 1,
-    }
-  });
-
+export default function TablePagination({ pagination }: Props) {
   return (
     <Flex justifyContent='space-between'>
       <HStack alignItems='center' spacing='3'>
-        <Select w='20' size='sm' onChange={(e) => setPerPage(Number(e.target.value))}>
-          <option value="10">10</option>
-          <option value="10">25</option>
-          <option value="10">50</option>
+        <Select w='20' size='sm' onChange={(e) => pagination.setPageSize(Number(e.target.value))}>
+          <option value="10" selected={pagination.pageSize === 10}>10</option>
+          <option value="25" selected={pagination.pageSize === 25}>25</option>
+          <option value="50" selected={pagination.pageSize === 50}>50</option>
         </Select>
         <Text fontSize='sm'>per halaman</Text>
       </HStack>
       <Pagination
         currentPage={pagination.currentPage}
-        onPageChange={(page) => pagination.setCurrentPage(page)}
+        onPageChange={(page) => {
+          pagination.setCurrentPage(page);
+          pagination.setPageSize(pagination.pageSize);
+        }}
         pagesCount={pagination.pagesCount}
       >
         <PaginationContainer
@@ -46,6 +34,7 @@ export default function TablePagination(props: Props) {
             w={8}
             h={8}
             variant='ghost'
+            onClick={() => pagination.setCurrentPage(pagination.currentPage - 1)}
           >
             <Icon as={ChevronLeftIcon} color={'gray.600'} fontSize='xs' />
           </PaginationPrevious>
