@@ -1,13 +1,16 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
+import moment from 'moment';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app'
 import Head from 'next/head';
 import { ReactElement, ReactNode, useState } from 'react';
+import 'moment/locale/id';
 
 import '../styles/globals.css'
 
 import Layouts from '@/layouts';
+import queryClient from '@/services/utils/query-client';
 import theme from '@/services/utils/theme'
 
 export type NextPageWithLayout<P = unknown, IP = unknown> = NextPage<P, IP> & {
@@ -19,20 +22,14 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        cacheTime: 3600,
-        refetchOnWindowFocus: false,
-        retry: false,
-      },
-    }
-  }));
+  const [customQueryClient] = useState(queryClient);
   const customTheme = extendTheme(theme);
   const getLayout = Component.getLayout ?? ((page) => <Layouts>{page}</Layouts>)
 
+  moment.locale('id-ID');
+
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={customQueryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <ChakraProvider theme={customTheme}>
           <Head>

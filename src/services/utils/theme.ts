@@ -14,6 +14,11 @@ const theme: ThemeOverride = {
     }
   },
   components: {
+    Skeleton: {
+      baseStyle: {
+        rounded: 'full'
+      }
+    },
     Button: {
       variants: {
         solid: {

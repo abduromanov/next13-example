@@ -9,7 +9,7 @@ import { InputPassword } from "@/components/Forms/InputPassword";
 import { InputText } from "@/components/Forms/InputText";
 
 import { NextPageWithLayout } from "@/pages/_app";
-import { doLogin, TLoginRequest } from "@/services/api/commands/auth.command";
+import { TLoginRequest, useLogin } from "@/services/api/commands/auth.command";
 import validators from "@/services/utils/validators";
 
 import logo from "../../../../public/circle.png";
@@ -31,13 +31,21 @@ export default function Page() {
   const router = useRouter();
   const toast = useToast();
 
-  const postMutation = doLogin().post();
+  const postMutation = useLogin().mutate();
 
   const submitHandler = (values: TLoginRequest) => {
     postMutation.mutate(values, {
       onSuccess(data) {
         Cookies.set('anggota', JSON.stringify(data.data));
         router.push('/');
+
+        toast({
+          position: 'top',
+          status: 'success',
+          variant: 'top-accent',
+          title: 'Berhasil masuk!',
+          duration: 3000
+        });
       },
       onError() {
         toast({
@@ -45,6 +53,7 @@ export default function Page() {
           status: 'error',
           variant: 'top-accent',
           title: 'Kombinasi ID Anggota dan Password tidak cocok',
+          duration: 3000
         });
       },
     })
@@ -87,7 +96,7 @@ export default function Page() {
               <HStack justify="space-between">
                 <Checkbox defaultChecked>Remember me</Checkbox>
               </HStack>
-              <Button colorScheme="brand" isLoading={form.formState.isSubmitting} onClick={form.handleSubmit(submitHandler)}>Masuk</Button>
+              <Button colorScheme="brand" isLoading={postMutation.isLoading} onClick={form.handleSubmit(submitHandler)}>Masuk</Button>
             </Stack>
           </Box>
         </Stack>

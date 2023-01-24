@@ -2,11 +2,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
-import { TAnggota, TResponse } from "@/types";
+import { DirectusResponse, TAnggota, TResponse } from "@/types";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<TResponse | TAnggota>
+  res: NextApiResponse<TResponse | DirectusResponse<TAnggota>>
 ) {
   try {
     if (!req.query.id) {
@@ -17,7 +17,9 @@ export default async function handler(
       fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status'],
     });
 
-    return res.status(200).json(data)
+    return res.status(200).json({
+      data: data
+    })
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
