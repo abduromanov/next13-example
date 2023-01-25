@@ -6,7 +6,7 @@ type Props = {
   item: any
 
 }
-export default function ModalCatatanPemb(props: Props) {
+export default function ModalCatatan(props: Props) {
   return (
 
     <Modal isOpen={props.isOpen} onClose={props.onClose} size='6xl' >

@@ -16,13 +16,7 @@ type Props = {
   item: any,
 }
 
-const CekLunas = (lunas: boolean) => {
-  if (lunas == true) {
-    return <Icon as={CheckIcon} />
-  }
-  return <Icon as={XMarkIcon} />
 
-}
 export default function TableMurobahah(props: Props) {
   return (
     <Tr>
@@ -32,7 +26,7 @@ export default function TableMurobahah(props: Props) {
       <Td>{props.item.totPinjaman}</Td>
       <Td>{props.item.totTerbayar}</Td>
       <Td>{props.item.tglMulaiCicilan}</Td>
-      <Td>{CekLunas(props.item.lunas)}</Td>
+      <Td>{props.item.lunas ? <Icon as={CheckIcon} /> : <Icon as={XMarkIcon} />}</Td>
       <Td>
         <Menu>
           <MenuButton as={IconButton} icon={<EllipsisVerticalIcon />} variant='outline' />
