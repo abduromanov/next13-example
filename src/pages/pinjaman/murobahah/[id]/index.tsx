@@ -5,9 +5,10 @@ import { GetServerSideProps } from "next"
 import BreadcrumbSection from "@/components/BreadcrumbSection"
 import ModalCatatan from "@/components/Modals/ModalCatatan"
 import ModalConfirmDelete from "@/components/Modals/ModalConfirmDelete"
-import TableCatatanPembayaran from "@/components/Tables/TableCatatanPembayaran"
-import TableRangkumanPembayaran from "@/components/Tables/TableRangkumanPembayaran"
-import TableRincianPembayaran from "@/components/Tables/TableRincianPembayaran"
+
+import TableCatatanPembayaran from "@/pages/pinjaman/murobahah/components/TableCatatanPembayaran"
+import TableRangkumanPembayaran from "@/pages/pinjaman/murobahah/components/TableRangkumanPembayaran"
+import TableRincianPembayaran from "@/pages/pinjaman/murobahah/components/TableRincianPembayaran"
 
 type TPageProps = {
   pageTitle: string
@@ -137,8 +138,8 @@ export default function PageDetailMurobahah() {
       </Flex>
 
       <Flex flexWrap='wrap' gap={5} mx={5} alignItems='center' justifyContent='center'>
-        <Box rounded='md' boxShadow='md' mx={7} p={5} >
-          <Box mb={3}>
+        <Box rounded='md' boxShadow='md' p={5}  >
+          <Box mb={3} >
             <Heading size='md'>Rincian Cicilan</Heading>
           </Box>
           <Divider />
@@ -185,7 +186,7 @@ export default function PageDetailMurobahah() {
             </VStack>
           </Box>
         </Box>
-        <Box rounded='md' boxShadow='md' h={64} p={5} ml={5} >
+        <Box rounded='md' boxShadow='md' h={72} p={5} >
           <Box mb={3}>
             <Heading size='md'>Cicilan Perbulan</Heading>
           </Box>
@@ -281,7 +282,6 @@ export default function PageDetailMurobahah() {
             </Table>
           </TableContainer>
         </CardBody>
-
       </Card>
 
       <Card boxShadow='md' mx={5} mb={5}>

@@ -4,9 +4,9 @@ import { GetServerSideProps } from "next"
 import Link from "next/link"
 
 import BreadcrumbSection from "@/components/BreadcrumbSection"
-import TableMurobahah from "@/components/Tables/TableMurobahah"
 
 import TablePagination from "@/layouts/components/TablePagination"
+import TableMurobahah from "@/pages/pinjaman/murobahah/components/TableMurobahah"
 
 
 type TPageProps = {
