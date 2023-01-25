@@ -29,19 +29,19 @@ const list: TSidebarMenu[] = [
   {
     label: "Syirkah",
     icon: "BuildingStorefrontIcon",
-    route: "syirkah",
+    route: "/syirkah",
     group: "Pinjaman",
   },
   {
     label: "Daftar Anggota",
     icon: "UsersIcon",
-    route: "anggota",
+    route: "/anggota",
     group: "Anggota",
   },
   {
     label: "Pengumuman",
     icon: "Square2StackIcon",
-    route: "pengumuman",
+    route: "/pengumuman",
     group: "Pengaturan",
   },
 ];

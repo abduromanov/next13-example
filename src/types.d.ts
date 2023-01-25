@@ -8,6 +8,14 @@ export type Disclosure = {
   getDisclosureProps: (props?: any) => any;
 }
 
+export interface DirectusResponse<T> {
+  data: T,
+  meta?: {
+    total_count: number,
+    filter_count: number,
+  }
+}
+
 export interface TResponse<T = unknown> {
   data?: T | [];
 }

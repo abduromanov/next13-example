@@ -1,7 +1,25 @@
-import query from "../query";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-import { TAnggota } from "@/types";
+import queryMutation from "../queryMutation";
 
-export const doAnggota = () => query<any, TAnggota[]>('/api/anggota', ['anggota']);
+import { DirectusResponse, TAnggota } from "@/types";
 
-export const doAnggotaDetail = (id: number) => query<any, TAnggota>(`/api/anggota/${id}`, ['anggota', id]);
+export const useAnggota = (config?: AxiosRequestConfig) =>
+  queryMutation<any, TAnggota[]>({
+    defaultQueryKey: ['anggota', ...Object.values(config?.params)],
+    queryFn: () => fetchAnggota(config)
+  });
+
+export const fetchAnggota = <ApiRequest = any, ApiResponse = any>(config?: AxiosRequestConfig) => {
+  return axios.get<ApiRequest, AxiosResponse<DirectusResponse<ApiResponse>>>('/api/anggota', config)
+}
+
+export const useAnggotaDetail = (id: number) =>
+  queryMutation<any, TAnggota>({
+    defaultQueryKey: ['anggota', id],
+    queryFn: () => fetchAnggotaDetail(id)
+  });
+
+export const fetchAnggotaDetail = <ApiRequest = any, ApiResponse = any>(id: number, config?: AxiosRequestConfig) => {
+  return axios.get<ApiRequest, AxiosResponse<DirectusResponse<ApiResponse>>>(`/api/anggota/${id}`, config)
+}
