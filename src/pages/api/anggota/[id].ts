@@ -13,12 +13,12 @@ export default async function handler(
       return res.status(404).json({});
     }
 
-    const fields = ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'tglDibuat', 'tglDihapus', 'mutasiTabungan', ...(req.query.fields as string).split(",")];
+    const fields = [...(req.query.fields as string || '').split(",")].filter((item) => item);
 
     delete req.query.fields;
 
     const data: TAnggota = await directus.items('anggota').readOne(req.query.id as string, {
-      fields: fields,
+      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'tglDibuat', 'tglDihapus', ...fields],
     });
 
     return res.status(200).json({
