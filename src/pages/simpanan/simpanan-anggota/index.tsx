@@ -69,7 +69,7 @@ export default function PageSimpanan() {
                     pointerEvents='none'>
                     <Icon as={MagnifyingGlassIcon} color='gray' />
                   </InputLeftElement>
-                  <Input placeholder="cari berdasarkan nama" focusBorderColor="teal.100" />
+                  <Input placeholder="cari berdasarkan nama" focusBorderColor="teal.200" />
                 </InputGroup>
               </Box>
             </Flex>

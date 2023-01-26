@@ -21,7 +21,7 @@ export default function TableSimpananAnggota(props: Props) {
       <Td>
         <Link href={`/simpanan/simpanan-anggota/mutasi/${props.item.id}`} >
           <Tooltip hasArrow label='lihat mutasi' fontSize='xs'>
-            <Icon as={EyeIcon} color="teal" />
+            <Icon as={EyeIcon} color="teal" boxSize={5} />
           </Tooltip>
         </Link>
       </Td>

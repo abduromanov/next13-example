@@ -23,7 +23,7 @@ const list: TSidebarMenu[] = [
   {
     label: "Murobahah",
     icon: "BanknotesIcon",
-    route: "/murobahah",
+    route: "/pinjaman/murobahah",
     group: "Pinjaman",
   },
   {
