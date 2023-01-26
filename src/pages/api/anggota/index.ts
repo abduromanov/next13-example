@@ -9,8 +9,12 @@ export default async function handler(
   res: NextApiResponse<TResponse | TAnggota>
 ) {
   try {
+    const fields = ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'tglDibuat', 'tglDihapus', 'mutasiTabungan', ...(req.query.fields as string).split(",")];
+
+    delete req.query.fields;
+
     const data = await directus.items('anggota').readByQuery({
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'tglDibuat', 'tglDihapus'],
+      fields: fields,
       meta: '*',
       filter: {
         tglDihapus: {
