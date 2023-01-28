@@ -1,14 +1,13 @@
 import { usePagination } from "@ajna/pagination";
 import { Button, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Progress, Skeleton, Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tooltip, Tr, useDisclosure, useToast } from "@chakra-ui/react";
 import { MagnifyingGlassIcon, PencilSquareIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { dehydrate, QueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { GetServerSideProps } from "next"
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import { fetchAnggota, useAnggota } from "@/services/api/commands/anggota.command";
+import { useAnggota } from "@/services/api/commands/anggota.command";
 
 import ModalTambahAnggota from "./components/ModalTambahAnggota";
 
@@ -20,25 +19,12 @@ interface TPageProps {
 }
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async ({ req }) => {
-  const query = new QueryClient();
-
   const anggota: TAnggota = JSON.parse(req.cookies.anggota || '');
-
-  await query.prefetchQuery({
-    queryKey: ['anggota', 1, 10],
-    queryFn: () => fetchAnggota({
-      params: {
-        page: 1,
-        limit: 10,
-      }
-    })
-  });
 
   return {
     props: {
       pageTitle: 'Daftar Anggota',
       anggota: anggota,
-      dehydratedState: dehydrate(query)
     }
   }
 }
@@ -74,12 +60,12 @@ export default function Page() {
     }
   });
 
-  const listAnggotaQuery = useAnggota({
+  const listAnggotaQuery = useAnggota().paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
     }
-  }).query();
+  });
 
   const listAnggota = listAnggotaQuery.data?.data?.data;
   const metadata = listAnggotaQuery.data?.data?.meta;
