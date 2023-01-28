@@ -10,10 +10,10 @@ export default function TablePagination({ pagination }: Props) {
   return (
     <Flex justifyContent='space-between'>
       <HStack alignItems='center' spacing='3'>
-        <Select w='20' size='sm' onChange={(e) => pagination.setPageSize(Number(e.target.value))}>
-          <option value="10" selected={pagination.pageSize === 10}>10</option>
-          <option value="25" selected={pagination.pageSize === 25}>25</option>
-          <option value="50" selected={pagination.pageSize === 50}>50</option>
+        <Select w='20' size='sm' onChange={(e) => pagination.setPageSize(Number(e.target.value))} defaultValue={10}>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
         </Select>
         <Text fontSize='sm'>per halaman</Text>
       </HStack>
