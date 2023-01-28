@@ -2,8 +2,8 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
-  InputProps
+  Textarea,
+  TextareaProps,
 } from "@chakra-ui/react";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
@@ -13,13 +13,12 @@ type TInputProps = {
   label?: string;
 }
 
-export function InputText(props: InputProps & TInputProps) {
+export function InputTextarea(props: TextareaProps & TInputProps) {
   return (
     <FormControl isInvalid={!!props.errors}>
       <FormLabel htmlFor={props.id || props.register.name}>{props.label}</FormLabel>
-      <Input
+      <Textarea
         id={props.id || props.register.name}
-        variant='outline'
         {...props}
         {...props.register}
       />
@@ -30,4 +29,4 @@ export function InputText(props: InputProps & TInputProps) {
   );
 }
 
-InputText.displayName = 'InputText';
+InputTextarea.displayName = 'InputTextarea';
