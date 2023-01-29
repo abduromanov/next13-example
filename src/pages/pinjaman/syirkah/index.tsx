@@ -3,9 +3,9 @@ import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { GetServerSideProps } from "next"
 
 import BreadcrumbSection from "@/components/BreadcrumbSection"
-import TableSyirkah from "@/components/Tables/TableSyirkah"
 
-import TablePagination from "@/layouts/components/TablePagination"
+import TableSyirkah from "@/pages/pinjaman/syirkah/components/TableSyirkah"
+
 
 type TPageProps = {
   pageTitle: string
@@ -87,7 +87,7 @@ export default function PageSyirkah() {
   return (
     <>
       <Box>
-        <Box>
+        <Box mt='-6'>
           <BreadcrumbSection data={breadcrumbData} />
         </Box>
         <Card boxShadow='md' mx={5}>
@@ -134,7 +134,6 @@ export default function PageSyirkah() {
                   ))}
                 </Tbody>
               </Table>
-              <TablePagination />
             </TableContainer>
           </CardBody>
         </Card>

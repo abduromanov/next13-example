@@ -3,9 +3,8 @@ import { ArrowLongRightIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { GetServerSideProps } from "next"
 
 import BreadcrumbSection from "@/components/BreadcrumbSection"
-import TableDetilSyirkah from "@/components/Tables/TableDetilSyirkah"
 
-import TablePagination from "@/layouts/components/TablePagination"
+import TableDetilSyirkah from "@/pages/pinjaman/syirkah/components/TableDetilSyirkah"
 
 
 type TPageProps = {
@@ -65,7 +64,7 @@ export default function PageDetailSyirkah() {
   return (
     <>
       <Box>
-        <Box>
+        <Box mt='-6'>
           <BreadcrumbSection data={breadcrumbData} />
         </Box>
         <Flex px={5}>
@@ -82,22 +81,22 @@ export default function PageDetailSyirkah() {
             <Divider />
             <CardBody>
               <VStack alignItems='start' mb={8}>
-                <HStack spacing={74}>
-                  <Text fontWeight='bold'>Nama BC</Text>
+                <Flex gap={2} flexWrap='wrap'>
+                  <Text fontWeight='bold' mr={74}>Nama BC</Text>
                   <Text>makan malam</Text>
-                </HStack>
-                <HStack spacing={88}>
-                  <Text fontWeight='bold'>Pemilik</Text>
+                </Flex>
+                <Flex gap={2} flexWrap='wrap'>
+                  <Text fontWeight='bold' mr={88}>Pemilik</Text>
                   <Text>Juragan</Text>
-                </HStack>
-                <HStack spacing={38}>
-                  <Text fontWeight='bold'>Tanggal mulai</Text>
+                </Flex>
+                <Flex gap={2} flexWrap='wrap'  >
+                  <Text fontWeight='bold' mr={38}>Tanggal mulai</Text>
                   <Text>25 November 2022</Text>
-                </HStack>
-                <HStack spacing={29}>
-                  <Text fontWeight='bold'>Tanggal Selesai</Text>
+                </Flex>
+                <Flex gap={2} flexWrap='wrap'>
+                  <Text fontWeight='bold' mr={29}>Tanggal Selesai</Text>
                   <Text>25 November 2023</Text>
-                </HStack>
+                </Flex>
               </VStack>
               <StatGroup>
                 <Stat mb={4}>
@@ -143,7 +142,6 @@ export default function PageDetailSyirkah() {
                     ))}
                   </Tbody>
                 </Table>
-                <TablePagination />
               </TableContainer>
             </CardBody>
           </Card>
