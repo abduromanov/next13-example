@@ -1,12 +1,15 @@
 {
-  "extends": ["eslint:recommended", "next", "next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
-  "plugins": ["@typescript-eslint", "simple-import-sort"],
+  "extends": ["eslint:recommended", "next", "next/core-web-vitals", "plugin:@typescript-eslint/recommended", "plugin:@tanstack/eslint-plugin-query/recommended", "prettier"],
+  "plugins": ["@typescript-eslint", "simple-import-sort", "@tanstack/query"],
   "rules": {
     "no-unused-vars": "off",
     "no-console": "warn",
     "@next/next/no-img-element": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    // React Query
+    "@tanstack/query/exhaustive-deps": "error",
+    "@tanstack/query/prefer-query-object-syntax": "error",
     // Sort
     "simple-import-sort/exports": "warn",
     "simple-import-sort/imports": [

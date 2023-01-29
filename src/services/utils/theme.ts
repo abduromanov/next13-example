@@ -14,16 +14,15 @@ const theme: ThemeOverride = {
     }
   },
   components: {
+    Skeleton: {
+      baseStyle: {
+        rounded: 'full'
+      }
+    },
     Button: {
-      variants: {
-        solid: {
-          color: 'white',
-          bg: 'brand.500',
-          _hover: {
-            bg: 'brand.600'
-          }
-        }
-      },
+      defaultProps: {
+        colorScheme: 'brand'
+      }
     },
     Input: {
       defaultProps: {

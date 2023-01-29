@@ -1,4 +1,4 @@
-import query from "../query";
+import queryMutation from "../queryMutation";
 
 import { TAnggota } from "@/types";
 
@@ -7,4 +7,4 @@ export type TLoginRequest = {
   password: string;
 }
 
-export const doLogin = () => query<TLoginRequest, TAnggota>('/api/auth/login');
+export const useLogin = () => queryMutation<TLoginRequest, TAnggota>('/api/auth/login');

@@ -19,7 +19,7 @@ const MenuItem = () => (
         <Text fontSize={'sm'}>{item}</Text>
         {menus[item].map((item, index) => (
           <Link href={item.route} className={'w-full'} key={index}>
-            <Button variant={'ghost'} verticalAlign={'center'} w={'full'} justifyContent={'start'} _hover={{ bg: 'brand.400' }} m={0}>
+            <Button variant={'ghost'} color='white' verticalAlign={'center'} w={'full'} justifyContent={'start'} _hover={{ bg: 'brand.400' }} m={0}>
               <Icon as={(Heroicon as any)[item.icon]} fontSize={'2xl'} />
               <Text ms={3}>{item.label}</Text>
             </Button>

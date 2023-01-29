@@ -1,7 +1,16 @@
-import query from "../query";
+import queryMutation from "../queryMutation";
 
 import { TAnggota } from "@/types";
 
-export const doAnggota = () => query<any, TAnggota[]>('/api/anggota', ['anggota']);
+export type TAnggotaRequest = {
+  idAnggota: string;
+  nama: string;
+  password: string;
+  alamat: string;
+}
 
-export const doAnggotaDetail = (id: number) => query<any, TAnggota>(`/api/anggota/${id}`, ['anggota', id]);
+export const useAnggota = () => queryMutation<any, TAnggota[]>('/api/anggota', ['anggota']);
+
+export const useAnggotaDetail = (id: number) => queryMutation<any, TAnggota>(`/api/anggota/${id}`, ['anggota', id]);
+
+export const useCreateAnggota = () => queryMutation<TAnggotaRequest, TAnggota>('/api/anggota/create', ['anggota', 'creeate']);

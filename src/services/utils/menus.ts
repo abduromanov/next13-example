@@ -35,13 +35,13 @@ const list: TSidebarMenu[] = [
   {
     label: "Daftar Anggota",
     icon: "UsersIcon",
-    route: "anggota",
+    route: "/anggota",
     group: "Anggota",
   },
   {
     label: "Pengumuman",
     icon: "Square2StackIcon",
-    route: "pengumuman",
+    route: "/pengumuman",
     group: "Pengaturan",
   },
 ];
