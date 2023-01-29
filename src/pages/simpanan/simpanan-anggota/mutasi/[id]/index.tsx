@@ -1,3 +1,4 @@
+import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -13,68 +14,87 @@ import {
   Tr, VStack
 } from "@chakra-ui/react";
 import { ArrowLongRightIcon, ChevronUpDownIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { QueryClient } from "@tanstack/react-query";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 import TableMutasi from "@/components/Tables/TableMutasi";
 
-import { doAnggota } from "@/services/api/commands/anggota.command";
+import TablePagination from "@/layouts/components/TablePagination";
+import { fetchAnggotaDetail, useAnggota, useAnggotaDetail } from "@/services/api/commands/anggota.command";
 
-type TPageProps = {
-  pageTitle: string
+import { TAnggota, TSimpanan } from "@/types";
+
+interface TPageProps {
+  pageTitle: string;
+  anggota: TAnggota;
+  simpanan?: TSimpanan;
 }
 
-export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async ({ req }) => {
+  // const query = new QueryClient();
+
+  // await query.prefetchQuery({
+  //   queryKey: ['simpanan', 1, 10],
+  //   queryFn: () => fetchAnggotaDetail({
+  //     params: {
+  //       page: 1,
+  //       limit: 10,
+  //       fields: "mutasiTabungan.*"
+  //     }
+  //   })
+  // })
   return {
     props: {
-      pageTitle: 'Mutasi Simpanan'
+      pageTitle: 'Mutasi Simpanan',
     }
   }
 }
 
 
-const dataSimpanan = [{
-  tanggal: '15/10/2022',
-  tipe: 'debit',
-  nominal: '10.000',
-  saldo: '30.000',
-  keterangan: 'masuk pertama'
-}, {
-  tanggal: '15/10/2022',
-  tipe: 'kredit',
-  nominal: '210.000',
-  saldo: '30.000',
-  keterangan: 'masuk kedua'
-}, {
-  tanggal: '15/10/2022',
-  tipe: 'debit',
-  nominal: '20.000',
-  saldo: '40.000',
-  keterangan: 'masuk ketiga'
-}, {
-  tanggal: '15/10/2022',
-  tipe: 'debit',
-  nominal: '20.000',
-  saldo: '40.000',
-  keterangan: 'masuk ketiga'
-}, {
-  tanggal: '15/10/2022',
-  tipe: 'debit',
-  nominal: '20.000',
-  saldo: '40.000',
-  keterangan: 'masuk ketiga'
-}]
-const totSimpanan = {
-  nama: 'Adinda',
-  noAngota: '019231230',
-  simpananPokok: 'Rp2.000.000',
-  simpananWajib: 'Rp1.200.000',
-  simpananKhusus: 'Rp5.200.000',
-  simpananSukarela: 'Rp1.000.000',
+export const convertToIDR = (jenisSimpanan: number) => {
+  return jenisSimpanan?.toLocaleString('id-ID', { currency: 'IDR', style: 'currency' })
 }
+
 export default function PageMutasi() {
-  const anggotaQuery = doAnggota().get();
-  const anggota = anggotaQuery.data;
+  const [total, setTotal] = useState<number>();
+  const router = useRouter()
+  const { id } = router.query
+
+
+  const pagination = usePagination({
+    total: total,
+    initialState: {
+      currentPage: 1,
+      pageSize: 10
+    }
+  });
+
+  const anggotaDetailQuery = useAnggotaDetail(Number(id), {
+    params: {
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+      fields: "mutasiTabungan.*"
+    }
+  }).query();
+  const anggotaDetailSimpanan = anggotaDetailQuery.data?.data?.data;
+  const metaData = anggotaDetailSimpanan?.mutasiTabungan?.length;
+
+  useEffect(() => {
+    setTotal(metaData)
+  }, [metaData])
+
+  const dataSimpanan = anggotaDetailSimpanan?.mutasiTabungan
+  const totSimpanan = {
+    simpananWajib: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'wajib').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
+    simpananKhusus: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'khusus').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
+    simpananSukarela: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'sukarela').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
+    simpananPokok: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'pokok').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
+  }
+
+  console.log(metaData)
   const breadcrumbData = [
     {
       name: 'Simpanan',
@@ -94,8 +114,8 @@ export default function PageMutasi() {
       </Box>
       <Flex px='8'>
         <Box>
-          {anggotaQuery.isLoading ? (<Skeleton width="100px" height="10px" />) :
-            (<Text fontSize='xl'>{anggota?.nama} - {anggota?.idAnggota}</Text>)
+          {anggotaDetailQuery.isLoading ? (<Skeleton width="100px" height="10px" />) :
+            (<Text fontSize='xl'>{anggotaDetailSimpanan?.nama} - {anggotaDetailSimpanan?.idAnggota}</Text>)
           }
         </Box>
         <Spacer />
@@ -115,28 +135,28 @@ export default function PageMutasi() {
           </CardHeader>
           <Divider />
           <CardBody>
-            <StatGroup>
+            <StatGroup >
               <Stat>
                 <StatLabel>Simpanan Pokok</StatLabel>
-                <StatNumber>{totSimpanan.simpananPokok}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan.simpananPokok)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Simpanan Wajib</StatLabel>
-                <StatNumber>{totSimpanan.simpananWajib}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan.simpananWajib)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Total Simpanan</StatLabel>
-                <StatNumber>{totSimpanan.simpananKhusus}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan.simpananKhusus)}</StatNumber>
               </Stat>
             </StatGroup>
-            <StatGroup mt={3}>
+            <StatGroup mt={7}>
               <Stat>
                 <StatLabel>Simpanan Khusus</StatLabel>
-                <StatNumber>{totSimpanan.simpananKhusus}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan.simpananKhusus)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Simpanan Sukarela</StatLabel>
-                <StatNumber>{totSimpanan.simpananSukarela}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan.simpananSukarela)}</StatNumber>
               </Stat>
               <Stat></Stat>
             </StatGroup>
@@ -149,9 +169,9 @@ export default function PageMutasi() {
                 <Text fontWeight='bold' mb='10px'>Filter Tanggal</Text>
                 <HStack flexWrap='wrap'>
                   <InputGroup border='1px' borderColor='gray.200' borderRadius='md'>
-                    <Input placeholder='select date' type='date' w="45%" border={0} focusBorderColor='none' />
+                    <Input placeholder='select date' type='date' w="200px" border={0} focusBorderColor='none' />
                     <ArrowLongRightIcon width='20px' />
-                    <Input placeholder='select date' type='date' w="45%" border={0} focusBorderColor='none' />
+                    <Input placeholder='select date' type='date' w="200px" border={0} focusBorderColor='none' />
                   </InputGroup>
                 </HStack>
               </Box>
@@ -171,11 +191,14 @@ export default function PageMutasi() {
               </Tr>
             </Thead>
             <Tbody>
-              {dataSimpanan.map((item, index) => (
-                <TableMutasi key={index} item={item} />
+              {(dataSimpanan || []).map((item: TSimpanan) => (
+                <TableMutasi item={item} key={item.id} />
               ))}
             </Tbody>
           </Table>
+          {/* <Skeleton w='full' isLoaded={!anggotaDetailQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton> */}
         </TableContainer>
       </VStack >
     </>

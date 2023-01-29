@@ -1,69 +1,82 @@
-import { Box, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Spacer, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
+import { usePagination } from "@ajna/pagination";
+import { Box, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Progress, Skeleton, Spacer, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { GetServerSideProps } from "next";
+import { useEffect, useState } from "react";
 
 import TableSimpananAnggota from "@/components/Tables/TableSimpanan";
 
+import TablePagination from "@/layouts/components/TablePagination";
+import { fetchAnggota, useAnggota } from "@/services/api/commands/anggota.command";
 
-type TPageProps = {
-  pageTitle: string
+import { TAnggota, TSimpanan } from "@/types";
+
+interface TPageProps {
+  pageTitle: string;
+  simpanan?: TSimpanan;
+  anggota?: TAnggota
+
 }
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+  const query = new QueryClient();
+
+  await query.prefetchQuery({
+    queryKey: ['anggota', 1, 10],
+    queryFn: () => fetchAnggota({
+      params: {
+        page: 1,
+        limit: 10
+      }
+    })
+  })
   return {
     props: {
-      pageTitle: 'Simpanan Anggota'
+      pageTitle: 'Simpanan Anggota',
+      dehydratedState: dehydrate(query)
     }
   }
 }
 
-const anggota = [
-  {
-    nama: 'adinda',
-    id: 112233,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }, {
-    nama: 'adinda',
-    id: 112234,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }, {
-    nama: 'adinda',
-    id: 112235,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }, {
-    nama: 'adinda',
-    id: 112236,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }, {
-    nama: 'adinda',
-    id: 112237,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }
-]
+
 export default function PageSimpanan() {
-  // const router = useRouter();
-  // const selectSimpanan = (id_anggota: any) => {
-  //   router.push({
-  //     pathname: `/simpanan/simpanan-anggota/mutasi/[id]`,
-  //     query: {
-  //       id: id_anggota
-  //     }
-  //   });
-  // }
+  const [total, setTotal] = useState<number>();
+
+
+  const pagination = usePagination({
+    total: total,
+    initialState: {
+      currentPage: 1,
+      pageSize: 10
+    }
+  });
+
+  const listAnggotaQuery = useAnggota({
+    params: {
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+      fields: "mutasiTabungan.saldo"
+    }
+  }).query();
+
+
+  const listAnggota = listAnggotaQuery.data?.data?.data;
+  const metadata = listAnggotaQuery.data?.data?.meta;
+
+  useEffect(() => {
+    setTotal(metadata?.filter_count)
+  }, [metadata])
+
   return (
     <>
       <Box >
         <Card m={5} boxShadow='md' size="md">
           <CardHeader>
-            <Flex alignItems="start">
+            <Flex alignItems="start" flexWrap='wrap' gap={5}>
               <Heading size='md'>Data simpanan Anggota</Heading>
               <Spacer />
-              <Box w="25%">
+              <Box w={64}>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents='none'>
@@ -75,9 +88,10 @@ export default function PageSimpanan() {
             </Flex>
           </CardHeader>
           <Divider />
+          {listAnggotaQuery.isLoading && <Progress size='xs' isIndeterminate />}
           <CardBody>
             <TableContainer p='3'>
-              <Table size='sm'>
+              <Table size='sm' mb={3}>
                 <Thead>
                   <Tr>
                     <Th>Nama Anggota</Th>
@@ -88,11 +102,14 @@ export default function PageSimpanan() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {anggota.map((item, index) => (
-                    <TableSimpananAnggota key={index} item={item} />
+                  {(listAnggota || []).map((item: TAnggota) => (
+                    <TableSimpananAnggota item={item} key={item.id} />
                   ))}
                 </Tbody>
               </Table>
+              <Skeleton w='full' isLoaded={!listAnggotaQuery.isLoading}>
+                <TablePagination pagination={pagination} />
+              </Skeleton>
             </TableContainer>
           </CardBody>
         </Card>
