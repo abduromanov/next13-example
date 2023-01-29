@@ -1,14 +1,15 @@
 import { usePagination } from "@ajna/pagination";
-import { Button, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Progress, Skeleton, Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tooltip, Tr } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Progress, Skeleton, Stack, Table, TableContainer, Tbody, Td, Th, Thead, Tooltip, Tr, useDisclosure, useToast } from "@chakra-ui/react";
 import { MagnifyingGlassIcon, PencilSquareIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { dehydrate, QueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { GetServerSideProps } from "next"
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import { fetchAnggota, useAnggota } from "@/services/api/commands/anggota.command";
+import { useAnggota } from "@/services/api/commands/anggota.command";
+
+import ModalTambahAnggota from "./components/ModalTambahAnggota";
 
 import { TAnggota } from "@/types";
 
@@ -18,25 +19,12 @@ interface TPageProps {
 }
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async ({ req }) => {
-  const query = new QueryClient();
-
   const anggota: TAnggota = JSON.parse(req.cookies.anggota || '');
-
-  await query.prefetchQuery({
-    queryKey: ['anggota', 1, 10],
-    queryFn: () => fetchAnggota({
-      params: {
-        page: 1,
-        limit: 10,
-      }
-    })
-  });
 
   return {
     props: {
       pageTitle: 'Daftar Anggota',
       anggota: anggota,
-      dehydratedState: dehydrate(query)
     }
   }
 }
@@ -61,6 +49,8 @@ const TableRow = (props: { item?: TAnggota }) => {
 
 export default function Page() {
   const [total, setTotal] = useState<number>();
+  const modalTambahAnggotaRef = useRef<ReturnType<typeof useDisclosure>>();
+  const toast = useToast();
 
   const pagination = usePagination({
     total: total,
@@ -70,12 +60,12 @@ export default function Page() {
     }
   });
 
-  const listAnggotaQuery = useAnggota({
+  const listAnggotaQuery = useAnggota().paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
     }
-  }).query();
+  });
 
   const listAnggota = listAnggotaQuery.data?.data?.data;
   const metadata = listAnggotaQuery.data?.data?.meta;
@@ -84,12 +74,33 @@ export default function Page() {
     setTotal(metadata?.filter_count)
   }, [metadata])
 
+  const formCallback = {
+    onSuccess: () => {
+      toast({
+        position: 'top',
+        status: 'success',
+        variant: 'top-accent',
+        title: 'Berhasil menambahkan anggota!',
+        duration: 3000
+      })
+    },
+    onError: () => {
+      toast({
+        position: 'top',
+        status: 'error',
+        variant: 'top-accent',
+        title: 'Gagal menambahkan anggota. Pastikan semua data sudah terisi dengan benar',
+        duration: 3000
+      });
+    }
+  }
+
   return (
     <Stack spacing='8' px='8' pb='10'>
       <Flex alignItems='center' justify='space-between'>
         <Heading size='lg'>Daftar Anggota</Heading>
         <Link href=''>
-          <Button as='span' leftIcon={<Icon as={PlusIcon} />}>Tambah Anggota</Button>
+          <Button as='span' leftIcon={<Icon as={PlusIcon} />} onClick={modalTambahAnggotaRef.current?.onOpen}>Tambah Anggota</Button>
         </Link>
       </Flex>
       <Card m={5} variant='outline' shadow='sm'>
@@ -135,6 +146,8 @@ export default function Page() {
           </Skeleton>
         </CardBody>
       </Card>
+
+      <ModalTambahAnggota ref={modalTambahAnggotaRef} formCallback={formCallback} />
     </Stack>
   );
 }
