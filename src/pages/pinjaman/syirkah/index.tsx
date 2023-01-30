@@ -114,8 +114,8 @@ export default function PageSyirkah() {
             </Box>
           </CardHeader>
           <CardBody mt={-5}>
-            <TableContainer p={3}>
-              <Table size='sm' mb={5}>
+            <TableContainer>
+              <Table mb={5}>
                 <Thead>
                   <Tr>
                     <Th>Nama BC</Th>

@@ -81,7 +81,7 @@ export default function PageDetailSyirkah() {
             <Divider />
             <CardBody>
               <VStack alignItems='start' mb={8}>
-                <Flex gap={2} flexWrap='wrap'>
+                <Flex gap={2} flexWrap='wrap' >
                   <Text fontWeight='bold' mr={74}>Nama BC</Text>
                   <Text>makan malam</Text>
                 </Flex>
@@ -114,16 +114,16 @@ export default function PageDetailSyirkah() {
             <CardHeader>
               <VStack alignItems='Start' flexWrap='wrap' >
                 <Text fontWeight='bold' mb='10px'>Filter Tanggal</Text>
-                <InputGroup border='1px' borderColor='gray.200' borderRadius='md' w='40%'>
-                  <Input placeholder='select date' type='date' w="50%" border={0} focusBorderColor='none' />
+                <Flex flexWrap='wrap' gap={3} w="90%">
+                  <Input placeholder='select date' type='date' w="225px" border={0} focusBorderColor='none' />
                   <ArrowLongRightIcon width='24px' />
-                  <Input placeholder='select date' type='date' w="50%" border={0} focusBorderColor='none' />
-                </InputGroup>
+                  <Input placeholder='select date' type='date' w="225px" border={0} focusBorderColor='none' />
+                </Flex>
               </VStack>
             </CardHeader>
             <CardBody>
-              <TableContainer pb={3}>
-                <Table size='sm' mb={5}>
+              <TableContainer >
+                <Table mb={5}>
                   <Thead>
                     <Tr>
                       <Th>Tanggal</Th>

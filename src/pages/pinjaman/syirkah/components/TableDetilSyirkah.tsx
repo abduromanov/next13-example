@@ -1,14 +1,11 @@
 import {
+  Flex,
   Icon,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Td,
+  Tooltip,
   Tr
 } from '@chakra-ui/react'
-import { EllipsisVerticalIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
 
@@ -28,17 +25,18 @@ export default function TableDetilSyirkah(props: Props) {
       <Td>{props.item.bagiHasilHamasah}</Td>
       <Td>{props.item.catatan}</Td>
       <Td>
-        <Menu>
-          <MenuButton as={IconButton} icon={<EllipsisVerticalIcon />} variant='outline' />
-          <MenuList>
-            <Link href={`/pinjaman/syirkah/${props.item.id}`}>
-              <MenuItem><Icon as={PencilSquareIcon} />&nbsp;Edit Data</MenuItem>
-            </Link>
-            <Link href={`/pinjaman/syirkah/${props.item.id}`}>
-              <MenuItem><Icon as={TrashIcon} color='red' />&nbsp;Hapus</MenuItem>
-            </Link>
-          </MenuList>
-        </Menu >
+        <Flex gap={3}>
+          <Link href="#">
+            <Tooltip hasArrow label='edit data' fontSize='xs'>
+              <Icon as={PencilSquareIcon} color="teal" boxSize={5} />
+            </Tooltip>
+          </Link>
+          <Link href="#">
+            <Tooltip hasArrow label='hapus' fontSize='xs'>
+              <Icon as={TrashIcon} color="red" boxSize={5} />
+            </Tooltip>
+          </Link>
+        </Flex>
       </Td >
     </Tr >
   )
