@@ -10,7 +10,7 @@ export default async function handler(
 ) {
   try {
     if (!req.query.id) {
-      return res.status(404).json({});
+      return res.status(404).end();
     }
 
     const data = await directus

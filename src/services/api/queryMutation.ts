@@ -53,7 +53,7 @@ const queryMutation = <ApiRequest, ApiResponse = any>(
     >((values: ApiRequest) => {
       switch (method) {
         case "POST":
-          return axios.put<ApiRequest, AxiosResponse<ApiResponse>>(url, values);
+          return axios.post<ApiRequest, AxiosResponse<ApiResponse>>(url, values);
 
         case "PUT":
           return axios.put<ApiRequest, AxiosResponse<ApiResponse>>(url, values);
@@ -65,7 +65,7 @@ const queryMutation = <ApiRequest, ApiResponse = any>(
           );
 
         case "DELETE":
-          return axios.put<ApiRequest, AxiosResponse<ApiResponse>>(url, values);
+          return axios.delete<ApiRequest, AxiosResponse<ApiResponse>>(url);
 
         default:
           return axios.post<ApiRequest, AxiosResponse<ApiResponse>>(
