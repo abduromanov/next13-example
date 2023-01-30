@@ -1,18 +1,10 @@
-import {
-  Button,
-  Icon,
-  Td,
-  Tooltip,
-  Tr
-} from '@chakra-ui/react'
-import { EyeIcon } from '@heroicons/react/24/outline'
-
-
+import { Button, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 type Props = {
-  item: any,
-  onOpen?: any
-}
+  item: any;
+  onOpen?: any;
+};
 export default function TableRincianPembayaran(props: Props) {
   return (
     <Tr>
@@ -24,13 +16,12 @@ export default function TableRincianPembayaran(props: Props) {
       <Td>{props.item.margin}</Td>
       <Td>{props.item.total}</Td>
       <Td>
-        <Button onClick={props.onOpen} variant='ghost'>
-          <Tooltip hasArrow label='detail' fontSize='xs'>
+        <Button onClick={props.onOpen} variant="ghost">
+          <Tooltip hasArrow label="detail" fontSize="xs">
             <Icon as={EyeIcon} color="teal" boxSize={5} />
           </Tooltip>
         </Button>
       </Td>
     </Tr>
-  )
+  );
 }
-

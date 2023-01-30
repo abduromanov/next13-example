@@ -9,9 +9,9 @@ export default async function handler(
   res: NextApiResponse<TResponse | TMurobahah>
 ) {
   try {
-    const data = await directus.items('murobahah').readByQuery({
-      fields: ['*'],
-      meta: '*',
+    const data = await directus.items("murobahah").readByQuery({
+      fields: ["*"],
+      meta: "*",
       ...req.query,
     });
 
@@ -19,4 +19,4 @@ export default async function handler(
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
-};
+}

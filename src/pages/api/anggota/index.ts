@@ -9,17 +9,29 @@ export default async function handler(
   res: NextApiResponse<TResponse | TAnggota>
 ) {
   try {
-    const fields = [...(req.query.fields as string || '').split(",")].filter((item) => item);
+    const fields = [...((req.query.fields as string) || "").split(",")].filter(
+      (item) => item
+    );
 
     delete req.query.fields;
 
-    const data = await directus.items('anggota').readByQuery({
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'tglDibuat', 'tglDihapus', ...fields],
-      meta: '*',
+    const data = await directus.items("anggota").readByQuery({
+      fields: [
+        "id",
+        "idAnggota",
+        "nama",
+        "alamat",
+        "isPasswordBaru",
+        "status",
+        "tglDibuat",
+        "tglDihapus",
+        ...fields,
+      ],
+      meta: "*",
       filter: {
         tglDihapus: {
-          _null: true
-        }
+          _null: true,
+        },
       },
       ...req.query,
     });
@@ -28,4 +40,4 @@ export default async function handler(
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
-};
+}

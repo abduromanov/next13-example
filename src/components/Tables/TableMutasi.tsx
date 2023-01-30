@@ -1,20 +1,15 @@
-import {
-  Badge,
-  Td,
-  Tr,
-} from '@chakra-ui/react'
-
+import { Badge, Td, Tr } from "@chakra-ui/react";
 
 type Props = {
-  item: any
-}
+  item: any;
+};
 const BadgeTipe = (tipe: any) => {
-  if (tipe == 'debit') {
-    return <Badge colorScheme='green'>{tipe}</Badge>
+  if (tipe == "debit") {
+    return <Badge colorScheme="green">{tipe}</Badge>;
   } else {
-    return <Badge colorScheme='purple'>{tipe}</Badge>
+    return <Badge colorScheme="purple">{tipe}</Badge>;
   }
-}
+};
 export default function TableMutasi(props: Props) {
   return (
     <Tr>
@@ -23,7 +18,5 @@ export default function TableMutasi(props: Props) {
       <Td>{props.item.nominal}</Td>
       <Td>{props.item.keterangan}</Td>
     </Tr>
-
-  )
+  );
 }
-

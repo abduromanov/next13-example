@@ -1,50 +1,72 @@
-import { Box, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Spacer, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Flex,
+  Heading,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Spacer,
+  Table,
+  TableContainer,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 
 import TableSimpananAnggota from "@/components/Tables/TableSimpanan";
 
-
 type TPageProps = {
-  pageTitle: string
-}
+  pageTitle: string;
+};
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   return {
     props: {
-      pageTitle: 'Simpanan Anggota'
-    }
-  }
-}
+      pageTitle: "Simpanan Anggota",
+    },
+  };
+};
 
 const anggota = [
   {
-    nama: 'adinda',
+    nama: "adinda",
     id: 112233,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }, {
-    nama: 'adinda',
+    alamat: "jakarta selatan",
+    totSimpanan: "1.200.000",
+  },
+  {
+    nama: "adinda",
     id: 112234,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }, {
-    nama: 'adinda',
+    alamat: "jakarta selatan",
+    totSimpanan: "1.200.000",
+  },
+  {
+    nama: "adinda",
     id: 112235,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }, {
-    nama: 'adinda',
+    alamat: "jakarta selatan",
+    totSimpanan: "1.200.000",
+  },
+  {
+    nama: "adinda",
     id: 112236,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }, {
-    nama: 'adinda',
+    alamat: "jakarta selatan",
+    totSimpanan: "1.200.000",
+  },
+  {
+    nama: "adinda",
     id: 112237,
-    alamat: 'jakarta selatan',
-    totSimpanan: '1.200.000'
-  }
-]
+    alamat: "jakarta selatan",
+    totSimpanan: "1.200.000",
+  },
+];
 export default function PageSimpanan() {
   // const router = useRouter();
   // const selectSimpanan = (id_anggota: any) => {
@@ -57,27 +79,29 @@ export default function PageSimpanan() {
   // }
   return (
     <>
-      <Box >
-        <Card m={5} boxShadow='md' size="md">
+      <Box>
+        <Card m={5} boxShadow="md" size="md">
           <CardHeader>
             <Flex alignItems="start">
-              <Heading size='md'>Data simpanan Anggota</Heading>
+              <Heading size="md">Data simpanan Anggota</Heading>
               <Spacer />
               <Box w="25%">
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents='none'>
-                    <Icon as={MagnifyingGlassIcon} color='gray' />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={MagnifyingGlassIcon} color="gray" />
                   </InputLeftElement>
-                  <Input placeholder="cari berdasarkan nama" focusBorderColor="teal.200" />
+                  <Input
+                    placeholder="cari berdasarkan nama"
+                    focusBorderColor="teal.200"
+                  />
                 </InputGroup>
               </Box>
             </Flex>
           </CardHeader>
           <Divider />
           <CardBody>
-            <TableContainer p='3'>
-              <Table size='sm'>
+            <TableContainer p="3">
+              <Table size="sm">
                 <Thead>
                   <Tr>
                     <Th>Nama Anggota</Th>
@@ -98,5 +122,5 @@ export default function PageSimpanan() {
         </Card>
       </Box>
     </>
-  )
+  );
 }
