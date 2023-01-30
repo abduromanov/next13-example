@@ -12,8 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { forwardRef, useImperativeHandle } from "react";
 
+import { useFormCallback } from "@/hooks/useFormCallback";
+
+import { useDeleteAnggota } from "@/services/api/commands/anggota.command";
+
 type Props = {
-  id?: number;
+  id: number;
+  refetchFn?: () => void;
 };
 
 const ModalDeleteAnggota = forwardRef<
@@ -21,6 +26,8 @@ const ModalDeleteAnggota = forwardRef<
   Props
 >((props, ref) => {
   const disclosure = useDisclosure();
+  const formCallback = useFormCallback();
+  const anggotaQuery = useDeleteAnggota(props.id).mutate("DELETE");
 
   useImperativeHandle(
     ref,
@@ -29,6 +36,23 @@ const ModalDeleteAnggota = forwardRef<
     }),
     [disclosure.onOpen]
   );
+
+  const submitHandler = () => {
+    anggotaQuery.mutate(
+      {},
+      {
+        onSuccess: () => {
+          formCallback.onSuccess("Berhasil menghapus anggota");
+          disclosure.onClose();
+          props.refetchFn?.();
+        },
+        onError: () => {
+          formCallback.onError("Gagal menghapus anggota");
+          disclosure.onClose();
+        },
+      }
+    );
+  };
 
   return (
     <Modal
@@ -52,7 +76,11 @@ const ModalDeleteAnggota = forwardRef<
             >
               Batal
             </Button>
-            <Button colorScheme="red" onClick={undefined}>
+            <Button
+              colorScheme="red"
+              onClick={submitHandler}
+              isLoading={anggotaQuery.isLoading}
+            >
               Hapus
             </Button>
           </HStack>

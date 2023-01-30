@@ -16,7 +16,10 @@ export const useAnggotaDetail = (id: number) =>
   queryMutation<any, TAnggota>(`/api/anggota/${id}`, ["anggota", id]);
 
 export const useCreateAnggota = () =>
-  queryMutation<TAnggotaRequest, TAnggota>("/api/anggota/create");
+  queryMutation<TAnggotaRequest, TAnggota>("/api/anggota");
 
-export const useDeleteAnggota = () =>
-  queryMutation<any, TAnggota>("/api/anggota");
+export const useUpdateAnggota = (id: number) =>
+  queryMutation<TAnggotaRequest, TAnggota>(`/api/anggota/${id}`);
+
+export const useDeleteAnggota = (id: number) =>
+  queryMutation<any, TAnggota>(`/api/anggota/${id}`);

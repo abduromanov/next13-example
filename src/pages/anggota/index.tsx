@@ -120,6 +120,8 @@ export default function Page() {
   const listAnggota = listAnggotaQuery.data?.data?.data;
   const metadata = listAnggotaQuery.data?.data?.meta;
 
+  const refetchQuery = () => listAnggotaQuery.refetch();
+
   useEffect(() => {
     setTotal(metadata?.filter_count);
   }, [metadata]);
@@ -185,7 +187,10 @@ export default function Page() {
                       modalEditRef.current?.onOpen();
                       setIdAnggota(item.id);
                     }}
-                    deleteHandler={modalDeleteRef.current?.onOpen}
+                    deleteHandler={() => {
+                      modalDeleteRef.current?.onOpen();
+                      setIdAnggota(item.id);
+                    }}
                   />
                 ))}
               </Tbody>
@@ -199,8 +204,16 @@ export default function Page() {
       </Card>
 
       <ModalCreateAnggota ref={modalCreateRef} />
-      <ModalEditAnggota ref={modalEditRef} id={idAnggota || 0} />
-      <ModalDeleteAnggota ref={modalDeleteRef} />
+      <ModalEditAnggota
+        ref={modalEditRef}
+        id={idAnggota || 0}
+        refetchFn={refetchQuery}
+      />
+      <ModalDeleteAnggota
+        ref={modalDeleteRef}
+        id={idAnggota || 0}
+        refetchFn={refetchQuery}
+      />
     </Stack>
   );
 }

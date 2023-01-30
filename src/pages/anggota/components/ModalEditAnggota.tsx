@@ -26,12 +26,13 @@ import { InputTextarea } from "@/components/Forms/InputTextarea";
 import {
   TAnggotaRequest,
   useAnggotaDetail,
-  useCreateAnggota,
+  useUpdateAnggota,
 } from "@/services/api/commands/anggota.command";
 import validators from "@/services/utils/validators";
 
 type Props = {
   id: number;
+  refetchFn?: () => void;
 };
 
 const ModalEditAnggota = forwardRef<
@@ -66,18 +67,19 @@ const ModalEditAnggota = forwardRef<
     form.setValue("alamat", anggota?.alamat || "");
   }, [anggota, form]);
 
-  const anggotaMutation = useCreateAnggota().mutate("PATCH");
+  const anggotaMutation = useUpdateAnggota(props.id).mutate("PATCH");
 
   const submitHandler: SubmitHandler<TAnggotaRequest> = (values) => {
     anggotaMutation.mutate(values, {
       onSuccess() {
-        formCallback.onSuccess("Berhasil menambahkan anggota");
+        formCallback.onSuccess("Berhasil mengubah anggota");
         form.reset();
         disclosure.onClose();
+        props.refetchFn?.();
       },
       onError() {
         formCallback.onError(
-          "Gagal menambahkan anggota! Pastikan semua data terisi dengan benar"
+          "Gagal mengubah anggota! Pastikan semua data terisi dengan benar"
         );
       },
     });
