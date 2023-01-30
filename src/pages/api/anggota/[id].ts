@@ -15,16 +15,16 @@ export default async function handler(
 
   try {
     switch (req.method) {
-      case 'GET':
+      case "GET":
         return get();
 
-      case 'PUT':
+      case "PUT":
         return update();
 
-      case 'PATCH':
+      case "PATCH":
         return update();
 
-      case 'DELETE':
+      case "DELETE":
         return destroy();
 
       default:
@@ -69,13 +69,13 @@ export default async function handler(
       delete request.password;
     }
 
-    await directus.items('anggota').updateOne(req.query.id as string, request);
+    await directus.items("anggota").updateOne(req.query.id as string, request);
 
     return res.status(200).end();
   }
 
   async function destroy() {
-    await directus.items('anggota').updateOne(req.query.id as string, {
+    await directus.items("anggota").updateOne(req.query.id as string, {
       tglDihapus: moment(),
     });
 

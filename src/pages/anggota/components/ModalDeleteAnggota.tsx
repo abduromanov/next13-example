@@ -27,7 +27,7 @@ const ModalDeleteAnggota = forwardRef<
 >((props, ref) => {
   const disclosure = useDisclosure();
   const formCallback = useFormCallback();
-  const anggotaQuery = useDeleteAnggota(props.id).mutate('DELETE');
+  const anggotaQuery = useDeleteAnggota(props.id).mutate("DELETE");
 
   useImperativeHandle(
     ref,
@@ -38,18 +38,21 @@ const ModalDeleteAnggota = forwardRef<
   );
 
   const submitHandler = () => {
-    anggotaQuery.mutate({}, {
-      onSuccess: () => {
-        formCallback.onSuccess('Berhasil menghapus anggota');
-        disclosure.onClose();
-        props.refetchFn?.();
-      },
-      onError: () => {
-        formCallback.onError('Gagal menghapus anggota');
-        disclosure.onClose();
+    anggotaQuery.mutate(
+      {},
+      {
+        onSuccess: () => {
+          formCallback.onSuccess("Berhasil menghapus anggota");
+          disclosure.onClose();
+          props.refetchFn?.();
+        },
+        onError: () => {
+          formCallback.onError("Gagal menghapus anggota");
+          disclosure.onClose();
+        },
       }
-    })
-  }
+    );
+  };
 
   return (
     <Modal
@@ -73,7 +76,11 @@ const ModalDeleteAnggota = forwardRef<
             >
               Batal
             </Button>
-            <Button colorScheme="red" onClick={submitHandler} isLoading={anggotaQuery.isLoading}>
+            <Button
+              colorScheme="red"
+              onClick={submitHandler}
+              isLoading={anggotaQuery.isLoading}
+            >
               Hapus
             </Button>
           </HStack>

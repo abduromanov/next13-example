@@ -10,10 +10,10 @@ export default async function handler(
 ) {
   try {
     switch (req.method) {
-      case 'GET':
+      case "GET":
         return get();
 
-      case 'POST':
+      case "POST":
         return post();
 
       default:
@@ -53,7 +53,6 @@ export default async function handler(
 
     return res.status(200).json(data);
   }
-
 
   async function post() {
     await directus.items<string, TAnggota>("anggota").createOne(req.body);

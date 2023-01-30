@@ -204,8 +204,16 @@ export default function Page() {
       </Card>
 
       <ModalCreateAnggota ref={modalCreateRef} />
-      <ModalEditAnggota ref={modalEditRef} id={idAnggota || 0} refetchFn={refetchQuery} />
-      <ModalDeleteAnggota ref={modalDeleteRef} id={idAnggota || 0} refetchFn={refetchQuery} />
+      <ModalEditAnggota
+        ref={modalEditRef}
+        id={idAnggota || 0}
+        refetchFn={refetchQuery}
+      />
+      <ModalDeleteAnggota
+        ref={modalDeleteRef}
+        id={idAnggota || 0}
+        refetchFn={refetchQuery}
+      />
     </Stack>
   );
 }

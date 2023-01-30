@@ -10,7 +10,7 @@ export default async function login(
   res: NextApiResponse<TResponse | Partial<TAnggota>>
 ) {
   try {
-    if (req.method !== 'POST') {
+    if (req.method !== "POST") {
       return res.status(405).end();
     }
 

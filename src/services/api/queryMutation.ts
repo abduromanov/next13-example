@@ -53,7 +53,10 @@ const queryMutation = <ApiRequest, ApiResponse = any>(
     >((values: ApiRequest) => {
       switch (method) {
         case "POST":
-          return axios.post<ApiRequest, AxiosResponse<ApiResponse>>(url, values);
+          return axios.post<ApiRequest, AxiosResponse<ApiResponse>>(
+            url,
+            values
+          );
 
         case "PUT":
           return axios.put<ApiRequest, AxiosResponse<ApiResponse>>(url, values);
