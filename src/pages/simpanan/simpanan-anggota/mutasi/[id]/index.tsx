@@ -14,38 +14,24 @@ import {
   Tr, VStack
 } from "@chakra-ui/react";
 import { ArrowLongRightIcon, ChevronUpDownIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { QueryClient } from "@tanstack/react-query";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
-import TableMutasi from "@/components/Tables/TableMutasi";
 
-import TablePagination from "@/layouts/components/TablePagination";
-import { fetchAnggotaDetail, useAnggota, useAnggotaDetail } from "@/services/api/commands/anggota.command";
+import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
+import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
 
 import { TAnggota, TSimpanan } from "@/types";
 
 interface TPageProps {
   pageTitle: string;
-  anggota: TAnggota;
+  anggota?: TAnggota;
   simpanan?: TSimpanan;
 }
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async ({ req }) => {
-  // const query = new QueryClient();
-
-  // await query.prefetchQuery({
-  //   queryKey: ['simpanan', 1, 10],
-  //   queryFn: () => fetchAnggotaDetail({
-  //     params: {
-  //       page: 1,
-  //       limit: 10,
-  //       fields: "mutasiTabungan.*"
-  //     }
-  //   })
-  // })
   return {
     props: {
       pageTitle: 'Mutasi Simpanan',
@@ -72,13 +58,13 @@ export default function PageMutasi() {
     }
   });
 
-  const anggotaDetailQuery = useAnggotaDetail(Number(id), {
+  const anggotaDetailQuery = useAnggotaDetail(id).paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
       fields: "mutasiTabungan.*"
     }
-  }).query();
+  });
   const anggotaDetailSimpanan = anggotaDetailQuery.data?.data?.data;
   const metaData = anggotaDetailSimpanan?.mutasiTabungan?.length;
 
@@ -94,7 +80,6 @@ export default function PageMutasi() {
     simpananPokok: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'pokok').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
   }
 
-  console.log(metaData)
   const breadcrumbData = [
     {
       name: 'Simpanan',
@@ -109,7 +94,7 @@ export default function PageMutasi() {
   ];
   return (
     <>
-      <Box>
+      <Box mt='-6'>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
       <Flex px='8'>

@@ -1,40 +1,28 @@
 import { usePagination } from "@ajna/pagination";
 import { Box, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Progress, Skeleton, Spacer, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { dehydrate, QueryClient } from "@tanstack/react-query";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 
-import TableSimpananAnggota from "@/components/Tables/TableSimpanan";
+import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import { fetchAnggota, useAnggota } from "@/services/api/commands/anggota.command";
+import TableSimpananAnggota from "@/pages/simpanan/simpanan-anggota/components/TableSimpanan";
+import { useSimpanan } from "@/services/api/commands/simpanan.command";
 
-import { TAnggota, TSimpanan } from "@/types";
+import { TSimpanan } from "@/types";
+
+
 
 interface TPageProps {
   pageTitle: string;
-  simpanan?: TSimpanan;
-  anggota?: TAnggota
 
 }
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
-  const query = new QueryClient();
-
-  await query.prefetchQuery({
-    queryKey: ['anggota', 1, 10],
-    queryFn: () => fetchAnggota({
-      params: {
-        page: 1,
-        limit: 10
-      }
-    })
-  })
   return {
     props: {
       pageTitle: 'Simpanan Anggota',
-      dehydratedState: dehydrate(query)
     }
   }
 }
@@ -52,25 +40,32 @@ export default function PageSimpanan() {
     }
   });
 
-  const listAnggotaQuery = useAnggota({
+  const listSimpananAnggotaQuery = useSimpanan().paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
-      fields: "mutasiTabungan.saldo"
     }
-  }).query();
+  });
 
 
-  const listAnggota = listAnggotaQuery.data?.data?.data;
-  const metadata = listAnggotaQuery.data?.data?.meta;
+  const listSimpananAnggota = listSimpananAnggotaQuery.data?.data?.data;
+  const metadata = listSimpananAnggotaQuery.data?.data?.meta;
 
   useEffect(() => {
     setTotal(metadata?.filter_count)
   }, [metadata])
 
+  const breadcrumbData = [{
+    name: 'Simpanan'
+  }, {
+    name: 'Simpanan Anggota'
+  }]
   return (
     <>
       <Box >
+        <Box mt='-6'>
+          <BreadcrumbSection data={breadcrumbData} />
+        </Box>
         <Card m={5} boxShadow='md' size="md">
           <CardHeader>
             <Flex alignItems="start" flexWrap='wrap' gap={5}>
@@ -88,10 +83,10 @@ export default function PageSimpanan() {
             </Flex>
           </CardHeader>
           <Divider />
-          {listAnggotaQuery.isLoading && <Progress size='xs' isIndeterminate />}
+          {listSimpananAnggotaQuery.isLoading && <Progress size='xs' isIndeterminate />}
           <CardBody>
             <TableContainer p='3'>
-              <Table size='sm' mb={3}>
+              <Table mb={3}>
                 <Thead>
                   <Tr>
                     <Th>Nama Anggota</Th>
@@ -102,12 +97,12 @@ export default function PageSimpanan() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {(listAnggota || []).map((item: TAnggota) => (
+                  {(listSimpananAnggota || []).map((item: TSimpanan) => (
                     <TableSimpananAnggota item={item} key={item.id} />
                   ))}
                 </Tbody>
               </Table>
-              <Skeleton w='full' isLoaded={!listAnggotaQuery.isLoading}>
+              <Skeleton w='full' isLoaded={!listSimpananAnggotaQuery.isLoading}>
                 <TablePagination pagination={pagination} />
               </Skeleton>
             </TableContainer>

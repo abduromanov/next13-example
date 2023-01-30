@@ -10,13 +10,19 @@ export default async function handler(
   res: NextApiResponse<TResponse | DirectusResponse<TAnggota[]>>
 ) {
   try {
-    const data = await directus.items('anggota').readByQuery({
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'mutasiTabungan.saldo'],
+    const data = await directus.items("anggota").readByQuery({
+      fields: ["id", "idAnggota", "nama", "alamat", "mutasiTabungan.saldo"],
+      meta: "*",
+      ...req.query,
     });
 
-    data.data?.map(item => {
-      item.totalSimpanan = _.reduce(item.mutasiTabungan, (total, mutasi) => (total?.saldo || 0) + (mutasi?.saldo || 0)) || 0
-      delete item.mutasiTabungan
+    data.data?.map((item) => {
+      item.totalSimpanan =
+        _.reduce(
+          item.mutasiTabungan,
+          (total, mutasi) => (total?.saldo || 0) + (mutasi?.saldo || 0)
+        ) || 0;
+      delete item.mutasiTabungan;
 
       return item;
     });
@@ -25,4 +31,4 @@ export default async function handler(
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
-};
+}
