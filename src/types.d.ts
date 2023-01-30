@@ -40,7 +40,7 @@ export interface TAnggota {
   tglDihapus: string;
 };
 
-export interface TMemberRelations {
+export interface TAnggotaRelations {
   mutasiTabungan?: TSimpanan[];
   // murobahah?: TMurobahah[];
 };
