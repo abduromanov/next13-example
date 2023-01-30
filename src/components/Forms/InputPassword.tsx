@@ -10,16 +10,16 @@ import {
   InputRightElement,
   useDisclosure,
   useMergeRefs,
-} from '@chakra-ui/react'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
-import { useRef } from 'react';
-import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
+} from "@chakra-ui/react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import { useRef } from "react";
+import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
 type TInputProps = {
   register: UseFormRegisterReturn;
   errors?: FieldError;
   label?: string;
-}
+};
 
 export function InputPassword(props: InputProps & TInputProps) {
   const { isOpen, onToggle } = useDisclosure();
@@ -35,27 +35,29 @@ export function InputPassword(props: InputProps & TInputProps) {
 
   return (
     <FormControl isInvalid={!!props.errors}>
-      <FormLabel htmlFor={props.id || props.register.name}>{props.label}</FormLabel>
+      <FormLabel htmlFor={props.id || props.register.name}>
+        {props.label}
+      </FormLabel>
       <InputGroup>
         <InputRightElement>
           <IconButton
             variant="link"
-            aria-label={isOpen ? 'Mask password' : 'Reveal password'}
+            aria-label={isOpen ? "Mask password" : "Reveal password"}
             icon={isOpen ? <Icon as={EyeSlashIcon} /> : <Icon as={EyeIcon} />}
-            onClick={onClickReveal} />
+            onClick={onClickReveal}
+          />
         </InputRightElement>
         <Input
           id={props.id || props.register.name}
-          type={isOpen ? 'text' : 'password'}
+          type={isOpen ? "text" : "password"}
           {...props}
           {...props.register}
-          ref={mergeRef} />
+          ref={mergeRef}
+        />
       </InputGroup>
-      <FormErrorMessage>
-        {props.errors?.message as string}
-      </FormErrorMessage>
+      <FormErrorMessage>{props.errors?.message as string}</FormErrorMessage>
     </FormControl>
   );
 }
 
-InputPassword.displayName = 'InputPassword'
+InputPassword.displayName = "InputPassword";

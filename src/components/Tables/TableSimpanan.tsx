@@ -1,16 +1,10 @@
-import {
-  Icon,
-  Td,
-  Tooltip,
-  Tr
-} from '@chakra-ui/react'
-import { EyeIcon } from '@heroicons/react/24/outline'
-import Link from 'next/link'
-
+import { Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { EyeIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 type Props = {
-  item: any,
-}
+  item: any;
+};
 export default function TableSimpananAnggota(props: Props) {
   return (
     <Tr>
@@ -19,13 +13,12 @@ export default function TableSimpananAnggota(props: Props) {
       <Td>{props.item.alamat}</Td>
       <Td>{props.item.totSimpanan}</Td>
       <Td>
-        <Link href={`/simpanan/simpanan-anggota/mutasi/${props.item.id}`} >
-          <Tooltip hasArrow label='lihat mutasi' fontSize='xs'>
+        <Link href={`/simpanan/simpanan-anggota/mutasi/${props.item.id}`}>
+          <Tooltip hasArrow label="lihat mutasi" fontSize="xs">
             <Icon as={EyeIcon} color="teal" boxSize={5} />
           </Tooltip>
         </Link>
       </Td>
     </Tr>
-  )
+  );
 }
-

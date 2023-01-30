@@ -3,9 +3,8 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Text,
-} from '@chakra-ui/react';
-import Link from 'next/link';
-
+} from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function BreadcrumbSection({ data }: any) {
   return (
