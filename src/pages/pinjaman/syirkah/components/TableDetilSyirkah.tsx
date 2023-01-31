@@ -28,12 +28,12 @@ export default function TableDetilSyirkah(props: Props) {
         <Flex gap={3}>
           <Link href="#">
             <Tooltip hasArrow label='edit data' fontSize='xs'>
-              <Icon as={PencilSquareIcon} color="teal" boxSize={5} />
+              <Icon as={PencilSquareIcon} color="teal" fontSize='lg' />
             </Tooltip>
           </Link>
           <Link href="#">
             <Tooltip hasArrow label='hapus' fontSize='xs'>
-              <Icon as={TrashIcon} color="red" boxSize={5} />
+              <Icon as={TrashIcon} color="red" fontSize='lg' />
             </Tooltip>
           </Link>
         </Flex>

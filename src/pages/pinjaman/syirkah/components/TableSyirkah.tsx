@@ -1,17 +1,11 @@
 import {
-  Button,
   Flex,
   Icon,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Td,
   Tooltip,
   Tr
 } from '@chakra-ui/react'
-import { DocumentTextIcon, EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { DocumentTextIcon, TrashIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
 
