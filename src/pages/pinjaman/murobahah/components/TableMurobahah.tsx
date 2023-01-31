@@ -1,60 +1,54 @@
 import {
+  Flex,
   Icon,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Td,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import {
   CheckIcon,
   DocumentTextIcon,
-  EllipsisVerticalIcon,
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import moment from "moment";
 import Link from "next/link";
+import { useMemo } from "react";
 
 type Props = {
   item: any;
 };
 
 export default function TableMurobahah(props: Props) {
+  const totalPinjaman = useMemo(() => props.item.totalPinjaman.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }), [props.item.totalPinjaman])
+  const tglMulaiCicilan = useMemo(
+    () => moment(props.item?.tglMulai).format("DD MMMM YYYY"),
+    [props.item?.tglMulai]
+  );
   return (
     <Tr>
-      <Td>{props.item.nama}</Td>
-      <Td>{props.item.idanggota}</Td>
+      <Td>{props.item.anggota.nama}</Td>
+      <Td>{props.item.anggota.idAnggota}</Td>
       <Td>{props.item.pembiayaan}</Td>
-      <Td>{props.item.totPinjaman}</Td>
+      <Td>{totalPinjaman}</Td>
       <Td>{props.item.totTerbayar}</Td>
-      <Td>{props.item.tglMulaiCicilan}</Td>
+      <Td>{tglMulaiCicilan}</Td>
       <Td>
         {props.item.lunas ? <Icon as={CheckIcon} /> : <Icon as={XMarkIcon} />}
       </Td>
       <Td>
-        <Menu>
-          <MenuButton
-            as={IconButton}
-            icon={<EllipsisVerticalIcon />}
-            variant="outline"
-          />
-          <MenuList>
-            <Link href={`/pinjaman/murobahah/${props.item.id}`}>
-              <MenuItem>
-                <Icon as={DocumentTextIcon} />
-                &nbsp;Lihat Detail
-              </MenuItem>
-            </Link>
-            <Link href={`/pinjaman/murobahah/${props.item.id}`}>
-              <MenuItem>
-                <Icon as={TrashIcon} color="red" />
-                &nbsp;Hapus
-              </MenuItem>
-            </Link>
-          </MenuList>
-        </Menu>
+        <Flex gap={5}>
+          <Link href={`/pinjaman/murobahah/${props.item.id}`}>
+            <Tooltip hasArrow label='lihat detail' fontSize='xs'>
+              <Icon as={DocumentTextIcon} color="teal" boxSize={5} />
+            </Tooltip>
+          </Link>
+          <Link href={`/pinjaman/murobahah/${props.item.id}`}>
+            <Tooltip hasArrow label='hapus' fontSize='xs'>
+              <Icon as={TrashIcon} color="red" boxSize={5} />
+            </Tooltip>
+          </Link>
+        </Flex>
       </Td>
     </Tr>
   );
