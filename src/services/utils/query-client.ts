@@ -8,6 +8,6 @@ export default function queryClient() {
         refetchOnWindowFocus: false,
         retry: false,
       },
-    }
-  })
-};
+    },
+  });
+}

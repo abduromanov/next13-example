@@ -13,14 +13,16 @@ export default async function handler(
       return res.status(404).json({});
     }
 
-    const data = await directus.items('murobahah').readOne(req.query.id as string, {
-      fields: ['*'],
-      meta: '*',
-      ...req.query,
-    });
+    const data = await directus
+      .items("murobahah")
+      .readOne(req.query.id as string, {
+        fields: ["*"],
+        meta: "*",
+        ...req.query,
+      });
 
     return res.status(200).json(data);
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
-};
+}

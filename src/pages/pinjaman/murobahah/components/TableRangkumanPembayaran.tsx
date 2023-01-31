@@ -1,14 +1,8 @@
-import {
-  Td,
-  Tr
-} from '@chakra-ui/react'
-
-
-
+import { Td, Tr } from "@chakra-ui/react";
 
 type Props = {
-  item: any,
-}
+  item: any;
+};
 export default function TableRangkumanPembayaran(props: Props) {
   return (
     <Tr>
@@ -17,6 +11,5 @@ export default function TableRangkumanPembayaran(props: Props) {
       <Td>{props.item.margin}</Td>
       <Td>{props.item.total}</Td>
     </Tr>
-  )
+  );
 }
-
