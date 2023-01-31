@@ -10,12 +10,14 @@ export default async function handler(
 ) {
   try {
     const filter = {
-      _and: [{
-        murobahah: {
-          _eq: parseInt(req.query.id as string)
-        }
-      }]
-    }
+      _and: [
+        {
+          murobahah: {
+            _eq: parseInt(req.query.id as string),
+          },
+        },
+      ],
+    };
 
     if (req.query.filter) {
       filter._and.push(JSON.parse(req.query.filter as string));
@@ -23,9 +25,9 @@ export default async function handler(
 
     delete req.query.filter;
 
-    const data = await directus.items('mutasiMurobahah').readByQuery({
-      fields: ['*'],
-      meta: '*',
+    const data = await directus.items("mutasiMurobahah").readByQuery({
+      fields: ["*"],
+      meta: "*",
       filter: filter,
       ...req.query,
     });
@@ -34,4 +36,4 @@ export default async function handler(
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
-};
+}

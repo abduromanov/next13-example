@@ -9,23 +9,54 @@ export default async function handler(
   res: NextApiResponse<TResponse | TAnggota>
 ) {
   try {
-    const fields = [...(req.query.fields as string || '').split(",")].filter((item) => item);
+    switch (req.method) {
+      case "GET":
+        return get();
+
+      case "POST":
+        return post();
+
+      default:
+        return res.status(405).end();
+    }
+  } catch (error: any) {
+    return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function get() {
+    const fields = [...((req.query.fields as string) || "").split(",")].filter(
+      (item) => item
+    );
 
     delete req.query.fields;
 
-    const data = await directus.items('anggota').readByQuery({
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'tglDibuat', 'tglDihapus', ...fields],
-      meta: '*',
+    const data = await directus.items("anggota").readByQuery({
+      fields: [
+        "id",
+        "idAnggota",
+        "nama",
+        "alamat",
+        "isPasswordBaru",
+        "status",
+        "tglDibuat",
+        "tglDihapus",
+        ...fields,
+      ],
+      meta: "*",
       filter: {
         tglDihapus: {
-          _null: true
-        }
+          _null: true,
+        },
       },
       ...req.query,
     });
 
     return res.status(200).json(data);
-  } catch (error: any) {
-    return res.status(error.response?.status || 500).json(error);
   }
-};
+
+  async function post() {
+    await directus.items<string, TAnggota>("anggota").createOne(req.body);
+
+    return res.status(200).json({});
+  }
+}

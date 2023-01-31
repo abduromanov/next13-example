@@ -8,15 +8,15 @@ import { useMemo } from 'react'
 
 
 type Props = {
-  item: any
-}
+  item: any;
+};
 const BadgeTipe = (tipe: any) => {
-  if (tipe == 'debit') {
-    return <Badge colorScheme='green'>{tipe}</Badge>
+  if (tipe == "debit") {
+    return <Badge colorScheme="green">{tipe}</Badge>;
   } else {
-    return <Badge colorScheme='purple'>{tipe}</Badge>
+    return <Badge colorScheme="purple">{tipe}</Badge>;
   }
-}
+};
 export default function TableMutasi(props: Props) {
   const tglDibuat = useMemo(() => moment(props.item?.tglDibuat).format('DD MMMM YYYY'), [props.item?.tglDibuat])
 
@@ -27,7 +27,5 @@ export default function TableMutasi(props: Props) {
       <Td>{props.item.nominal}</Td>
       <Td>{props.item.catatan}</Td>
     </Tr>
-
-  )
+  );
 }
-

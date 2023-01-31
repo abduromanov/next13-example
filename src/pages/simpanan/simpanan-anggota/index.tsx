@@ -73,11 +73,13 @@ export default function PageSimpanan() {
               <Spacer />
               <Box w={64}>
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents='none'>
-                    <Icon as={MagnifyingGlassIcon} color='gray' />
+                  <InputLeftElement pointerEvents="none">
+                    <Icon as={MagnifyingGlassIcon} color="gray" />
                   </InputLeftElement>
-                  <Input placeholder="cari berdasarkan nama" focusBorderColor="teal.200" />
+                  <Input
+                    placeholder="cari berdasarkan nama"
+                    focusBorderColor="teal.200"
+                  />
                 </InputGroup>
               </Box>
             </Flex>
@@ -110,5 +112,5 @@ export default function PageSimpanan() {
         </Card>
       </Box>
     </>
-  )
+  );
 }

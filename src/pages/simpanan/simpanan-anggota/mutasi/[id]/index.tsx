@@ -3,17 +3,38 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Card, CardBody, CardHeader, Center, Divider, Flex, Heading, HStack, Icon, Input,
+  Card,
+  CardBody,
+  CardHeader,
+  Center,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Icon,
+  Input,
   InputGroup,
   Select,
   Skeleton,
-  Spacer, Stat, StatGroup, StatLabel, StatNumber, Table,
+  Spacer,
+  Stat,
+  StatGroup,
+  StatLabel,
+  StatNumber,
+  Table,
   TableContainer,
   Tbody,
-  Text, Th, Thead,
-  Tr, VStack
+  Text,
+  Th,
+  Thead,
+  Tr,
+  VStack,
 } from "@chakra-ui/react";
-import { ArrowLongRightIcon, ChevronUpDownIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLongRightIcon,
+  ChevronUpDownIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -82,14 +103,14 @@ export default function PageMutasi() {
 
   const breadcrumbData = [
     {
-      name: 'Simpanan',
+      name: "Simpanan",
     },
     {
-      name: 'Simpanan Anggota',
-      url: '/simpanan/simpanan-anggota'
+      name: "Simpanan Anggota",
+      url: "/simpanan/simpanan-anggota",
     },
     {
-      name: 'Mutasi',
+      name: "Mutasi",
     },
   ];
   return (
@@ -97,7 +118,7 @@ export default function PageMutasi() {
       <Box mt='-6'>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
-      <Flex px='8'>
+      <Flex px="8">
         <Box>
           {anggotaDetailQuery.isLoading ? (<Skeleton width="100px" height="10px" />) :
             (<Text fontSize='xl'>{anggotaDetailSimpanan?.nama} - {anggotaDetailSimpanan?.idAnggota}</Text>)
@@ -105,17 +126,25 @@ export default function PageMutasi() {
         </Box>
         <Spacer />
         <Box>
-          <ButtonGroup gap='2'>
-            <Button colorScheme='teal'><Icon as={PlusIcon} />&nbsp;Debit</Button>
-            <Button colorScheme='yellow'><Icon as={PlusIcon} />&nbsp;Kredit</Button>
+          <ButtonGroup gap="2">
+            <Button colorScheme="teal">
+              <Icon as={PlusIcon} />
+              &nbsp;Debit
+            </Button>
+            <Button colorScheme="yellow">
+              <Icon as={PlusIcon} />
+              &nbsp;Kredit
+            </Button>
           </ButtonGroup>
         </Box>
       </Flex>
       <VStack px={8} spacing={8} pb={10}>
-        <Card p='5' bg='white' boxShadow='base' w='100%'>
-          <CardHeader >
+        <Card p="5" bg="white" boxShadow="base" w="100%">
+          <CardHeader>
             <Center>
-              <Heading w='60%' size='md' lineHeight='8' textAlign='center'>Simpanan Anggota Koperasi Syariah Jasa Hamasah</Heading>
+              <Heading w="60%" size="md" lineHeight="8" textAlign="center">
+                Simpanan Anggota Koperasi Syariah Jasa Hamasah
+              </Heading>
             </Center>
           </CardHeader>
           <Divider />
@@ -147,9 +176,9 @@ export default function PageMutasi() {
             </StatGroup>
           </CardBody>
         </Card>
-        <TableContainer boxShadow='lg' p='5' w='100%'>
+        <TableContainer boxShadow="lg" p="5" w="100%">
           <Box mb={5}>
-            <Flex gap='4' alignItems='center' flexWrap='wrap'>
+            <Flex gap="4" alignItems="center" flexWrap="wrap">
               <Box>
                 <Text fontWeight='bold' mb='10px'>Filter Tanggal</Text>
                 <HStack flexWrap='wrap'>
@@ -160,16 +189,27 @@ export default function PageMutasi() {
                   </InputGroup>
                 </HStack>
               </Box>
-              <Box mr='20px'>
-                <Text fontWeight='bold' mb='10px'>Filter jenis simpanan</Text>
-                <Select placeholder="select option"><option>option 1</option><option>option 2</option></Select>
+              <Box mr="20px">
+                <Text fontWeight="bold" mb="10px">
+                  Filter jenis simpanan
+                </Text>
+                <Select placeholder="select option">
+                  <option>option 1</option>
+                  <option>option 2</option>
+                </Select>
               </Box>
             </Flex>
           </Box>
-          <Table size='md'>
+          <Table size="md">
             <Thead>
               <Tr>
-                <Th>Tanggal&nbsp;<ChevronUpDownIcon width='15px' style={{ display: 'inline-flex' }} /></Th>
+                <Th>
+                  Tanggal&nbsp;
+                  <ChevronUpDownIcon
+                    width="15px"
+                    style={{ display: "inline-flex" }}
+                  />
+                </Th>
                 <Th>Tipe</Th>
                 <Th>Nominal</Th>
                 <Th>Keterangan</Th>
@@ -185,7 +225,7 @@ export default function PageMutasi() {
             <TablePagination pagination={pagination} />
           </Skeleton> */}
         </TableContainer>
-      </VStack >
+      </VStack>
     </>
   );
-};
+}
