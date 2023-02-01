@@ -29,6 +29,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import {
@@ -38,13 +39,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
 import { useSimpananDetail, } from "@/services/api/commands/simpanan.command";
+
+import ModalCreateDebit from "../../components/ModalCreateDebit";
+import ModalCreateKredit from "../../components/ModalCreateKredit";
 
 import { TAnggota, TSimpanan } from "@/types";
 
@@ -72,6 +76,10 @@ export default function PageMutasi() {
   const [jenisTabungan, setJenisTabungan] = useState<string>()
   const router = useRouter()
   const { id, nama, idAnggota } = router.query
+
+  const modalCreateDebitRef = useRef<ReturnType<typeof useDisclosure>>();
+  const modalCreateKreditRef = useRef<ReturnType<typeof useDisclosure>>();
+
 
   // console.log(id)
   const pagination = usePagination({
@@ -129,11 +137,11 @@ export default function PageMutasi() {
         <Spacer />
         <Box>
           <ButtonGroup gap="2">
-            <Button colorScheme="teal">
+            <Button colorScheme="teal" onClick={() => modalCreateDebitRef.current?.onOpen()} >
               <Icon as={PlusIcon} />
               &nbsp;Debit
             </Button>
-            <Button colorScheme="yellow">
+            <Button colorScheme="yellow" onClick={() => modalCreateKreditRef.current?.onOpen()}>
               <Icon as={PlusIcon} />
               &nbsp;Kredit
             </Button>
@@ -151,7 +159,7 @@ export default function PageMutasi() {
           </CardHeader>
           <Divider />
           <CardBody>
-            <StatGroup >
+            <StatGroup gap={3}>
               <Stat>
                 <StatLabel>Simpanan Pokok</StatLabel>
                 <StatNumber>{convertToIDR(totSimpanan?.pokok)}</StatNumber>
@@ -165,7 +173,7 @@ export default function PageMutasi() {
                 <StatNumber>{convertToIDR(totSimpananAll)}</StatNumber>
               </Stat>
             </StatGroup>
-            <StatGroup mt={7}>
+            <StatGroup mt={5}>
               <Stat>
                 <StatLabel>Simpanan Khusus</StatLabel>
                 <StatNumber>{convertToIDR(totSimpanan?.khusus)}</StatNumber>
@@ -178,7 +186,7 @@ export default function PageMutasi() {
             </StatGroup>
           </CardBody>
         </Card>
-        <TableContainer boxShadow="lg" p="5" w="100%">
+        <TableContainer boxShadow="md" w="100%" p={5}>
           <Box mb={5}>
             <Flex gap="4" alignItems="center" flexWrap="wrap">
               <Box>
@@ -207,7 +215,7 @@ export default function PageMutasi() {
           </Box>
           <Divider />
           {simpananDetailQuery.isLoading && <Progress size="xs" isIndeterminate />}
-          <Table size="md" mb={5}>
+          <Table mb={3}>
             <Thead>
               <Tr>
                 <Th>
@@ -233,6 +241,8 @@ export default function PageMutasi() {
             <TablePagination pagination={pagination} />
           </Skeleton>
         </TableContainer>
+        <ModalCreateDebit ref={modalCreateDebitRef} />
+        <ModalCreateKredit ref={modalCreateKreditRef} />
       </VStack>
     </>
   );
