@@ -14,6 +14,7 @@ import {
   Icon,
   Input,
   InputGroup,
+  Progress,
   Select,
   Skeleton,
   Spacer,
@@ -41,8 +42,9 @@ import { useEffect, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
+import TablePagination from "@/layouts/components/TablePagination";
 import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
-import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
+import { useSimpananDetail, } from "@/services/api/commands/simpanan.command";
 
 import { TAnggota, TSimpanan } from "@/types";
 
@@ -52,7 +54,7 @@ interface TPageProps {
   simpanan?: TSimpanan;
 }
 
-export const getServerSideProps: GetServerSideProps<TPageProps> = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   return {
     props: {
       pageTitle: 'Mutasi Simpanan',
@@ -67,10 +69,11 @@ export const convertToIDR = (jenisSimpanan: number) => {
 
 export default function PageMutasi() {
   const [total, setTotal] = useState<number>();
+  const [jenisTabungan, setJenisTabungan] = useState<string>()
   const router = useRouter()
-  const { id } = router.query
+  const { id, nama, idAnggota } = router.query
 
-
+  // console.log(id)
   const pagination = usePagination({
     total: total,
     initialState: {
@@ -79,27 +82,26 @@ export default function PageMutasi() {
     }
   });
 
-  const anggotaDetailQuery = useAnggotaDetail(id).paginate({
+  const simpananDetailQuery = useSimpananDetail(Number(id), jenisTabungan as string).paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
-      fields: "mutasiTabungan.*"
+      jenisSimpanan: jenisTabungan == "false" ? false : jenisTabungan
+      // "filter[jenisTabungan][_eq]": jenisTabungan == "false" ? false : jenisTabungan
     }
   });
-  const anggotaDetailSimpanan = anggotaDetailQuery.data?.data?.data;
-  const metaData = anggotaDetailSimpanan?.mutasiTabungan?.length;
+
+  const simpananDetail = simpananDetailQuery.data?.data?.data;
+  const metaData = simpananDetailQuery.data?.data?.meta;
+  const totSimpanan = simpananDetailQuery.data?.data?.totSimpanan;
+
 
   useEffect(() => {
-    setTotal(metaData)
+    setTotal(metaData?.filter_count)
   }, [metaData])
 
-  const dataSimpanan = anggotaDetailSimpanan?.mutasiTabungan
-  const totSimpanan = {
-    simpananWajib: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'wajib').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
-    simpananKhusus: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'khusus').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
-    simpananSukarela: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'sukarela').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
-    simpananPokok: dataSimpanan?.filter((v: any) => v.jenisTabungan == 'pokok').map((v: any) => v.saldo).reduce((a: number, b: number) => a + b, 0),
-  }
+
+  const totSimpananAll = totSimpanan?.wajib + totSimpanan?.khusus + totSimpanan?.sukarela + totSimpanan?.pokok
 
   const breadcrumbData = [
     {
@@ -120,9 +122,9 @@ export default function PageMutasi() {
       </Box>
       <Flex px="8">
         <Box>
-          {anggotaDetailQuery.isLoading ? (<Skeleton width="100px" height="10px" />) :
-            (<Text fontSize='xl'>{anggotaDetailSimpanan?.nama} - {anggotaDetailSimpanan?.idAnggota}</Text>)
-          }
+          {/* {simpananDetailQuery.isLoading ? (<Skeleton width="100px" height="10px" />) : */}
+          <Text fontSize='xl'>{nama} - {idAnggota}</Text>
+          {/* } */}
         </Box>
         <Spacer />
         <Box>
@@ -152,25 +154,25 @@ export default function PageMutasi() {
             <StatGroup >
               <Stat>
                 <StatLabel>Simpanan Pokok</StatLabel>
-                <StatNumber>{convertToIDR(totSimpanan.simpananPokok)}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan?.pokok)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Simpanan Wajib</StatLabel>
-                <StatNumber>{convertToIDR(totSimpanan.simpananWajib)}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan?.wajib)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Total Simpanan</StatLabel>
-                <StatNumber>{convertToIDR(totSimpanan.simpananKhusus)}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpananAll)}</StatNumber>
               </Stat>
             </StatGroup>
             <StatGroup mt={7}>
               <Stat>
                 <StatLabel>Simpanan Khusus</StatLabel>
-                <StatNumber>{convertToIDR(totSimpanan.simpananKhusus)}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan?.khusus)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Simpanan Sukarela</StatLabel>
-                <StatNumber>{convertToIDR(totSimpanan.simpananSukarela)}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan?.sukarela)}</StatNumber>
               </Stat>
               <Stat></Stat>
             </StatGroup>
@@ -193,14 +195,19 @@ export default function PageMutasi() {
                 <Text fontWeight="bold" mb="10px">
                   Filter jenis simpanan
                 </Text>
-                <Select placeholder="select option">
-                  <option>option 1</option>
-                  <option>option 2</option>
+                <Select onChange={(e) => setJenisTabungan(e.target.value)}>
+                  <option selected value="false">semua simpanan</option>
+                  <option value="khusus">khusus</option>
+                  <option value="wajib">wajib</option>
+                  <option value="sukarela">sukarela</option>
+                  <option value="pokok">pokok</option>
                 </Select>
               </Box>
             </Flex>
           </Box>
-          <Table size="md">
+          <Divider />
+          {simpananDetailQuery.isLoading && <Progress size="xs" isIndeterminate />}
+          <Table size="md" mb={5}>
             <Thead>
               <Tr>
                 <Th>
@@ -213,17 +220,18 @@ export default function PageMutasi() {
                 <Th>Tipe</Th>
                 <Th>Nominal</Th>
                 <Th>Keterangan</Th>
+                <Th>jenis simpanan</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {(dataSimpanan || []).map((item: TSimpanan) => (
+              {(simpananDetail || []).map((item: TSimpanan) => (
                 <TableMutasi item={item} key={item.id} />
               ))}
             </Tbody>
           </Table>
-          {/* <Skeleton w='full' isLoaded={!anggotaDetailQuery.isLoading}>
+          <Skeleton w='full' isLoaded={!simpananDetailQuery.isLoading}>
             <TablePagination pagination={pagination} />
-          </Skeleton> */}
+          </Skeleton>
         </TableContainer>
       </VStack>
     </>

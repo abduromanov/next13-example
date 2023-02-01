@@ -6,6 +6,8 @@ import {
 import moment from 'moment'
 import { useMemo } from 'react'
 
+import { convertToIDR } from '../mutasi/[id]';
+
 
 type Props = {
   item: any;
@@ -24,8 +26,9 @@ export default function TableMutasi(props: Props) {
     <Tr>
       <Td>{tglDibuat}</Td>
       <Td>{BadgeTipe(props.item.tipe)}</Td>
-      <Td>{props.item.nominal}</Td>
+      <Td>{convertToIDR(props.item.nominal)}</Td>
       <Td>{props.item.catatan}</Td>
+      <Td>{props.item.jenisTabungan}</Td>
     </Tr>
   );
 }
