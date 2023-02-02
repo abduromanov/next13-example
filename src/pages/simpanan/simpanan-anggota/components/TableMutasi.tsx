@@ -27,6 +27,7 @@ export default function TableMutasi(props: Props) {
       <Td>{tglDibuat}</Td>
       <Td>{BadgeTipe(props.item.tipe)}</Td>
       <Td>{convertToIDR(props.item.nominal)}</Td>
+      <Td>{convertToIDR(props.item.saldo)}</Td>
       <Td>{props.item.catatan}</Td>
       <Td>{props.item.jenisTabungan}</Td>
     </Tr>

@@ -52,6 +52,7 @@ import ModalCreateKredit from "../../components/ModalCreateKredit";
 
 import { TAnggota, TSimpanan } from "@/types";
 
+
 interface TPageProps {
   pageTitle: string;
   anggota?: TAnggota;
@@ -227,6 +228,7 @@ export default function PageMutasi() {
                 </Th>
                 <Th>Tipe</Th>
                 <Th>Nominal</Th>
+                <Th>Saldo</Th>
                 <Th>Keterangan</Th>
                 <Th>jenis simpanan</Th>
               </Tr>

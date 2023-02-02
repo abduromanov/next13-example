@@ -9,15 +9,23 @@ export default async function handler(
   res: NextApiResponse<TResponse | TMurobahah>
 ) {
   try {
+    // const filter = {
+    //   _and: [
+    //     {
+    //       idAnggota: {
+    //         _eq: parseInt(req.query.id as string),
+    //       },
+    //       jenisTabungan: {
+    //         _eq: (req.query.jenisTabungan as string)
+    //       },
+    //     },
+    //   ],
+    // };
     const filter = {
       idAnggota: {
         _eq: parseInt(req.query.id as string),
       },
-      // jenisTabungan: {
-      //   _eq: req.query.jenisTabungan as string,
-      // },
     };
-
     const data = await directus.items("mutasiTabungan").readByQuery({
       fields: ["*"],
       meta: "*",
