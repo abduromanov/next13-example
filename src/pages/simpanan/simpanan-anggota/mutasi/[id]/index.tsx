@@ -1,3 +1,4 @@
+import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -13,6 +14,7 @@ import {
   Icon,
   Input,
   InputGroup,
+  Progress,
   Select,
   Skeleton,
   Spacer,
@@ -27,6 +29,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import {
@@ -35,72 +38,80 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
-import TableMutasi from "@/components/Tables/TableMutasi";
 
-import { doAnggota } from "@/services/api/commands/anggota.command";
+import TablePagination from "@/layouts/components/TablePagination";
+import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
+import { useSimpananDetail, } from "@/services/api/commands/simpanan.command";
 
-type TPageProps = {
+import ModalCreateDebit from "../../components/ModalCreateDebit";
+import ModalCreateKredit from "../../components/ModalCreateKredit";
+
+import { TAnggota, TSimpanan } from "@/types";
+
+
+interface TPageProps {
   pageTitle: string;
-};
+  anggota?: TAnggota;
+  simpanan?: TSimpanan;
+}
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   return {
     props: {
-      pageTitle: "Mutasi Simpanan",
-    },
-  };
-};
+      pageTitle: 'Mutasi Simpanan',
+    }
+  }
+}
 
-const dataSimpanan = [
-  {
-    tanggal: "15/10/2022",
-    tipe: "debit",
-    nominal: "10.000",
-    saldo: "30.000",
-    keterangan: "masuk pertama",
-  },
-  {
-    tanggal: "15/10/2022",
-    tipe: "kredit",
-    nominal: "210.000",
-    saldo: "30.000",
-    keterangan: "masuk kedua",
-  },
-  {
-    tanggal: "15/10/2022",
-    tipe: "debit",
-    nominal: "20.000",
-    saldo: "40.000",
-    keterangan: "masuk ketiga",
-  },
-  {
-    tanggal: "15/10/2022",
-    tipe: "debit",
-    nominal: "20.000",
-    saldo: "40.000",
-    keterangan: "masuk ketiga",
-  },
-  {
-    tanggal: "15/10/2022",
-    tipe: "debit",
-    nominal: "20.000",
-    saldo: "40.000",
-    keterangan: "masuk ketiga",
-  },
-];
-const totSimpanan = {
-  nama: "Adinda",
-  noAngota: "019231230",
-  simpananPokok: "Rp2.000.000",
-  simpananWajib: "Rp1.200.000",
-  simpananKhusus: "Rp5.200.000",
-  simpananSukarela: "Rp1.000.000",
-};
+
+export const convertToIDR = (jenisSimpanan: number) => {
+  return jenisSimpanan?.toLocaleString('id-ID', { currency: 'IDR', style: 'currency' })
+}
+
 export default function PageMutasi() {
-  const anggotaQuery = doAnggota().get();
-  const anggota = anggotaQuery.data;
+  const [total, setTotal] = useState<number>();
+  const [jenisTabungan, setJenisTabungan] = useState<string>()
+  const router = useRouter()
+  const { id, nama, idAnggota } = router.query
+
+  const modalCreateDebitRef = useRef<ReturnType<typeof useDisclosure>>();
+  const modalCreateKreditRef = useRef<ReturnType<typeof useDisclosure>>();
+
+
+  // console.log(id)
+  const pagination = usePagination({
+    total: total,
+    initialState: {
+      currentPage: 1,
+      pageSize: 10
+    }
+  });
+
+  const simpananDetailQuery = useSimpananDetail(Number(id), jenisTabungan as string).paginate({
+    params: {
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+      jenisTabungan: jenisTabungan == "false" ? false : jenisTabungan
+      // "filter[jenisTabungan][_eq]": jenisTabungan == "false" ? false : jenisTabungan
+    }
+  });
+
+  const simpananDetail = simpananDetailQuery.data?.data?.data;
+  const metaData = simpananDetailQuery.data?.data?.meta;
+  const totSimpanan = simpananDetailQuery.data?.data?.totSimpanan;
+
+
+  useEffect(() => {
+    setTotal(metaData?.filter_count)
+  }, [metaData])
+
+
+  const totSimpananAll = totSimpanan?.wajib + totSimpanan?.khusus + totSimpanan?.sukarela + totSimpanan?.pokok
+
   const breadcrumbData = [
     {
       name: "Simpanan",
@@ -115,27 +126,23 @@ export default function PageMutasi() {
   ];
   return (
     <>
-      <Box>
+      <Box mt='-6'>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
       <Flex px="8">
         <Box>
-          {anggotaQuery.isLoading ? (
-            <Skeleton width="100px" height="10px" />
-          ) : (
-            <Text fontSize="xl">
-              {anggota?.nama} - {anggota?.idAnggota}
-            </Text>
-          )}
+          {/* {simpananDetailQuery.isLoading ? (<Skeleton width="100px" height="10px" />) : */}
+          <Text fontSize='xl'>{nama} - {idAnggota}</Text>
+          {/* } */}
         </Box>
         <Spacer />
         <Box>
           <ButtonGroup gap="2">
-            <Button colorScheme="teal">
+            <Button colorScheme="teal" onClick={() => modalCreateDebitRef.current?.onOpen()} >
               <Icon as={PlusIcon} />
               &nbsp;Debit
             </Button>
-            <Button colorScheme="yellow">
+            <Button colorScheme="yellow" onClick={() => modalCreateKreditRef.current?.onOpen()}>
               <Icon as={PlusIcon} />
               &nbsp;Kredit
             </Button>
@@ -153,61 +160,43 @@ export default function PageMutasi() {
           </CardHeader>
           <Divider />
           <CardBody>
-            <StatGroup>
+            <StatGroup gap={3}>
               <Stat>
                 <StatLabel>Simpanan Pokok</StatLabel>
-                <StatNumber>{totSimpanan.simpananPokok}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan?.pokok)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Simpanan Wajib</StatLabel>
-                <StatNumber>{totSimpanan.simpananWajib}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan?.wajib)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Total Simpanan</StatLabel>
-                <StatNumber>{totSimpanan.simpananKhusus}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpananAll)}</StatNumber>
               </Stat>
             </StatGroup>
-            <StatGroup mt={3}>
+            <StatGroup mt={5}>
               <Stat>
                 <StatLabel>Simpanan Khusus</StatLabel>
-                <StatNumber>{totSimpanan.simpananKhusus}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan?.khusus)}</StatNumber>
               </Stat>
               <Stat>
                 <StatLabel>Simpanan Sukarela</StatLabel>
-                <StatNumber>{totSimpanan.simpananSukarela}</StatNumber>
+                <StatNumber>{convertToIDR(totSimpanan?.sukarela)}</StatNumber>
               </Stat>
               <Stat></Stat>
             </StatGroup>
           </CardBody>
         </Card>
-        <TableContainer boxShadow="lg" p="5" w="100%">
+        <TableContainer boxShadow="md" w="100%" p={5}>
           <Box mb={5}>
             <Flex gap="4" alignItems="center" flexWrap="wrap">
               <Box>
-                <Text fontWeight="bold" mb="10px">
-                  Filter Tanggal
-                </Text>
-                <HStack flexWrap="wrap">
-                  <InputGroup
-                    border="1px"
-                    borderColor="gray.200"
-                    borderRadius="md"
-                  >
-                    <Input
-                      placeholder="select date"
-                      type="date"
-                      w="45%"
-                      border={0}
-                      focusBorderColor="none"
-                    />
-                    <ArrowLongRightIcon width="20px" />
-                    <Input
-                      placeholder="select date"
-                      type="date"
-                      w="45%"
-                      border={0}
-                      focusBorderColor="none"
-                    />
+                <Text fontWeight='bold' mb='10px'>Filter Tanggal</Text>
+                <HStack flexWrap='wrap'>
+                  <InputGroup border='1px' borderColor='gray.200' borderRadius='md'>
+                    <Input placeholder='select date' type='date' w="200px" border={0} focusBorderColor='none' />
+                    <ArrowLongRightIcon width='20px' />
+                    <Input placeholder='select date' type='date' w="200px" border={0} focusBorderColor='none' />
                   </InputGroup>
                 </HStack>
               </Box>
@@ -215,14 +204,19 @@ export default function PageMutasi() {
                 <Text fontWeight="bold" mb="10px">
                   Filter jenis simpanan
                 </Text>
-                <Select placeholder="select option">
-                  <option>option 1</option>
-                  <option>option 2</option>
+                <Select onChange={(e) => setJenisTabungan(e.target.value)}>
+                  <option selected value="false">semua simpanan</option>
+                  <option value="khusus">khusus</option>
+                  <option value="wajib">wajib</option>
+                  <option value="sukarela">sukarela</option>
+                  <option value="pokok">pokok</option>
                 </Select>
               </Box>
             </Flex>
           </Box>
-          <Table size="md">
+          <Divider />
+          {simpananDetailQuery.isLoading && <Progress size="xs" isIndeterminate />}
+          <Table mb={3}>
             <Thead>
               <Tr>
                 <Th>
@@ -234,16 +228,23 @@ export default function PageMutasi() {
                 </Th>
                 <Th>Tipe</Th>
                 <Th>Nominal</Th>
+                <Th>Saldo</Th>
                 <Th>Keterangan</Th>
+                <Th>jenis simpanan</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {dataSimpanan.map((item, index) => (
-                <TableMutasi key={index} item={item} />
+              {(simpananDetail || []).map((item: TSimpanan) => (
+                <TableMutasi item={item} key={item.id} />
               ))}
             </Tbody>
           </Table>
+          <Skeleton w='full' isLoaded={!simpananDetailQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton>
         </TableContainer>
+        <ModalCreateDebit ref={modalCreateDebitRef} />
+        <ModalCreateKredit ref={modalCreateKreditRef} />
       </VStack>
     </>
   );
