@@ -25,7 +25,7 @@ export const useSimpananDetail = (id: number, jenisTabungan: string) =>
   queryMutation<any, TSimpanan[]>(`/api/simpanan/${id}`, ["simpanan", id]);
 
 export const useSimpananSebelumnya = (id: number) =>
-  queryMutation<any, Saldo[]>(`/api/simpanan/${id}/saldoSebelumnya`, [
+  queryMutation<any, Saldo>(`/api/simpanan/${id}/saldoSebelumnya`, [
     "simpanan",
     id,
   ]);

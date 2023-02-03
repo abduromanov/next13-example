@@ -95,7 +95,7 @@ export default function PageMutasi() {
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
-      jenisSimpanan: jenisTabungan == "false" ? false : jenisTabungan
+      jenisTabungan: jenisTabungan == "false" ? false : jenisTabungan
       // "filter[jenisTabungan][_eq]": jenisTabungan == "false" ? false : jenisTabungan
     }
   });
