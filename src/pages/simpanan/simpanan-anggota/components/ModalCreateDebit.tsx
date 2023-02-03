@@ -16,7 +16,10 @@ export type FormType = {
   nominalWajib: string;
   nominalKhusus: string;
   nominalSukarela: string;
-  catatan: string
+  catatan: string;
+  idAnggota: any;
+  saldo: any;
+  jenisTabungan: any;
 
 }
 
@@ -99,6 +102,8 @@ const ModalCreateDebit = forwardRef<
         });
       }
 
+      // console.log(listReq)
+
       simpananMutation.mutate(listReq, {
         onSuccess() {
           formCallback.onSuccess("Berhasil menambahkan data simpanan");
@@ -138,17 +143,21 @@ const ModalCreateDebit = forwardRef<
                 <InputText
                   label="Simpanan Wajib"
                   name="nominalWajib"
+                  onChange={(e) => form.setValue('nominalWajib', isNaN(parseInt(e.currentTarget.value.replace(/\D/g, ''), 10)) || !e.currentTarget.value ? '0' : parseInt(e.currentTarget.value.replace(/\D/g, ''), 10).toLocaleString('id-ID'))}
                   // value={form.getValues("nominalWajib")}
                   register={{ ...form.register("nominalWajib") }}
                 />
 
                 <InputText
                   label="Simpanan Khusus"
+                  onChange={(e) => form.setValue('nominalKhusus', isNaN(parseInt(e.currentTarget.value.replace(/\D/g, ''), 10)) || !e.currentTarget.value ? '0' : parseInt(e.currentTarget.value.replace(/\D/g, ''), 10).toLocaleString('id-ID'))}
                   // value={form.getValues("nominalKhusus")}
                   register={{ ...form.register("nominalKhusus") }}
                 />
                 <InputText
                   label="Simpanan Sukarela"
+                  onChange={(e) => form.setValue('nominalSukarela', isNaN(parseInt(e.currentTarget.value.replace(/\D/g, ''), 10)) || !e.currentTarget.value ? '0' : parseInt(e.currentTarget.value.replace(/\D/g, ''), 10).toLocaleString('id-ID'))}
+
                   // value={form.getValues("nominalSukarela")}
                   register={{ ...form.register("nominalSukarela") }}
                 />
