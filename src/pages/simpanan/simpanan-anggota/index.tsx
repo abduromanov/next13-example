@@ -1,91 +1,77 @@
-import {
-  Box,
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-  Flex,
-  Heading,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Spacer,
-  Table,
-  TableContainer,
-  Tbody,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
+import { usePagination } from "@ajna/pagination";
+import { Box, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Progress, Skeleton, Spacer, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
+import { useEffect, useState } from "react";
 
-import TableSimpananAnggota from "@/components/Tables/TableSimpanan";
+import BreadcrumbSection from "@/components/BreadcrumbSection";
 
-type TPageProps = {
+import TablePagination from "@/layouts/components/TablePagination";
+import TableSimpananAnggota from "@/pages/simpanan/simpanan-anggota/components/TableSimpanan";
+import { useSimpanan } from "@/services/api/commands/simpanan.command";
+
+import { TSimpanan } from "@/types";
+
+
+
+interface TPageProps {
   pageTitle: string;
-};
+
+}
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   return {
     props: {
-      pageTitle: "Simpanan Anggota",
-    },
-  };
-};
+      pageTitle: 'Simpanan Anggota',
+    }
+  }
+}
 
-const anggota = [
-  {
-    nama: "adinda",
-    id: 112233,
-    alamat: "jakarta selatan",
-    totSimpanan: "1.200.000",
-  },
-  {
-    nama: "adinda",
-    id: 112234,
-    alamat: "jakarta selatan",
-    totSimpanan: "1.200.000",
-  },
-  {
-    nama: "adinda",
-    id: 112235,
-    alamat: "jakarta selatan",
-    totSimpanan: "1.200.000",
-  },
-  {
-    nama: "adinda",
-    id: 112236,
-    alamat: "jakarta selatan",
-    totSimpanan: "1.200.000",
-  },
-  {
-    nama: "adinda",
-    id: 112237,
-    alamat: "jakarta selatan",
-    totSimpanan: "1.200.000",
-  },
-];
+
 export default function PageSimpanan() {
-  // const router = useRouter();
-  // const selectSimpanan = (id_anggota: any) => {
-  //   router.push({
-  //     pathname: `/simpanan/simpanan-anggota/mutasi/[id]`,
-  //     query: {
-  //       id: id_anggota
-  //     }
-  //   });
-  // }
+  const [total, setTotal] = useState<number>();
+
+
+  const pagination = usePagination({
+    total: total,
+    initialState: {
+      currentPage: 1,
+      pageSize: 10
+    }
+  });
+
+  const listSimpananAnggotaQuery = useSimpanan().paginate({
+    params: {
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+    }
+  });
+
+
+  const listSimpananAnggota = listSimpananAnggotaQuery.data?.data?.data;
+  const metadata = listSimpananAnggotaQuery.data?.data?.meta;
+
+  useEffect(() => {
+    setTotal(metadata?.filter_count)
+  }, [metadata])
+
+  const breadcrumbData = [{
+    name: 'Simpanan'
+  }, {
+    name: 'Simpanan Anggota'
+  }]
   return (
     <>
-      <Box>
-        <Card m={5} boxShadow="md" size="md">
+      <Box >
+        <Box mt='-6'>
+          <BreadcrumbSection data={breadcrumbData} />
+        </Box>
+        <Card m={5} boxShadow='md' size="md">
           <CardHeader>
-            <Flex alignItems="start">
-              <Heading size="md">Data simpanan Anggota</Heading>
+            <Flex alignItems="start" flexWrap='wrap' gap={5}>
+              <Heading size='md'>Data simpanan Anggota</Heading>
               <Spacer />
-              <Box w="25%">
+              <Box w={64}>
                 <InputGroup>
                   <InputLeftElement pointerEvents="none">
                     <Icon as={MagnifyingGlassIcon} color="gray" />
@@ -99,9 +85,10 @@ export default function PageSimpanan() {
             </Flex>
           </CardHeader>
           <Divider />
+          {listSimpananAnggotaQuery.isLoading && <Progress size='xs' isIndeterminate />}
           <CardBody>
-            <TableContainer p="3">
-              <Table size="sm">
+            <TableContainer p='3'>
+              <Table mb={3}>
                 <Thead>
                   <Tr>
                     <Th>Nama Anggota</Th>
@@ -112,11 +99,14 @@ export default function PageSimpanan() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {anggota.map((item, index) => (
-                    <TableSimpananAnggota key={index} item={item} />
+                  {(listSimpananAnggota || []).map((item: TSimpanan) => (
+                    <TableSimpananAnggota item={item} key={item.id} />
                   ))}
                 </Tbody>
               </Table>
+              <Skeleton w='full' isLoaded={!listSimpananAnggotaQuery.isLoading}>
+                <TablePagination pagination={pagination} />
+              </Skeleton>
             </TableContainer>
           </CardBody>
         </Card>
