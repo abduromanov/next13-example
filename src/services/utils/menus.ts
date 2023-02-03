@@ -29,7 +29,7 @@ const list: TSidebarMenu[] = [
   {
     label: "Syirkah",
     icon: "BuildingStorefrontIcon",
-    route: "/syirkah",
+    route: "/pinjaman/syirkah",
     group: "Pinjaman",
   },
   {
