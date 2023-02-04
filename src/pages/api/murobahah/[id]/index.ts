@@ -16,7 +16,7 @@ export default async function handler(
     const data = await directus
       .items("murobahah")
       .readOne(req.query.id as string, {
-        fields: ["*"],
+        fields: ["*", "anggota.id", "anggota.nama"],
         meta: "*",
         ...req.query,
       });

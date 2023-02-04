@@ -1,3 +1,4 @@
+import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -9,14 +10,23 @@ export default async function handler(
   res: NextApiResponse<TResponse | TMurobahah>
 ) {
   try {
-    const data = await directus.items("murobahah").readByQuery({
-      fields: ["*", "anggota.nama", "anggota.idAnggota", "anggota.id"],
-      meta: "*",
-      ...req.query,
-    });
+    switch (req.method) {
+      case "DELETE":
+        return destroy();
 
-    return res.status(200).json(data);
+      default:
+        return res.status(405).end();
+    }
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function destroy() {
+    await directus
+      .items("mutasiMurobahah")
+      .updateOne(req.query.idMutasi as string, {
+        tglDihapus: moment(),
+      });
+    return res.status(200).end();
   }
 }

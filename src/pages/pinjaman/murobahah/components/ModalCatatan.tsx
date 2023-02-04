@@ -10,16 +10,30 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { forwardRef, useImperativeHandle } from "react";
 
 type Props = {
-  isOpen: any;
-  onClose: any;
-  item: any;
+  isOpen?: any;
+  onClose?: any;
+  item?: any;
 };
-export default function ModalCatatan(props: Props) {
+const ModalCatatan = forwardRef<
+  Partial<ReturnType<typeof useDisclosure>> | undefined,
+  Props
+>((props, ref) => {
+  const disclosure = useDisclosure();
+  useImperativeHandle(
+    ref,
+    () => ({
+      onOpen: disclosure.onOpen,
+    }),
+    [disclosure.onOpen]
+  );
   return (
-    <Modal isOpen={props.isOpen} onClose={props.onClose} size="6xl">
+    <Modal isOpen={disclosure.isOpen}
+      onClose={disclosure.onClose} size="6xl">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Catatan Pembayaran</ModalHeader>
@@ -45,4 +59,9 @@ export default function ModalCatatan(props: Props) {
       </ModalContent>
     </Modal>
   );
-}
+})
+
+
+export default ModalCatatan;
+
+ModalCatatan.displayName = "ModalCatatan";
