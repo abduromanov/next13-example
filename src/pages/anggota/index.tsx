@@ -136,7 +136,6 @@ export default function Page() {
             leftIcon={<Icon as={PlusIcon} />}
             onClick={() => {
               modalCreateRef.current?.onOpen();
-              setIdAnggota(0);
             }}
           >
             Tambah Anggota
