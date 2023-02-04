@@ -138,7 +138,12 @@ const ModalCreateAnggota = forwardRef<
             <Button colorScheme="red" onClick={disclosure.onClose}>
               Batal
             </Button>
-            <Button onClick={form.handleSubmit(submitHandler)}>Simpan</Button>
+            <Button
+              isLoading={anggotaMutation.isLoading}
+              onClick={form.handleSubmit(submitHandler)}
+            >
+              Simpan
+            </Button>
           </HStack>
         </ModalFooter>
       </ModalContent>

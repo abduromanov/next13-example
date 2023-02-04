@@ -1,13 +1,8 @@
-import {
-  Badge,
-  Td,
-  Tr,
-} from '@chakra-ui/react'
-import moment from 'moment'
-import { useMemo } from 'react'
+import { Badge, Td, Tr } from "@chakra-ui/react";
+import moment from "moment";
+import { useMemo } from "react";
 
-import { convertToIDR } from '../mutasi/[id]';
-
+import { convertToIDR } from "../mutasi/[id]";
 
 type Props = {
   item: any;
@@ -20,7 +15,10 @@ const BadgeTipe = (tipe: any) => {
   }
 };
 export default function TableMutasi(props: Props) {
-  const tglDibuat = useMemo(() => moment(props.item?.tglDibuat).format('DD MMMM YYYY'), [props.item?.tglDibuat])
+  const tglDibuat = useMemo(
+    () => moment(props.item?.tglDibuat).format("DD MMMM YYYY"),
+    [props.item?.tglDibuat]
+  );
 
   return (
     <Tr>

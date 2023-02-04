@@ -16,7 +16,7 @@ export default async function handler(
             _eq: parseInt(req.query.id as string),
           },
           jenisTabungan: {
-            _eq: "wajib"
+            _eq: "wajib",
           },
         },
       ],
@@ -28,7 +28,7 @@ export default async function handler(
             _eq: parseInt(req.query.id as string),
           },
           jenisTabungan: {
-            _eq: "khusus"
+            _eq: "khusus",
           },
         },
       ],
@@ -40,7 +40,7 @@ export default async function handler(
             _eq: parseInt(req.query.id as string),
           },
           jenisTabungan: {
-            _eq: "sukarela"
+            _eq: "sukarela",
           },
         },
       ],
@@ -58,19 +58,27 @@ export default async function handler(
       filter: filterKhusus,
       ...req.query,
     });
-    const dataSaldoSukarela = await directus.items("mutasiTabungan").readByQuery({
-      fields: ["saldo"],
-      meta: "*",
-      filter: filterSukarela,
-      ...req.query,
-    });
+    const dataSaldoSukarela = await directus
+      .items("mutasiTabungan")
+      .readByQuery({
+        fields: ["saldo"],
+        meta: "*",
+        filter: filterSukarela,
+        ...req.query,
+      });
 
-    const saldoWajib = dataSaldoWajib.data?.slice(-1).map((item) => item.saldo)
-    const saldoKhusus = dataSaldoKhusus.data?.slice(-1).map((item) => item.saldo)
-    const saldoSukarela = dataSaldoSukarela.data?.slice(-1).map((item) => item.saldo)
+    const saldoWajib = dataSaldoWajib.data?.slice(-1).map((item) => item.saldo);
+    const saldoKhusus = dataSaldoKhusus.data
+      ?.slice(-1)
+      .map((item) => item.saldo);
+    const saldoSukarela = dataSaldoSukarela.data
+      ?.slice(-1)
+      .map((item) => item.saldo);
 
     const dataMerge = {
-      saldoWajib, saldoKhusus, saldoSukarela
+      saldoWajib,
+      saldoKhusus,
+      saldoSukarela,
     };
 
     return res.status(200).json(dataMerge);

@@ -45,13 +45,12 @@ import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
-import { useSimpananDetail, } from "@/services/api/commands/simpanan.command";
+import { useSimpananDetail } from "@/services/api/commands/simpanan.command";
 
 import ModalCreateDebit from "../../components/ModalCreateDebit";
 import ModalCreateKredit from "../../components/ModalCreateKredit";
 
 import { TAnggota, TSimpanan } from "@/types";
-
 
 interface TPageProps {
   pageTitle: string;
@@ -62,55 +61,61 @@ interface TPageProps {
 export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   return {
     props: {
-      pageTitle: 'Mutasi Simpanan',
-    }
-  }
-}
-
+      pageTitle: "Mutasi Simpanan",
+    },
+  };
+};
 
 export const convertToIDR = (jenisSimpanan: number) => {
-  return jenisSimpanan?.toLocaleString('id-ID', { currency: 'IDR', style: 'currency' })
-}
+  return jenisSimpanan?.toLocaleString("id-ID", {
+    currency: "IDR",
+    style: "currency",
+  });
+};
 
 export default function PageMutasi() {
   const [total, setTotal] = useState<number>();
-  const [jenisTabungan, setJenisTabungan] = useState<string>()
-  const router = useRouter()
-  const { id, nama, idAnggota } = router.query
+  const [jenisTabungan, setJenisTabungan] = useState<string>();
+  const router = useRouter();
+  const { id, nama, idAnggota } = router.query;
 
   const modalCreateDebitRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalCreateKreditRef = useRef<ReturnType<typeof useDisclosure>>();
-
 
   // console.log(id)
   const pagination = usePagination({
     total: total,
     initialState: {
       currentPage: 1,
-      pageSize: 10
-    }
+      pageSize: 10,
+    },
   });
 
-  const simpananDetailQuery = useSimpananDetail(Number(id), jenisTabungan as string).paginate({
+  const simpananDetailQuery = useSimpananDetail(
+    Number(id),
+    jenisTabungan as string
+  ).paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
-      jenisTabungan: jenisTabungan == "false" ? false : jenisTabungan
+      jenisTabungan: jenisTabungan == "false" ? false : jenisTabungan,
       // "filter[jenisTabungan][_eq]": jenisTabungan == "false" ? false : jenisTabungan
-    }
+    },
   });
 
   const simpananDetail = simpananDetailQuery.data?.data?.data;
   const metaData = simpananDetailQuery.data?.data?.meta;
   const totSimpanan = simpananDetailQuery.data?.data?.totSimpanan;
 
-
   useEffect(() => {
-    setTotal(metaData?.filter_count)
-  }, [metaData])
+    setTotal(metaData?.filter_count);
+  }, [metaData]);
 
-
-  const totSimpananAll = totSimpanan?.wajib + totSimpanan?.khusus + totSimpanan?.sukarela + totSimpanan?.pokok
+  const totSimpananAll =
+    totSimpanan?.wajib +
+    totSimpanan?.khusus +
+    totSimpanan?.sukarela +
+    totSimpanan?.pokok;
 
   const breadcrumbData = [
     {
@@ -126,23 +131,31 @@ export default function PageMutasi() {
   ];
   return (
     <>
-      <Box mt='-6'>
+      <Box mt="-6">
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
       <Flex px="8">
         <Box>
           {/* {simpananDetailQuery.isLoading ? (<Skeleton width="100px" height="10px" />) : */}
-          <Text fontSize='xl'>{nama} - {idAnggota}</Text>
+          <Text fontSize="xl">
+            {nama} - {idAnggota}
+          </Text>
           {/* } */}
         </Box>
         <Spacer />
         <Box>
           <ButtonGroup gap="2">
-            <Button colorScheme="teal" onClick={() => modalCreateDebitRef.current?.onOpen()} >
+            <Button
+              colorScheme="teal"
+              onClick={() => modalCreateDebitRef.current?.onOpen()}
+            >
               <Icon as={PlusIcon} />
               &nbsp;Debit
             </Button>
-            <Button colorScheme="yellow" onClick={() => modalCreateKreditRef.current?.onOpen()}>
+            <Button
+              colorScheme="yellow"
+              onClick={() => modalCreateKreditRef.current?.onOpen()}
+            >
               <Icon as={PlusIcon} />
               &nbsp;Kredit
             </Button>
@@ -191,12 +204,30 @@ export default function PageMutasi() {
           <Box mb={5}>
             <Flex gap="4" alignItems="center" flexWrap="wrap">
               <Box>
-                <Text fontWeight='bold' mb='10px'>Filter Tanggal</Text>
-                <HStack flexWrap='wrap'>
-                  <InputGroup border='1px' borderColor='gray.200' borderRadius='md'>
-                    <Input placeholder='select date' type='date' w="200px" border={0} focusBorderColor='none' />
-                    <ArrowLongRightIcon width='20px' />
-                    <Input placeholder='select date' type='date' w="200px" border={0} focusBorderColor='none' />
+                <Text fontWeight="bold" mb="10px">
+                  Filter Tanggal
+                </Text>
+                <HStack flexWrap="wrap">
+                  <InputGroup
+                    border="1px"
+                    borderColor="gray.200"
+                    borderRadius="md"
+                  >
+                    <Input
+                      placeholder="select date"
+                      type="date"
+                      w="200px"
+                      border={0}
+                      focusBorderColor="none"
+                    />
+                    <ArrowLongRightIcon width="20px" />
+                    <Input
+                      placeholder="select date"
+                      type="date"
+                      w="200px"
+                      border={0}
+                      focusBorderColor="none"
+                    />
                   </InputGroup>
                 </HStack>
               </Box>
@@ -205,7 +236,9 @@ export default function PageMutasi() {
                   Filter jenis simpanan
                 </Text>
                 <Select onChange={(e) => setJenisTabungan(e.target.value)}>
-                  <option selected value="false">semua simpanan</option>
+                  <option selected value="false">
+                    semua simpanan
+                  </option>
                   <option value="khusus">khusus</option>
                   <option value="wajib">wajib</option>
                   <option value="sukarela">sukarela</option>
@@ -215,7 +248,9 @@ export default function PageMutasi() {
             </Flex>
           </Box>
           <Divider />
-          {simpananDetailQuery.isLoading && <Progress size="xs" isIndeterminate />}
+          {simpananDetailQuery.isLoading && (
+            <Progress size="xs" isIndeterminate />
+          )}
           <Table mb={3}>
             <Thead>
               <Tr>
@@ -239,7 +274,7 @@ export default function PageMutasi() {
               ))}
             </Tbody>
           </Table>
-          <Skeleton w='full' isLoaded={!simpananDetailQuery.isLoading}>
+          <Skeleton w="full" isLoaded={!simpananDetailQuery.isLoading}>
             <TablePagination pagination={pagination} />
           </Skeleton>
         </TableContainer>

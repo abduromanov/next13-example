@@ -2,7 +2,7 @@
 import { QueryKey, useMutation, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
-import { DirectusResponse } from "@/types";
+import { DirectusResponse, TResponse } from "@/types";
 
 const queryMutation = <ApiRequest, ApiResponse = any>(
   url: string,
@@ -44,10 +44,13 @@ const queryMutation = <ApiRequest, ApiResponse = any>(
     });
   };
 
-  const mutate = (method: "POST" | "PUT" | "PATCH" | "DELETE") => {
+  const mutate = (
+    method: "POST" | "PUT" | "PATCH" | "DELETE",
+    config?: AxiosRequestConfig
+  ) => {
     return useMutation<
       AxiosResponse<ApiResponse>,
-      AxiosError,
+      AxiosError<TResponse>,
       ApiRequest,
       unknown
     >((values: ApiRequest) => {
@@ -55,25 +58,35 @@ const queryMutation = <ApiRequest, ApiResponse = any>(
         case "POST":
           return axios.post<ApiRequest, AxiosResponse<ApiResponse>>(
             url,
-            values
+            values,
+            config
           );
 
         case "PUT":
-          return axios.put<ApiRequest, AxiosResponse<ApiResponse>>(url, values);
+          return axios.put<ApiRequest, AxiosResponse<ApiResponse>>(
+            url,
+            values,
+            config
+          );
 
         case "PATCH":
           return axios.patch<ApiRequest, AxiosResponse<ApiResponse>>(
             url,
-            values
+            values,
+            config
           );
 
         case "DELETE":
-          return axios.delete<ApiRequest, AxiosResponse<ApiResponse>>(url);
+          return axios.delete<ApiRequest, AxiosResponse<ApiResponse>>(
+            url,
+            config
+          );
 
         default:
           return axios.post<ApiRequest, AxiosResponse<ApiResponse>>(
             url,
-            values
+            values,
+            config
           );
       }
     });

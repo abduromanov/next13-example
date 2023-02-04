@@ -18,6 +18,7 @@ export interface DirectusResponse<T> {
 
 export interface TResponse<T = unknown> {
   data?: T | [];
+  message?: string;
 }
 
 export interface AuthPropsType {
@@ -120,4 +121,11 @@ export interface TMutasiSyirkah {
 export interface TSyirkahRelations {
   anggota: Partial<TAnggota>;
   mutasiSyirkah: Partial<TMutasiSyirkah>[];
+}
+
+export interface TPengumuman {
+  id: string;
+  image: string;
+  date_created: string;
+  active: boolean;
 }
