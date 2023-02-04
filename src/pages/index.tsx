@@ -50,12 +50,12 @@ export default function Page(pageProps: TPageProps) {
     pageProps.anggota
   );
 
-  const pengumumanQuery = usePengumuman(['home']).query({
+  const pengumumanQuery = usePengumuman(["home"]).query({
     params: {
       limit: 5,
       filter: {
-        active: true
-      }
+        active: true,
+      },
     },
   });
 
