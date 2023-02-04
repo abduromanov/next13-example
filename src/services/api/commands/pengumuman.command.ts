@@ -2,8 +2,11 @@ import queryMutation from "../queryMutation";
 
 import { TPengumuman, TResponse } from "@/types";
 
-export const usePengumuman = () =>
-  queryMutation<any, TPengumuman[]>("/api/pengumuman", ["pengumuman"]);
+export const usePengumuman = (key?: string[]) => {
+  key = key?.filter(item => item) || [];
+
+  return queryMutation<any, TPengumuman[]>("/api/pengumuman", ["pengumuman", ...key]);
+}
 
 export const useMutatePengumuman = (id = "") =>
   queryMutation<FormData | { active: boolean }, TResponse>(

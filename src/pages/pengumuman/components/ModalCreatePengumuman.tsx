@@ -79,10 +79,12 @@ const ModalCreatePengumuman = forwardRef<
             type="file"
           />
           <Text mt="1" fontSize="xs" color="gray">
-            *Ukuran file maks. 1 MB
+            Besar file maks. 1 MB.
+            <br />
+            Rasio gambar yang direkomendasikan adalah 16:9
           </Text>
           {form.formState.errors["file"] && (
-            <Text mt="1" fontSize="xs" color="red">
+            <Text mt="2" fontSize="xs" color="red">
               {form.formState.errors["file"].message}
             </Text>
           )}
