@@ -1,18 +1,10 @@
-import {
-  Flex,
-  Icon,
-  Td,
-  Tooltip,
-  Tr
-} from '@chakra-ui/react'
-import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline'
-import Link from 'next/link'
-
+import { Flex, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 type Props = {
-  item: any,
-}
-
+  item: any;
+};
 
 export default function TableDetilSyirkah(props: Props) {
   return (
@@ -27,18 +19,17 @@ export default function TableDetilSyirkah(props: Props) {
       <Td>
         <Flex gap={3}>
           <Link href="#">
-            <Tooltip hasArrow label='edit data' fontSize='xs'>
-              <Icon as={PencilSquareIcon} color="teal" fontSize='lg' />
+            <Tooltip hasArrow label="edit data" fontSize="xs">
+              <Icon as={PencilSquareIcon} color="teal" fontSize="lg" />
             </Tooltip>
           </Link>
           <Link href="#">
-            <Tooltip hasArrow label='hapus' fontSize='xs'>
-              <Icon as={TrashIcon} color="red" fontSize='lg' />
+            <Tooltip hasArrow label="hapus" fontSize="xs">
+              <Icon as={TrashIcon} color="red" fontSize="lg" />
             </Tooltip>
           </Link>
         </Flex>
-      </Td >
-    </Tr >
-  )
+      </Td>
+    </Tr>
+  );
 }
-
