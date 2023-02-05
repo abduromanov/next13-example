@@ -2,18 +2,14 @@ import { Badge, Td, Tr } from "@chakra-ui/react";
 import moment from "moment";
 import { useMemo } from "react";
 
-import { convertToIDR } from "../mutasi/[id]";
+import toIDR from "@/services/utils/toIDR";
+
+import { TSimpanan } from "@/types";
 
 type Props = {
-  item: any;
+  item: TSimpanan;
 };
-const BadgeTipe = (tipe: any) => {
-  if (tipe == "debit") {
-    return <Badge colorScheme="green">{tipe}</Badge>;
-  } else {
-    return <Badge colorScheme="purple">{tipe}</Badge>;
-  }
-};
+
 export default function TableMutasi(props: Props) {
   const tglDibuat = useMemo(
     () => moment(props.item?.tglDibuat).format("DD MMMM YYYY"),
@@ -23,11 +19,17 @@ export default function TableMutasi(props: Props) {
   return (
     <Tr>
       <Td>{tglDibuat}</Td>
-      <Td>{BadgeTipe(props.item.tipe)}</Td>
-      <Td>{convertToIDR(props.item.nominal)}</Td>
-      <Td>{convertToIDR(props.item.saldo)}</Td>
+      <Td>
+        <Badge colorScheme={props.item.nominal < 0 ? "red" : "green"}>
+          {props.item.nominal < 0 ? "Kredit" : "Debit"}
+        </Badge>
+      </Td>
+      <Td color={props.item.nominal < 0 ? "red" : "green"}>
+        {toIDR(props.item.nominal)}
+      </Td>
+      <Td>{toIDR(props.item.saldo)}</Td>
       <Td>{props.item.catatan}</Td>
-      <Td>{props.item.jenisTabungan}</Td>
+      <Td textTransform="uppercase">{props.item.jenisTabungan}</Td>
     </Tr>
   );
 }

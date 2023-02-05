@@ -9,8 +9,11 @@ export type TAnggotaRequest = {
   alamat: string;
 };
 
-export const useAnggota = () =>
-  queryMutation<any, TAnggota[]>("/api/anggota", ["anggota"]);
+export const useAnggota = (key?: string[]) => {
+  key = key?.filter((item) => item) || [];
+
+  return queryMutation<any, TAnggota[]>("/api/anggota", ["anggota", ...key]);
+};
 
 export const useAnggotaDetail = (id: number) =>
   queryMutation<any, TAnggota>(`/api/anggota/${id}`, ["anggota", id]);
