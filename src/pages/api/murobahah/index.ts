@@ -10,9 +10,28 @@ export default async function handler(
 ) {
   try {
     const data = await directus.items("murobahah").readByQuery({
-      fields: ["*", "anggota.nama", "anggota.idAnggota", "anggota.id"],
+      fields: [
+        "*",
+        "anggota.nama",
+        "anggota.idAnggota",
+        "anggota.id",
+        "mutasiMurobahah.total",
+      ],
+      filter: {
+        tglDihapus: {
+          _null: true,
+        },
+      },
       meta: "*",
       ...req.query,
+    });
+    data.data?.map((item) => {
+      item.totalTerbayar = item.mutasiMurobahah
+        .map((v: any) => v.total)
+        .reduce((a: any, b: any) => a + b, 0);
+      delete item.mutasiMurobahah;
+
+      return item;
     });
 
     return res.status(200).json(data);
