@@ -7,11 +7,13 @@ import {
   GridItem,
   Heading,
   HStack,
+  Skeleton,
   StackDivider,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
+import Image from "next/image";
 import { A11y, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -20,6 +22,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
+import { usePengumuman } from "@/services/api/commands/pengumuman.command";
 
 import { TAnggota } from "@/types";
 
@@ -43,20 +46,33 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
 export default function Page(pageProps: TPageProps) {
   const anggotaQuery = useAnggotaDetail(pageProps.anggota.id).query(
+    {},
     pageProps.anggota
   );
 
-  const anggota = anggotaQuery.data?.data?.data;
+  const pengumumanQuery = usePengumuman(["home"]).query({
+    params: {
+      limit: 5,
+      filter: {
+        active: true,
+      },
+    },
+  });
 
-  if (anggotaQuery.isLoading) {
-    return <Text>Loading...</Text>;
-  }
+  const isLoading = anggotaQuery.isLoading || pengumumanQuery.isLoading;
+
+  const anggota = anggotaQuery.data?.data?.data;
+  const pengumuman = pengumumanQuery.data?.data?.data;
 
   return (
     <VStack px={8} spacing={8}>
       <VStack>
-        <Heading>Selamat Datang, {anggota?.nama}</Heading>
-        <Text>No. Anggota: {anggota?.idAnggota}</Text>
+        <Skeleton isLoaded={!isLoading}>
+          <Heading>Selamat Datang, {anggota?.nama}</Heading>
+        </Skeleton>
+        <Skeleton isLoaded={!isLoading}>
+          <Text>No. Anggota: {anggota?.idAnggota}</Text>
+        </Skeleton>
       </VStack>
       <Grid
         templateColumns={{ base: "100% 1fr", lg: "repeat(6, 1fr)" }}
@@ -68,74 +84,35 @@ export default function Page(pageProps: TPageProps) {
               <Heading size={"md"}>Pengumuman</Heading>
             </CardHeader>
             <CardBody>
-              <Swiper
-                modules={[Navigation, Pagination, A11y]}
-                spaceBetween={50}
-                slidesPerView={1}
-                navigation
-                pagination={{ clickable: true }}
-              >
-                <SwiperSlide className="items-center">
-                  <Box
-                    w={"full"}
-                    h={300}
-                    bg={"blue.100"}
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    Slide
-                  </Box>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Box
-                    w={"full"}
-                    h={300}
-                    bg={"blue.100"}
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    Slide
-                  </Box>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Box
-                    w={"full"}
-                    h={300}
-                    bg={"blue.100"}
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    Slide
-                  </Box>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Box
-                    w={"full"}
-                    h={300}
-                    bg={"blue.100"}
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    Slide
-                  </Box>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Box
-                    w={"full"}
-                    h={300}
-                    bg={"blue.100"}
-                    display={"flex"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    Slide
-                  </Box>
-                </SwiperSlide>
-              </Swiper>
+              <Skeleton isLoaded={!isLoading} rounded="lg">
+                <Swiper
+                  modules={[Navigation, Pagination, A11y]}
+                  spaceBetween={50}
+                  slidesPerView={1}
+                  navigation
+                  pagination={{ clickable: true }}
+                  loop
+                >
+                  {pengumuman?.map((item) => (
+                    <SwiperSlide className="items-center" key={item.id}>
+                      <Box
+                        w={"full"}
+                        h={500}
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                      >
+                        <Image
+                          alt={item.id}
+                          src={`${process.env.API_URL}/assets/${item.image}?access_token=${process.env.API_TOKEN}&quality=20`}
+                          fill
+                          style={{ objectFit: "cover" }}
+                        />
+                      </Box>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </Skeleton>
             </CardBody>
           </Card>
         </GridItem>

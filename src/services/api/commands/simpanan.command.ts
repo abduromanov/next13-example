@@ -1,6 +1,6 @@
 import queryMutation from "../queryMutation";
 
-import { TSimpanan } from "@/types";
+import { TAnggota, TSimpanan } from "@/types";
 
 export type TSimpananRequest = {
   idAnggota: string;
@@ -16,12 +16,9 @@ export type Saldo = {
   saldoSukarela: any;
 };
 export const useSimpanan = () =>
-  queryMutation<any, TSimpanan[]>("/api/simpanan", ["simpanan"]);
+  queryMutation<any, TAnggota[]>("/api/simpanan", ["simpanan"]);
 
-export const useAllSimpanan = () =>
-  queryMutation<any, TSimpanan[]>("/api/simpanan/all", ["allSimpanan"]);
-
-export const useSimpananDetail = (id: number, jenisTabungan: string) =>
+export const useSimpananDetail = (id: number) =>
   queryMutation<any, TSimpanan[]>(`/api/simpanan/${id}`, ["simpanan", id]);
 
 export const useSimpananSebelumnya = (id: number) =>

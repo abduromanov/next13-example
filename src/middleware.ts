@@ -17,7 +17,10 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (req.cookies.get("anggota") && req.nextUrl.pathname.startsWith("/auth")) {
+  if (
+    (req.cookies.get("anggota") && req.nextUrl.pathname.startsWith("/auth")) ||
+    req.nextUrl.pathname.includes("components")
+  ) {
     url.pathname = "/";
 
     return NextResponse.redirect(url);

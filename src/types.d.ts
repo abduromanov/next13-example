@@ -14,10 +14,11 @@ export interface DirectusResponse<T> {
     total_count: number;
     filter_count: number;
   };
+  totalSimpanan?: TTotalSimpanan;
 }
-
 export interface TResponse<T = unknown> {
   data?: T | [];
+  message?: string;
 }
 
 export interface AuthPropsType {
@@ -38,6 +39,7 @@ export interface TAnggota {
   simpananPokok: number;
   isPasswordBaru: boolean;
   tglDihapus: string;
+  totalSimpanan: number;
 }
 
 export interface TAnggotaRelations {
@@ -55,6 +57,13 @@ export interface TSimpanan {
   saldo: number;
   tglDibuat: string;
   tglDiubah: string;
+}
+
+export interface TTotalSimpanan {
+  wajib: number;
+  khusus: number;
+  sukarela: number;
+  pokok: number;
 }
 
 export interface TMurobahah {
@@ -120,4 +129,11 @@ export interface TMutasiSyirkah {
 export interface TSyirkahRelations {
   anggota: Partial<TAnggota>;
   mutasiSyirkah: Partial<TMutasiSyirkah>[];
+}
+
+export interface TPengumuman {
+  id: string;
+  image: string;
+  date_created: string;
+  active: boolean;
 }

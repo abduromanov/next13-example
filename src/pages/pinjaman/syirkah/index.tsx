@@ -1,115 +1,147 @@
-import { Box, Button, Card, CardBody, CardHeader, Divider, Flex, Heading, Icon, Input, InputGroup, InputLeftElement, Spacer, Table, TableContainer, Tbody, Text, Th, Thead, Tr } from "@chakra-ui/react"
-import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline"
-import { GetServerSideProps } from "next"
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Flex,
+  Heading,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Spacer,
+  Table,
+  TableContainer,
+  Tbody,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
+import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { GetServerSideProps } from "next";
 
-import BreadcrumbSection from "@/components/BreadcrumbSection"
+import BreadcrumbSection from "@/components/BreadcrumbSection";
 
-import TableSyirkah from "@/pages/pinjaman/syirkah/components/TableSyirkah"
-
+import TableSyirkah from "@/pages/pinjaman/syirkah/components/TableSyirkah";
 
 type TPageProps = {
-  pageTitle: string
-}
+  pageTitle: string;
+};
 
 export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   return {
     props: {
-      pageTitle: 'Syirkah'
-    }
-  }
-}
+      pageTitle: "Syirkah",
+    },
+  };
+};
 
-const dataSyirkah = [{
-  id: 1,
-  namaBC: 'makan malam',
-  namaAnggota: 'admin',
-  idAnggota: '123456789',
-  modalAwal: 'cicil rumah',
-  modalHamasah: 'Rp.10.900.000',
-  tglMulai: 'Rp.27.800.000',
-  tglSelesai: '30 September 2022',
-}, {
-  id: 2,
-  namaBC: 'makan malam',
-  namaAnggota: 'admin',
-  idAnggota: '123456789',
-  modalAwal: 'cicil rumah',
-  modalHamasah: 'Rp.10.900.000',
-  tglMulai: 'Rp.27.800.000',
-  tglSelesai: '30 September 2022',
-}, {
-  id: 3,
-  namaBC: 'makan malam',
-  namaAnggota: 'admin',
-  idAnggota: '123456789',
-  modalAwal: 'cicil rumah',
-  modalHamasah: 'Rp.10.900.000',
-  tglMulai: 'Rp.27.800.000',
-  tglSelesai: '30 September 2022',
-}, {
-  id: 4,
-  namaBC: 'makan malam',
-  namaAnggota: 'admin',
-  idAnggota: '123456789',
-  modalAwal: 'cicil rumah',
-  modalHamasah: 'Rp.10.900.000',
-  tglMulai: 'Rp.27.800.000',
-  tglSelesai: '30 September 2022',
-}, {
-  id: 5,
-  namaBC: 'makan malam',
-  namaAnggota: 'admin',
-  idAnggota: '123456789',
-  modalAwal: 'cicil rumah',
-  modalHamasah: 'Rp.10.900.000',
-  tglMulai: 'Rp.27.800.000',
-  tglSelesai: '30 September 2022',
-}, {
-  id: 6,
-  namaBC: 'makan malam',
-  namaAnggota: 'admin',
-  idAnggota: '123456789',
-  modalAwal: 'cicil rumah',
-  modalHamasah: 'Rp.10.900.000',
-  tglMulai: 'Rp.27.800.000',
-  tglSelesai: '30 September 2022',
-}]
+const dataSyirkah = [
+  {
+    id: 1,
+    namaBC: "makan malam",
+    namaAnggota: "admin",
+    idAnggota: "123456789",
+    modalAwal: "cicil rumah",
+    modalHamasah: "Rp.10.900.000",
+    tglMulai: "Rp.27.800.000",
+    tglSelesai: "30 September 2022",
+  },
+  {
+    id: 2,
+    namaBC: "makan malam",
+    namaAnggota: "admin",
+    idAnggota: "123456789",
+    modalAwal: "cicil rumah",
+    modalHamasah: "Rp.10.900.000",
+    tglMulai: "Rp.27.800.000",
+    tglSelesai: "30 September 2022",
+  },
+  {
+    id: 3,
+    namaBC: "makan malam",
+    namaAnggota: "admin",
+    idAnggota: "123456789",
+    modalAwal: "cicil rumah",
+    modalHamasah: "Rp.10.900.000",
+    tglMulai: "Rp.27.800.000",
+    tglSelesai: "30 September 2022",
+  },
+  {
+    id: 4,
+    namaBC: "makan malam",
+    namaAnggota: "admin",
+    idAnggota: "123456789",
+    modalAwal: "cicil rumah",
+    modalHamasah: "Rp.10.900.000",
+    tglMulai: "Rp.27.800.000",
+    tglSelesai: "30 September 2022",
+  },
+  {
+    id: 5,
+    namaBC: "makan malam",
+    namaAnggota: "admin",
+    idAnggota: "123456789",
+    modalAwal: "cicil rumah",
+    modalHamasah: "Rp.10.900.000",
+    tglMulai: "Rp.27.800.000",
+    tglSelesai: "30 September 2022",
+  },
+  {
+    id: 6,
+    namaBC: "makan malam",
+    namaAnggota: "admin",
+    idAnggota: "123456789",
+    modalAwal: "cicil rumah",
+    modalHamasah: "Rp.10.900.000",
+    tglMulai: "Rp.27.800.000",
+    tglSelesai: "30 September 2022",
+  },
+];
 
 export default function PageSyirkah() {
   const breadcrumbData = [
     {
-      name: 'Pinjaman',
+      name: "Pinjaman",
     },
     {
-      name: 'Syirkah',
+      name: "Syirkah",
     },
   ];
   return (
     <>
       <Box>
-        <Box mt='-6'>
+        <Box mt="-6">
           <BreadcrumbSection data={breadcrumbData} />
         </Box>
-        <Card boxShadow='md' mx={5}>
+        <Card boxShadow="md" mx={5}>
           <CardHeader>
             <Flex mb={3}>
               <Box>
-                <Heading size='md'>Data Syirkah Anggota</Heading>
+                <Heading size="md">Data Syirkah Anggota</Heading>
               </Box>
               <Spacer />
               <Box>
-                <Button colorScheme='teal'><Icon as={PlusIcon} />&nbsp;Tambah Pinjaman</Button>
+                <Button colorScheme="teal">
+                  <Icon as={PlusIcon} />
+                  &nbsp;Tambah Pinjaman
+                </Button>
               </Box>
             </Flex>
             <Divider />
             <Box w="300px" mt={3}>
-              <Text fontSize='sm'>Pencarian</Text>
+              <Text fontSize="sm">Pencarian</Text>
               <InputGroup mt={2}>
-                <InputLeftElement
-                  pointerEvents='none'>
-                  <Icon as={MagnifyingGlassIcon} color='gray' />
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={MagnifyingGlassIcon} color="gray" />
                 </InputLeftElement>
-                <Input placeholder="cari berdasarkan nama" focusBorderColor="teal.200" />
+                <Input
+                  placeholder="cari berdasarkan nama"
+                  focusBorderColor="teal.200"
+                />
               </InputGroup>
             </Box>
           </CardHeader>
@@ -139,5 +171,5 @@ export default function PageSyirkah() {
         </Card>
       </Box>
     </>
-  )
+  );
 }

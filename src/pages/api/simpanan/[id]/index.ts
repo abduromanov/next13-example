@@ -9,18 +9,6 @@ export default async function handler(
   res: NextApiResponse<TResponse | TMurobahah>
 ) {
   try {
-    // const filter = {
-    //   _and: [
-    //     {
-    //       idAnggota: {
-    //         _eq: parseInt(req.query.id as string),
-    //       },
-    //       jenisTabungan: {
-    //         _eq: (req.query.jenisTabungan as string)
-    //       },
-    //     },
-    //   ],
-    // };
     const filter = {
       idAnggota: {
         _eq: parseInt(req.query.id as string),
@@ -33,7 +21,7 @@ export default async function handler(
       ...req.query,
     });
 
-    const totSimpanan = {
+    const totalSimpanan = {
       wajib: data.data
         ?.filter((item) => item.jenisTabungan == "wajib")
         .map((item) => item.saldo)
@@ -51,7 +39,9 @@ export default async function handler(
         .map((item) => item.saldo)
         .reduce((a, b) => a + b, 0),
     };
-    const dataMerge = { ...data, totSimpanan };
+
+    const dataMerge = { ...data, totalSimpanan };
+
     return res.status(200).json(dataMerge);
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);

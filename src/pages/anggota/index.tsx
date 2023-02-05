@@ -97,6 +97,7 @@ const TableRow = (props: {
 export default function Page() {
   const [total, setTotal] = useState<number>();
   const [idAnggota, setIdAnggota] = useState<number>();
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalEditRef = useRef<ReturnType<typeof useDisclosure>>();
@@ -114,6 +115,7 @@ export default function Page() {
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
+      search: searchTerm,
     },
   });
 
@@ -136,7 +138,6 @@ export default function Page() {
             leftIcon={<Icon as={PlusIcon} />}
             onClick={() => {
               modalCreateRef.current?.onOpen();
-              setIdAnggota(0);
             }}
           >
             Tambah Anggota
@@ -151,17 +152,17 @@ export default function Page() {
                 Jumlah Anggota: {metadata?.filter_count}
               </Heading>
             </Skeleton>
-            <Skeleton isLoaded={!listAnggotaQuery.isLoading} w="25%">
-              <InputGroup>
-                <InputLeftElement pointerEvents="none">
-                  <Icon as={MagnifyingGlassIcon} color="gray" />
-                </InputLeftElement>
-                <Input
-                  placeholder="Cari berdasarkan nama / No. ID"
-                  focusBorderColor="brand.400"
-                />
-              </InputGroup>
-            </Skeleton>
+
+            <InputGroup w="25%">
+              <InputLeftElement pointerEvents="none">
+                <Icon as={MagnifyingGlassIcon} color="gray" />
+              </InputLeftElement>
+              <Input
+                placeholder="Cari berdasarkan nama / No. ID"
+                focusBorderColor="brand.400"
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </InputGroup>
           </Flex>
         </CardHeader>
         <Divider />
@@ -171,7 +172,7 @@ export default function Page() {
             <Table>
               <Thead>
                 <Tr>
-                  <Th>No. ID</Th>
+                  <Th>ID Anggota</Th>
                   <Th>Nama Anggota</Th>
                   <Th>Alamat</Th>
                   <Th>Tgl Dibuat</Th>
