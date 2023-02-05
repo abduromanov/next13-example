@@ -3,11 +3,9 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { useMemo } from "react";
 
-// type Props = {
-//   item: any;
-//   onOpen?: any;
-//   onClick?: () => void
-// };
+import toIDR from "@/services/utils/toIDR";
+
+
 export const TableCatatanPembayaran = (props: {
   modalHandler?: () => void;
   item: any;
@@ -19,9 +17,9 @@ export const TableCatatanPembayaran = (props: {
   return (
     <Tr>
       <Td>{tglBayar}</Td>
-      <Td>{props.item.cicilan}</Td>
-      <Td>{props.item.margin}</Td>
-      <Td>{props.item.total}</Td>
+      <Td>{toIDR(props.item.cicilan)}</Td>
+      <Td>{toIDR(props.item.margin)}</Td>
+      <Td>{toIDR(props.item.total)}</Td>
       <Td>{props.item.tenorTerbayar}</Td>
       <Td>{props.item.bulanTidakSesuai}</Td>
       <Td>{props.item.catatan}</Td>

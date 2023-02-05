@@ -1,3 +1,4 @@
+import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -9,6 +10,21 @@ export default async function handler(
   res: NextApiResponse<TResponse | TSimpanan>
 ) {
   try {
+    switch (req.method) {
+      case "GET":
+        return get();
+
+      case "POST":
+        return destroy();
+
+      default:
+        return res.status(405).end();
+    }
+  } catch (error: any) {
+    return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function get() {
     if (!req.query.id) {
       return res.status(404).json({});
     }
@@ -22,7 +38,12 @@ export default async function handler(
       });
 
     return res.status(200).json(data);
-  } catch (error: any) {
-    return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function destroy() {
+    await directus.items("murobahah").updateOne(req.query.id as string, {
+      tglDihapus: moment(),
+    });
+    return res.status(200).end();
   }
 }

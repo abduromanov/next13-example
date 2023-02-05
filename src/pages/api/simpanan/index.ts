@@ -32,11 +32,9 @@ export default async function handler(
     });
 
     data.data?.map((item) => {
-      item.totalSimpanan =
-        _.reduce(
-          item.mutasiTabungan,
-          (total, mutasi) => (total?.saldo || 0) + (mutasi?.saldo || 0)
-        ) || 0;
+      item.totalSimpanan = item.mutasiTabungan
+        .map((v: any) => v.saldo)
+        .reduce((a: any, b: any) => a + b, 0);
       delete item.mutasiTabungan;
 
       return item;

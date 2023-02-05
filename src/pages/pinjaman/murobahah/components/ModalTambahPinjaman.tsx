@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Flex, HStack, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, Textarea, useDisclosure } from "@chakra-ui/react"
+import { Alert, AlertIcon, Box, Button, Flex, HStack, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, Textarea, useDisclosure } from "@chakra-ui/react"
 import moment from "moment";
 import { useRouter } from "next/router";
 import { forwardRef, useImperativeHandle } from "react"
@@ -8,20 +8,18 @@ import { useFormCallback } from "@/hooks/useFormCallback";
 
 import { InputText } from "@/components/Forms/InputText";
 
-import { TMutasiMurobahahRequest, useCreateMutasiMurobahah } from "@/services/api/commands/murobahah.command";
+import { TMurobahahRequest, TMutasiMurobahahRequest, useCreateMurobahah, useCreateMutasiMurobahah } from "@/services/api/commands/murobahah.command";
 
-// type Props = {
-//    refetchFn?: () => void;
-// }
 
-const ModalTambahPembayaran = forwardRef<
+
+const ModalTambahPinjaman = forwardRef<
   Partial<ReturnType<typeof useDisclosure>> | undefined,
   any>((_, ref) => {
     const disclosure = useDisclosure();
     const formCallback = useFormCallback();
     const router = useRouter();
     const { id } = router.query;
-    const form = useForm<TMutasiMurobahahRequest>({
+    const form = useForm<TMurobahahRequest>({
       defaultValues: {
         tglBayar: "",
         catatan: ""
@@ -38,7 +36,7 @@ const ModalTambahPembayaran = forwardRef<
       form.setValue('total', (parseInt((form.getValues('cicilan') || "0").replace(/\D/g, ''), 10) + parseInt((form.getValues('margin') || "0").replace(/\D/g, ''), 10)).toLocaleString('id-ID'));
     }
 
-    const mutasiMurobahahMutation = useCreateMutasiMurobahah(Number(id)).mutate("POST");
+    const mutasiMurobahahMutation = useCreateMurobahah().mutate("POST");
     const submitHandler: SubmitHandler<TMutasiMurobahahRequest> = (values) => {
       values.tglBayar = moment(values.tglBayar).set({ h: moment().hour(), m: moment().minute(), s: moment().second() }).toISOString();
       values.cicilan = parseInt((values.cicilan as string)?.replace(/\D/g, ''), 10);
@@ -67,7 +65,7 @@ const ModalTambahPembayaran = forwardRef<
       <Modal isOpen={disclosure.isOpen} onClose={disclosure.onClose} size={["full", "xl"]}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Tambah Pembayaran Murobahah</ModalHeader>
+          <ModalHeader>Tambah Murobahah</ModalHeader>
 
           {watchField &&
             <ModalBody>
@@ -76,29 +74,41 @@ const ModalTambahPembayaran = forwardRef<
                   <AlertIcon />
                   Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data tidak dapat dirubah ataupun dihapus !
                 </Alert>
-                <InputText type='date' register={{ ...form.register("tglBayar") }} label="Tanggal Bayar" />
+                <Box>
+                  <Text>Pilih Anggota</Text>
+                  <Select placeholder="pilih anggota">
+                    <option>anggota 1</option>
+                  </Select>
+                </Box>
+
                 <Flex gap={5}>
                   <Box w="254px">
-                    <Text mb={2}>Cicilan</Text>
-                    <Input variant="outline" type='number' placeholder="Masukkan Jumlah Cicilan" onChange={(e) => {
+                    {/* <Text mb={2}>Jumlah Pinjaman</Text>
+                    <Input type='number' placeholder="Masukkan Jumlah Cicilan" onChange={(e) => {
                       form.setValue("cicilan", !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '');
                       calculateTotal();
                     }}
-                      value={form.getValues("cicilan")} />
+                      value={form.getValues("cicilan")} /> */}
+                    <InputText label="Jumlah Pinjaman" register={"jumlahPinjaman"} />
                   </Box>
                   <Box w="254px">
-                    <Text mb={2}>Margin</Text>
-                    <Input variant="outline" type='number' placeholder="Masukkan Jumlah Margin" onChange={(e) => {
+                    {/* <Text mb={2}>Margin</Text>
+                    <Input type='number' placeholder="Masukkan Jumlah Margin" onChange={(e) => {
                       form.setValue("margin", !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '');
                       calculateTotal();
                     }}
-                      value={form.getValues("margin")} />
+                    value={form.getValues("margin")} /> */}
+                    <InputText label="Tenor" register={"tenor"} />
+                    <Text fontSize="xs">* Minimal Tenor adalah 12 Bulan</Text>
                   </Box>
                 </Flex>
-                <InputText type='number' register={{ ...form.register("total") }} label="Total" />
                 <Flex gap={5}>
-                  <InputText type='number' register={{ ...form.register("tenorTerbayar") }} label="Tenor Terbayar" placeholder="Masukkan Tenor Terbayar" />
-                  <InputText type='number' register={{ ...form.register("bulanTidakSesuai") }} label="bulan tidak sesuai" placeholder="Masukkan Bulan Tidak Sesuai" />
+                  <InputText type='number' register={"totalMargin"} label="Total Margin" />
+                  <InputText type='number' register={"jumlahDP"} label="Jumlah DP" />
+                </Flex>
+                <Flex gap={5}>
+                  <InputText type='date' register={"tglMulai"} label="Tanggal Mulai" />
+                  <InputText type='date' register={"tglSelesai"} label="Tanggal Selesai " />
                 </Flex>
                 <Box>
                   <Text>Catatan</Text>
@@ -121,5 +131,5 @@ const ModalTambahPembayaran = forwardRef<
     )
   })
 
-export default ModalTambahPembayaran;
-ModalTambahPembayaran.displayName = "ModalTambahPembayaran";
+export default ModalTambahPinjaman;
+ModalTambahPinjaman.displayName = "ModalTambahPinjaman";

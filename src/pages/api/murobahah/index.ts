@@ -9,6 +9,21 @@ export default async function handler(
   res: NextApiResponse<TResponse | TMurobahah>
 ) {
   try {
+    switch (req.method) {
+      case "GET":
+        return get();
+
+      case "POST":
+        return post();
+
+      default:
+        return res.status(405).end();
+    }
+  } catch (error: any) {
+    return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function get() {
     const data = await directus.items("murobahah").readByQuery({
       fields: [
         "*",
@@ -35,7 +50,10 @@ export default async function handler(
     });
 
     return res.status(200).json(data);
-  } catch (error: any) {
-    return res.status(error.response?.status || 500).json(error);
+  }
+  async function post() {
+    await directus.items<string, TMurobahah>("murobahah").createOne(req.body);
+
+    return res.status(200).json({});
   }
 }

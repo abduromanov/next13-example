@@ -13,6 +13,23 @@ export type TMutasiMurobahahRequest = {
   tglBayar: string;
   total: string;
 };
+
+export type TMurobahahRequest = {
+  cicilan: string;
+  dp: string;
+  lunas: boolean;
+  margin: string;
+  pembiayaan: string;
+  pinjaman: string;
+  tenor: string;
+  tglDimulai: string;
+  tglSelesai: string;
+  total: string;
+  totalMargin: string;
+  totalPinjaman: string;
+  anggota: string;
+};
+
 export const useMurobahah = () =>
   queryMutation<any, TMurobahah[]>("/api/murobahah", ["murobahah"]);
 
@@ -34,3 +51,5 @@ export const useCreateMutasiMurobahah = (id: number) =>
   queryMutation<TMutasiMurobahahRequest, TMutasiMurobahah>(
     `/api/murobahah/${id}/mutasi`
   );
+export const useCreateMurobahah = () =>
+  queryMutation<TMurobahahRequest, TMurobahah>(`/api/murobahah`);

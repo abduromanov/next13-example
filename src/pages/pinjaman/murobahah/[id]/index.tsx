@@ -44,6 +44,7 @@ import ModalConfirmDelete from "@/pages/pinjaman/murobahah/components/ModalConfi
 import { TableCatatanPembayaran } from "@/pages/pinjaman/murobahah/components/TableCatatanPembayaran";
 import TableRincianPembayaran from "@/pages/pinjaman/murobahah/components/TableRincianPembayaran";
 import { useMurobahahDetail, useMutasiMurobahah } from "@/services/api/commands/murobahah.command";
+import toIDR from "@/services/utils/toIDR";
 
 import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
 
@@ -61,9 +62,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 
 
 
-export const convertToIDR = (jenisSimpanan: number) => {
-  return jenisSimpanan?.toLocaleString('id-ID', { currency: 'IDR', style: 'currency' })
-}
 export default function PageDetailMurobahah() {
   const [catatanDate, setCatatanDate] = useState<string>();
   const [idMutasi, setIdMutasi] = useState<number>();
@@ -130,8 +128,8 @@ export default function PageDetailMurobahah() {
   ];
 
   return (
-    <Box>
-      <Box mt="-5">
+    <Stack spacing="8" px="8" pb="10">
+      <Box>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
       <Flex mx={5} p={3} mt={-2} gap="3" flexWrap="wrap">
@@ -198,19 +196,19 @@ export default function PageDetailMurobahah() {
                 <Text fontWeight="bold" mr="133px">
                   Pinjaman
                 </Text>
-                <Text>{convertToIDR(detailMurobahah?.totalPinjaman)}</Text>
+                <Text>{toIDR(detailMurobahah?.totalPinjaman)}</Text>
               </HStack>
               <HStack spacing={2} flexWrap="wrap">
                 <Text fontWeight="bold" mr="150px">
                   Margin
                 </Text>
-                <Text>{convertToIDR(detailMurobahah?.totalMargin)}</Text>
+                <Text>{toIDR(detailMurobahah?.totalMargin)}</Text>
               </HStack>
               <HStack spacing={2} flexWrap="wrap">
                 <Text fontWeight="bold" mr="184px">
                   DP
                 </Text>
-                <Text>{convertToIDR(detailMurobahah?.dp)}</Text>
+                <Text>{toIDR(detailMurobahah?.dp)}</Text>
               </HStack>
             </VStack>
           </Box>
@@ -222,7 +220,7 @@ export default function PageDetailMurobahah() {
                 <Text fontWeight="bold" mr="170px">
                   Total
                 </Text>
-                <Text>{convertToIDR(detailMurobahah?.total)}</Text>
+                <Text>{toIDR(detailMurobahah?.total)}</Text>
               </HStack>
               <HStack spacing={2} flexWrap="wrap">
                 <Text fontWeight="bold" mr="165px">
@@ -245,13 +243,13 @@ export default function PageDetailMurobahah() {
                 <Text fontWeight="bold" mr={48}>
                   Pinjaman/bulan
                 </Text>
-                <Text>{convertToIDR(detailMurobahah?.pinjaman)}</Text>
+                <Text>{toIDR(detailMurobahah?.pinjaman)}</Text>
               </HStack>
               <HStack spacing={2} flexWrap="wrap">
                 <Text fontWeight="bold" mr="208px">
                   Margin/bulan
                 </Text>
-                <Text>{convertToIDR(detailMurobahah?.margin)}</Text>
+                <Text>{toIDR(detailMurobahah?.margin)}</Text>
               </HStack>
               <HStack spacing={4}>
                 {detailMurobahah?.lunas ? (
@@ -280,7 +278,7 @@ export default function PageDetailMurobahah() {
                 <Text fontWeight="bold" mr="275px">
                   Total
                 </Text>
-                <Text>{convertToIDR(detailMurobahah?.cicilan)}</Text>
+                <Text>{toIDR(detailMurobahah?.cicilan)}</Text>
               </HStack>
             </VStack>
           </Box>
@@ -350,9 +348,9 @@ export default function PageDetailMurobahah() {
                   <Th></Th>
                   <Th>{rincianPembayaranTotal.tenorBayar}</Th>
                   <Th>{rincianPembayaranTotal.bulanTidakSesuai}</Th>
-                  <Th>{convertToIDR(rincianPembayaranTotal.cicilan)}</Th>
-                  <Th>{convertToIDR(rincianPembayaranTotal.margin)}</Th>
-                  <Th>{convertToIDR(rincianPembayaranTotal.total)}</Th>
+                  <Th>{toIDR(rincianPembayaranTotal.cicilan)}</Th>
+                  <Th>{toIDR(rincianPembayaranTotal.margin)}</Th>
+                  <Th>{toIDR(rincianPembayaranTotal.total)}</Th>
                 </Tr>
               </Tfoot>
             </Table>
@@ -389,13 +387,13 @@ export default function PageDetailMurobahah() {
                 <Text>Total Terbayar</Text>
               </Box>
               <Box w="200px">
-                <Text>{convertToIDR(rincianPembayaranTotal?.cicilan)}</Text>
+                <Text>{toIDR(rincianPembayaranTotal?.cicilan)}</Text>
               </Box>
               <Box w="200px">
-                <Text>{convertToIDR(rincianPembayaranTotal?.margin)}</Text>
+                <Text>{toIDR(rincianPembayaranTotal?.margin)}</Text>
               </Box>
               <Box w="200px">
-                <Text>{convertToIDR(rincianPembayaranTotal?.total)}</Text>
+                <Text>{toIDR(rincianPembayaranTotal?.total)}</Text>
               </Box>
             </Flex>
             <Flex>
@@ -403,13 +401,13 @@ export default function PageDetailMurobahah() {
                 <Text>Sisa Cicilan</Text>
               </Box>
               <Box w="200px">
-                <Text>{convertToIDR(rangkumanPembayaranTotal.sisaCicilan.cicilan)}</Text>
+                <Text>{toIDR(rangkumanPembayaranTotal.sisaCicilan.cicilan)}</Text>
               </Box>
               <Box w="200px">
-                <Text>{convertToIDR(rangkumanPembayaranTotal.sisaCicilan.margin)}</Text>
+                <Text>{toIDR(rangkumanPembayaranTotal.sisaCicilan.margin)}</Text>
               </Box>
               <Box w="200px">
-                <Text>{convertToIDR(rangkumanPembayaranTotal.sisaCicilan.total)}</Text>
+                <Text>{toIDR(rangkumanPembayaranTotal.sisaCicilan.total)}</Text>
               </Box>
             </Flex>
             <Flex>
@@ -461,6 +459,6 @@ export default function PageDetailMurobahah() {
           </TableContainer> */}
         </CardBody>
       </Card>
-    </Box>
+    </Stack>
   );
 }

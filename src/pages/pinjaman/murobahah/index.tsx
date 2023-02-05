@@ -13,6 +13,8 @@ import {
   InputGroup,
   InputLeftElement,
   Progress,
+  Skeleton,
+  Stack,
   Table,
   TableContainer,
   Tbody,
@@ -20,17 +22,20 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import TableMurobahah from "@/pages/pinjaman/murobahah/components/TableMurobahah";
 import { useMurobahah } from "@/services/api/commands/murobahah.command";
+
+import ModalTambahPinjaman from "./components/ModalTambahPinjaman";
 
 import { TMurobahah } from "@/types";
 
@@ -49,6 +54,9 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 
 export default function PageMurobahah() {
   const [total, setTotal] = useState<number>();
+  const modalTambahPinjamanRef = useRef<ReturnType<typeof useDisclosure>>();
+
+
   const pagination = usePagination({
     total: total,
     initialState: {
@@ -77,14 +85,14 @@ export default function PageMurobahah() {
     },
   ];
   return (
-    <Box>
-      <Box mt="-6">
+    <Stack spacing={8} px={8} pb={10}>
+      <Box >
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
       <Flex alignItems="center" justify="space-between" mx={5}>
         <Heading size="lg">Data Pinjaman Murobahah</Heading>
         <Link href="">
-          <Button as="span" leftIcon={<Icon as={PlusIcon} />}>
+          <Button as="span" leftIcon={<Icon as={PlusIcon} />} onClick={() => { modalTambahPinjamanRef.current?.onOpen() }}>
             Tambah Pinjaman
           </Button>
         </Link>
@@ -145,10 +153,13 @@ export default function PageMurobahah() {
                 ))}
               </Tbody>
             </Table>
-            <TablePagination pagination={pagination} />
           </TableContainer>
+          <Skeleton w="full" isLoaded={!listMurobahahQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton>
         </CardBody>
       </Card>
-    </Box>
+      <ModalTambahPinjaman ref={modalTambahPinjamanRef} />
+    </Stack>
   );
 }
