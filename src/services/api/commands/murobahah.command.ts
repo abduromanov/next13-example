@@ -3,13 +3,13 @@ import queryMutation from "../queryMutation";
 import { TMurobahah, TMutasiMurobahah } from "@/types";
 
 export type TMutasiMurobahahRequest = {
-  bulanTidakSesuai: number;
+  bulanTidakSesuai: string;
   catatan: string;
   cicilan: string;
   isBulat: boolean;
   margin: string;
   murobahah: string;
-  tenorTerbayar: number;
+  tenorTerbayar: string;
   tglBayar: string;
   total: string;
 };
@@ -22,7 +22,7 @@ export type TMurobahahRequest = {
   pembiayaan: string;
   pinjaman: string;
   tenor: string;
-  tglDimulai: string;
+  tglMulai: string;
   tglSelesai: string;
   total: string;
   totalMargin: string;

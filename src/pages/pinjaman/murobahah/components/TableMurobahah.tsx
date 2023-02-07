@@ -15,12 +15,14 @@ import moment from "moment";
 import Link from "next/link";
 import { useMemo } from "react";
 
+import toIDR from "@/services/utils/toIDR";
+
 type Props = {
   item: any;
 };
 
 export default function TableMurobahah(props: Props) {
-  const totalPinjaman = useMemo(() => props.item.totalPinjaman.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }), [props.item.totalPinjaman])
+  const totalPinjaman = useMemo(() => toIDR(props.item.totalPinjaman), [props.item.totalPinjaman])
   const tglMulaiCicilan = useMemo(
     () => moment(props.item?.tglMulai).format("DD MMMM YYYY"),
     [props.item?.tglMulai]

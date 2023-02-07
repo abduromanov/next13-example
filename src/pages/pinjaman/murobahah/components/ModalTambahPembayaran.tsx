@@ -41,12 +41,10 @@ const ModalTambahPembayaran = forwardRef<
     const mutasiMurobahahMutation = useCreateMutasiMurobahah(Number(id)).mutate("POST");
     const submitHandler: SubmitHandler<TMutasiMurobahahRequest> = (values) => {
       values.tglBayar = moment(values.tglBayar).set({ h: moment().hour(), m: moment().minute(), s: moment().second() }).toISOString();
-      values.cicilan = parseInt((values.cicilan as string)?.replace(/\D/g, ''), 10);
-      values.margin = parseInt((values.margin as string)?.replace(/\D/g, ''), 10);
-      values.total = parseInt((values.total as string)?.replace(/\D/g, ''), 10);
-      values.murobahah = Number(id);
-      values.tenorTerbayar = parseInt(values.tenorTerbayar);
-      values.bulanTidakSesuai = parseInt(values.bulanTidakSesuai);
+      values.cicilan = (values.cicilan as string)?.replace(/\D/g, '');
+      values.margin = (values.margin as string)?.replace(/\D/g, '');
+      values.total = (values.total as string)?.replace(/\D/g, '');
+      values.murobahah = id as string;
       values.isBulat = false;
       // console.log(values)
       mutasiMurobahahMutation.mutate(values, {
@@ -62,51 +60,59 @@ const ModalTambahPembayaran = forwardRef<
         },
       });
     }
-    const watchField = form.watch(["cicilan", "margin", "total"])
+    form.watch(["cicilan", "margin", "total"])
     return (
       <Modal isOpen={disclosure.isOpen} onClose={disclosure.onClose} size={["full", "xl"]}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Tambah Pembayaran Murobahah</ModalHeader>
 
-          {watchField &&
-            <ModalBody>
-              <Stack spacing={3}>
-                <Alert status="warning">
-                  <AlertIcon />
-                  Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data tidak dapat dirubah ataupun dihapus !
-                </Alert>
-                <InputText type='date' register={{ ...form.register("tglBayar") }} label="Tanggal Bayar" />
-                <Flex gap={5}>
-                  <Box w="254px">
+          <ModalBody>
+            <Stack spacing={3}>
+              <Alert status="warning">
+                <AlertIcon />
+                Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data tidak dapat dirubah ataupun dihapus !
+              </Alert>
+              <InputText type='date' register={{ ...form.register("tglBayar") }} label="Tanggal Bayar" />
+              <Flex gap={5}>
+                {/* <Box w="254px">
                     <Text mb={2}>Cicilan</Text>
                     <Input variant="outline" type='number' placeholder="Masukkan Jumlah Cicilan" onChange={(e) => {
                       form.setValue("cicilan", !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '');
-                      calculateTotal();
+
                     }}
                       value={form.getValues("cicilan")} />
-                  </Box>
-                  <Box w="254px">
-                    <Text mb={2}>Margin</Text>
-                    <Input variant="outline" type='number' placeholder="Masukkan Jumlah Margin" onChange={(e) => {
-                      form.setValue("margin", !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '');
-                      calculateTotal();
-                    }}
-                      value={form.getValues("margin")} />
-                  </Box>
-                </Flex>
-                <InputText type='number' register={{ ...form.register("total") }} label="Total" />
-                <Flex gap={5}>
-                  <InputText type='number' register={{ ...form.register("tenorTerbayar") }} label="Tenor Terbayar" placeholder="Masukkan Tenor Terbayar" />
-                  <InputText type='number' register={{ ...form.register("bulanTidakSesuai") }} label="bulan tidak sesuai" placeholder="Masukkan Bulan Tidak Sesuai" />
-                </Flex>
-                <Box>
-                  <Text>Catatan</Text>
-                  <Textarea placeholder="masukkan Catatan" onChange={(e) => form.setValue('catatan', e.target.value)} />
-                </Box>
-              </Stack>
-            </ModalBody>
-          }
+                  </Box> */}
+                <InputText
+                  label="Cicilan"
+                  value={form.getValues("cicilan")}
+                  onChange={(e) => {
+                    form.setValue('cicilan', !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '')
+                    calculateTotal();
+                  }}
+                  register={"cicilan"}
+                />
+                <InputText
+                  label="Margin"
+                  value={form.getValues("margin")}
+                  onChange={(e) => {
+                    form.setValue('margin', !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '')
+                    calculateTotal();
+                  }}
+                  register={"margin"}
+                />
+              </Flex>
+              <InputText register={{ ...form.register("total") }} label="Total" isReadOnly />
+              <Flex gap={5}>
+                <InputText type='number' register={{ ...form.register("tenorTerbayar") }} label="Tenor Terbayar" placeholder="Masukkan Tenor Terbayar" />
+                <InputText type='number' register={{ ...form.register("bulanTidakSesuai") }} label="bulan tidak sesuai" placeholder="Masukkan Bulan Tidak Sesuai" />
+              </Flex>
+              <Box>
+                <Text>Catatan</Text>
+                <Textarea placeholder="masukkan Catatan" onChange={(e) => form.setValue('catatan', e.target.value)} />
+              </Box>
+            </Stack>
+          </ModalBody>
 
           <ModalFooter>
             <HStack spacing={3}>

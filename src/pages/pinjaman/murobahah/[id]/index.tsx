@@ -175,7 +175,7 @@ export default function PageDetailMurobahah() {
                   Nama
                 </Text>
                 <Skeleton isLoaded={!detailMurobahahQuery.isLoading} >
-                  <Text>{detailMurobahah?.anggota.nama}</Text>
+                  <Text>{detailMurobahah?.anggota?.nama}</Text>
                 </Skeleton>
               </HStack>
               <HStack spacing={2} flexWrap="wrap">

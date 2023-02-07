@@ -24,19 +24,19 @@ export default async function handler(
     const totalSimpanan = {
       wajib: data.data
         ?.filter((item) => item.jenisTabungan == "wajib")
-        .map((item) => item.saldo)
+        .map((item) => item.nominal)
         .reduce((a, b) => a + b, 0),
       pokok: data.data
         ?.filter((item) => item.jenisTabungan == "pokok")
-        .map((item) => item.saldo)
+        .map((item) => item.nominal)
         .reduce((a, b) => a + b, 0),
       sukarela: data.data
         ?.filter((item) => item.jenisTabungan == "sukarela")
-        .map((item) => item.saldo)
+        .map((item) => item.nominal)
         .reduce((a, b) => a + b, 0),
       khusus: data.data
         ?.filter((item) => item.jenisTabungan == "khusus")
-        .map((item) => item.saldo)
+        .map((item) => item.nominal)
         .reduce((a, b) => a + b, 0),
     };
 

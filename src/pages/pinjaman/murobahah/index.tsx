@@ -133,8 +133,8 @@ export default function PageMurobahah() {
         <Divider />
         {listMurobahahQuery.isLoading && <Progress size="xs" isIndeterminate />}
         <CardBody>
-          <TableContainer p="0" pb="5">
-            <Table mb={5}>
+          <TableContainer p="3">
+            <Table mb={3}>
               <Thead>
                 <Tr>
                   <Th>Nama Anggota</Th>
