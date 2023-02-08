@@ -10,7 +10,7 @@ export default async function handler(
 ) {
   try {
     const data = await directus.items("syirkah").readByQuery({
-      fields: ["*"],
+      fields: ["*", "anggota.nama", "anggota.idAnggota"],
       meta: "*",
       ...req.query,
     });

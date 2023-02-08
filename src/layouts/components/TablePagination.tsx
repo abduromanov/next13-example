@@ -23,7 +23,7 @@ export default function TablePagination({ pagination }: Props) {
           w="20"
           size="sm"
           onChange={(e) => pagination.setPageSize(Number(e.target.value))}
-          defaultValue={10}
+          defaultValue={pagination.pageSize}
         >
           <option value="10">10</option>
           <option value="25">25</option>

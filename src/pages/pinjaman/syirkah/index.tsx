@@ -1,5 +1,5 @@
+import { usePagination } from "@ajna/pagination";
 import {
-  Box,
   Button,
   Card,
   CardBody,
@@ -11,21 +11,28 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Spacer,
+  Progress,
+  Skeleton,
+  Stack,
   Table,
   TableContainer,
   Tbody,
-  Text,
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
+import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
+import TablePagination from "@/layouts/components/TablePagination";
 import TableSyirkah from "@/pages/pinjaman/syirkah/components/TableSyirkah";
+import { useSyirkah } from "@/services/api/commands/syirkah.command";
+
+import ModalCreateSyirkah from "./components/ModalCreateSyirkah";
 
 type TPageProps = {
   pageTitle: string;
@@ -39,70 +46,12 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   };
 };
 
-const dataSyirkah = [
-  {
-    id: 1,
-    namaBC: "makan malam",
-    namaAnggota: "admin",
-    idAnggota: "123456789",
-    modalAwal: "cicil rumah",
-    modalHamasah: "Rp.10.900.000",
-    tglMulai: "Rp.27.800.000",
-    tglSelesai: "30 September 2022",
-  },
-  {
-    id: 2,
-    namaBC: "makan malam",
-    namaAnggota: "admin",
-    idAnggota: "123456789",
-    modalAwal: "cicil rumah",
-    modalHamasah: "Rp.10.900.000",
-    tglMulai: "Rp.27.800.000",
-    tglSelesai: "30 September 2022",
-  },
-  {
-    id: 3,
-    namaBC: "makan malam",
-    namaAnggota: "admin",
-    idAnggota: "123456789",
-    modalAwal: "cicil rumah",
-    modalHamasah: "Rp.10.900.000",
-    tglMulai: "Rp.27.800.000",
-    tglSelesai: "30 September 2022",
-  },
-  {
-    id: 4,
-    namaBC: "makan malam",
-    namaAnggota: "admin",
-    idAnggota: "123456789",
-    modalAwal: "cicil rumah",
-    modalHamasah: "Rp.10.900.000",
-    tglMulai: "Rp.27.800.000",
-    tglSelesai: "30 September 2022",
-  },
-  {
-    id: 5,
-    namaBC: "makan malam",
-    namaAnggota: "admin",
-    idAnggota: "123456789",
-    modalAwal: "cicil rumah",
-    modalHamasah: "Rp.10.900.000",
-    tglMulai: "Rp.27.800.000",
-    tglSelesai: "30 September 2022",
-  },
-  {
-    id: 6,
-    namaBC: "makan malam",
-    namaAnggota: "admin",
-    idAnggota: "123456789",
-    modalAwal: "cicil rumah",
-    modalHamasah: "Rp.10.900.000",
-    tglMulai: "Rp.27.800.000",
-    tglSelesai: "30 September 2022",
-  },
-];
+export default function Page() {
+  const [total, setTotal] = useState<number>();
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-export default function PageSyirkah() {
+  const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
+
   const breadcrumbData = [
     {
       name: "Pinjaman",
@@ -111,65 +60,96 @@ export default function PageSyirkah() {
       name: "Syirkah",
     },
   ];
+
+  const pagination = usePagination({
+    total: total,
+    initialState: {
+      currentPage: 1,
+      pageSize: 10,
+    },
+  });
+
+  const listSyirkahQuery = useSyirkah().paginate({
+    params: {
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+      search: searchTerm,
+    },
+  });
+
+  const listSyirkah = listSyirkahQuery.data?.data?.data;
+  const metadata = listSyirkahQuery.data?.data?.meta;
+
+  // const refetchQuery = () => listSyirkahQuery.refetch();
+
+  useEffect(() => {
+    setTotal(metadata?.filter_count);
+  }, [metadata]);
+
   return (
-    <>
-      <Box>
-        <Box mt="-6">
-          <BreadcrumbSection data={breadcrumbData} />
-        </Box>
-        <Card boxShadow="md" mx={5}>
-          <CardHeader>
-            <Flex mb={3}>
-              <Box>
-                <Heading size="md">Data Syirkah Anggota</Heading>
-              </Box>
-              <Spacer />
-              <Box>
-                <Button colorScheme="teal">
-                  <Icon as={PlusIcon} />
-                  &nbsp;Tambah Pinjaman
-                </Button>
-              </Box>
-            </Flex>
-            <Divider />
-            <Box w="300px" mt={3}>
-              <Text fontSize="sm">Pencarian</Text>
-              <InputGroup mt={2}>
-                <InputLeftElement pointerEvents="none">
-                  <Icon as={MagnifyingGlassIcon} color="gray" />
-                </InputLeftElement>
-                <Input
-                  placeholder="cari berdasarkan nama"
-                  focusBorderColor="teal.200"
-                />
-              </InputGroup>
-            </Box>
-          </CardHeader>
-          <CardBody mt={-5}>
-            <TableContainer>
-              <Table mb={5}>
-                <Thead>
-                  <Tr>
-                    <Th>Nama BC</Th>
-                    <Th>Nama Anggota</Th>
-                    <Th>ID Anggota</Th>
-                    <Th>Modal Awal</Th>
-                    <Th>Modal Hamasah</Th>
-                    <Th>Tanggal Mulai</Th>
-                    <Th>Tanggal Seleksi</Th>
-                    <Th>Aksi</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {dataSyirkah.map((item, index) => (
-                    <TableSyirkah key={index} item={item} />
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </CardBody>
-        </Card>
-      </Box>
-    </>
+    <Stack spacing="8" px="8" pb="10">
+      <BreadcrumbSection data={breadcrumbData} />
+
+      <Flex alignItems="center" justify="space-between">
+        <Heading size="lg">Data Syirkah Anggota</Heading>
+        <Button
+          as="span"
+          leftIcon={<Icon as={PlusIcon} />}
+          onClick={modalCreateRef.current?.onOpen}
+        >
+          Tambah Pinjaman
+        </Button>
+      </Flex>
+
+      <Card m={5} variant="outline" shadow="sm">
+        <CardHeader display='flex' justifyContent='flex-end'>
+          <InputGroup w='25%'>
+            <InputLeftElement pointerEvents="none">
+              <Icon as={MagnifyingGlassIcon} color="gray" />
+            </InputLeftElement>
+            <Input
+              placeholder="Cari berdasarkan nama / No. ID"
+              focusBorderColor="brand.400"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </InputGroup>
+        </CardHeader>
+
+        <Divider />
+        {listSyirkahQuery.isLoading && (
+          <Progress size="xs" isIndeterminate />
+        )}
+
+        <CardBody>
+          <TableContainer p="0" mb="5">
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Nama BC</Th>
+                  <Th>Nama Anggota</Th>
+                  <Th>ID Anggota</Th>
+                  <Th textAlign='right'>Modal Awal</Th>
+                  <Th textAlign='right'>Modal Hamasah</Th>
+                  <Th>Tanggal Mulai</Th>
+                  <Th>Tanggal Selesai</Th>
+                  <Th>Aksi</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {(listSyirkah || []).map(item => (
+                  <TableSyirkah key={item.id} item={item} />
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+
+          <Skeleton w="full" isLoaded={!listSyirkahQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton>
+        </CardBody>
+      </Card>
+
+      <ModalCreateSyirkah ref={modalCreateRef} />
+    </Stack>
   );
 }

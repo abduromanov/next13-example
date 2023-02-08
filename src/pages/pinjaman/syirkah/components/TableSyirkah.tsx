@@ -1,30 +1,39 @@
 import { Flex, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
-import { DocumentTextIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
+import moment from "moment";
 import Link from "next/link";
+import { useMemo } from "react";
+
+import toIDR from "@/services/utils/toIDR";
+
+import { TSyirkah, TSyirkahRelations } from "@/types";
 
 type Props = {
-  item: any;
+  item: TSyirkah & TSyirkahRelations;
 };
 
 export default function TableSyirkah(props: Props) {
+  const tglMulai = useMemo(() => props.item.tglMulai ? moment(props.item.tglMulai).format('DD MMMM YYYY') : '', [props.item.tglMulai]);
+  const tglSelesai = useMemo(() => props.item.tglSelesai ? moment(props.item.tglSelesai).format('DD MMMM YYYY') : '', [props.item.tglSelesai]);
+
   return (
     <Tr>
-      <Td>{props.item.namaBC}</Td>
-      <Td>{props.item.namaAnggota}</Td>
-      <Td>{props.item.idAnggota}</Td>
-      <Td>{props.item.modalAwal}</Td>
-      <Td>{props.item.modalHamasah}</Td>
-      <Td>{props.item.tglMulai}</Td>
-      <Td>{props.item.tglSelesai}</Td>
+      <Td>{props.item.namaBc}</Td>
+      <Td>{props.item.anggota.nama}</Td>
+      <Td>{props.item.anggota.idAnggota}</Td>
+      <Td textAlign='right'>{toIDR(props.item.modalAwal)}</Td>
+      <Td textAlign='right'>{toIDR(props.item.modalHamasah)}</Td>
+      <Td>{tglMulai}</Td>
+      <Td>{tglSelesai}</Td>
       <Td>
         <Flex gap={3}>
           <Link href={`/pinjaman/syirkah/${props.item.id}`}>
-            <Tooltip hasArrow label="lihat detail" fontSize="xs">
-              <Icon as={DocumentTextIcon} color="teal" boxSize={5} />
+            <Tooltip hasArrow label="Lihat Detail" fontSize="xs">
+              <Icon as={EyeIcon} color="teal" boxSize={5} />
             </Tooltip>
           </Link>
           <Link href={`/pinjaman/syirkah/${props.item.id}`}>
-            <Tooltip hasArrow label="hapus" fontSize="xs">
+            <Tooltip hasArrow label="Hapus" fontSize="xs">
               <Icon as={TrashIcon} color="red" boxSize={5} />
             </Tooltip>
           </Link>
