@@ -36,6 +36,9 @@ export const useMurobahah = () =>
 export const useMurobahahDetail = (id: number) =>
   queryMutation<any, TMurobahah>(`/api/murobahah/${id}`, ["murobahah", id]);
 
+export const useDeleteMurobahah = (id: number) =>
+  queryMutation<any, TMurobahah>(`/api/murobahah/${id}`);
+
 export const useMutasiMurobahah = (id: number) =>
   queryMutation<any, TMutasiMurobahah[]>(`/api/murobahah/${id}/mutasi`, [
     "murobahah",

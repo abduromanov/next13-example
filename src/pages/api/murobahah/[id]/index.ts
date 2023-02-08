@@ -14,7 +14,7 @@ export default async function handler(
       case "GET":
         return get();
 
-      case "POST":
+      case "DELETE":
         return destroy();
 
       default:

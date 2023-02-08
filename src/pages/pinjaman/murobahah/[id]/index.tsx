@@ -40,12 +40,12 @@ import { useMemo, useRef, useState } from "react";
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import ModalCatatan from "@/pages/pinjaman/murobahah/components/ModalCatatan";
-import ModalConfirmDelete from "@/pages/pinjaman/murobahah/components/ModalConfirmDelete";
 import { TableCatatanPembayaran } from "@/pages/pinjaman/murobahah/components/TableCatatanPembayaran";
 import TableRincianPembayaran from "@/pages/pinjaman/murobahah/components/TableRincianPembayaran";
 import { useMurobahahDetail, useMutasiMurobahah } from "@/services/api/commands/murobahah.command";
 import toIDR from "@/services/utils/toIDR";
 
+import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
 import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
 
 type TPageProps = {
@@ -339,7 +339,7 @@ export default function PageDetailMurobahah() {
                     </>
                   ))}
                 />
-                <ModalConfirmDelete ref={modalDeleteRef} refetchFn={refetchQuery} id={Number(id) || 0} idMutasi={idMutasi || 0} />
+                <ModalConfirmDeleteMutasi ref={modalDeleteRef} refetchFn={refetchQuery} id={Number(id) || 0} idMutasi={idMutasi || 0} />
                 <ModalTambahPembayaran ref={modalTambahPembayaranRef} />
               </Tbody>
               <Tfoot>

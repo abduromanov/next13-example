@@ -1,6 +1,5 @@
 import { Alert, AlertIcon, Box, Button, Flex, HStack, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, Textarea, useDisclosure } from "@chakra-ui/react"
 import moment from "moment";
-import { useRouter } from "next/router";
 import { forwardRef, useImperativeHandle } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -18,8 +17,7 @@ const ModalTambahPinjaman = forwardRef<
   any>((_, ref) => {
     const disclosure = useDisclosure();
     const formCallback = useFormCallback();
-    const router = useRouter();
-    const { id } = router.query;
+
     const form = useForm<TMurobahahRequest>({
       defaultValues: {
         totalPinjaman: "",
@@ -54,9 +52,11 @@ const ModalTambahPinjaman = forwardRef<
       const pinjaman = ((Number(values.totalPinjaman) - Number(values.dp)) / Number(values.tenor))
       values.pinjaman = String(pinjaman);
 
-      const cicilan = Number(values.pinjaman) + Number(values.totalMargin)
-      values.cicilan = String(cicilan);
+      const margin = Number(values.totalMargin) / Number(values.tenor)
+      values.margin = String(margin);
 
+      const cicilan = Number(values.pinjaman) + Number(values.margin)
+      values.cicilan = String(cicilan);
 
       values.lunas = false;
       // console.log(values)

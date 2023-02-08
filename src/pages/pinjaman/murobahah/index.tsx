@@ -35,6 +35,7 @@ import TablePagination from "@/layouts/components/TablePagination";
 import TableMurobahah from "@/pages/pinjaman/murobahah/components/TableMurobahah";
 import { useMurobahah } from "@/services/api/commands/murobahah.command";
 
+import ModalConfirmDeleteMurobahah from "./components/ModalConfirmDeleteMurobahah";
 import ModalTambahPinjaman from "./components/ModalTambahPinjaman";
 
 import { TMurobahah } from "@/types";
@@ -54,7 +55,9 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 
 export default function PageMurobahah() {
   const [total, setTotal] = useState<number>();
+  const [idMurobahah, setIdMurobahah] = useState<number>();
   const modalTambahPinjamanRef = useRef<ReturnType<typeof useDisclosure>>();
+  const modalConfirmDeleteMurobahahRef = useRef<ReturnType<typeof useDisclosure>>();
 
 
   const pagination = usePagination({
@@ -76,6 +79,9 @@ export default function PageMurobahah() {
   useEffect(() => {
     setTotal(metadata?.filter_count);
   }, [metadata]);
+
+  const refetchQuery = () => listMurobahahQuery.refetch();
+
   const breadcrumbData = [
     {
       name: "Pinjaman",
@@ -149,7 +155,7 @@ export default function PageMurobahah() {
               </Thead>
               <Tbody>
                 {(listMurobahah || []).map((item: TMurobahah) => (
-                  <TableMurobahah item={item} key={item.id} />
+                  <TableMurobahah item={item} key={item.id} modalHandler={() => { modalConfirmDeleteMurobahahRef.current?.onOpen(); setIdMurobahah(Number(item.id)) }} />
                 ))}
               </Tbody>
             </Table>
@@ -160,6 +166,7 @@ export default function PageMurobahah() {
         </CardBody>
       </Card>
       <ModalTambahPinjaman ref={modalTambahPinjamanRef} />
+      <ModalConfirmDeleteMurobahah ref={modalConfirmDeleteMurobahahRef} refetchFn={refetchQuery} id={idMurobahah || 0} />
     </Stack>
   );
 }

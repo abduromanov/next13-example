@@ -21,7 +21,7 @@ type Props = {
   refetchFn?: () => void;
 
 };
-const ModalConfirmDelete = forwardRef<
+const ModalConfirmDeleteMutasi = forwardRef<
   Partial<ReturnType<typeof useDisclosure>> | undefined,
   Props
 >((props, ref) => {
@@ -41,12 +41,12 @@ const ModalConfirmDelete = forwardRef<
       {},
       {
         onSuccess: () => {
-          formCallback.onSuccess("Berhasil menghapus anggota");
+          formCallback.onSuccess("Berhasil menghapus mutasi murobahah");
           disclosure.onClose();
           props.refetchFn?.();
         },
         onError: () => {
-          formCallback.onError("Gagal menghapus anggota");
+          formCallback.onError("Gagal menghapus mutasi murobahah");
           disclosure.onClose();
         },
       }
@@ -74,6 +74,6 @@ const ModalConfirmDelete = forwardRef<
 })
 
 
-export default ModalConfirmDelete;
+export default ModalConfirmDeleteMutasi;
 
-ModalConfirmDelete.displayName = "ModalConfirmDelete";
+ModalConfirmDeleteMutasi.displayName = "ModalConfirmDeleteMutasi";
