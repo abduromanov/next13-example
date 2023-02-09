@@ -30,7 +30,7 @@ export default function TableMurobahah(props: Props) {
     () => moment(props.item?.tglMulai).format("DD MMMM YYYY"),
     [props.item?.tglMulai]
   );
-  const totalTerbayar = useMemo(() => props.item.totalTerbayar.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }), [props.item.totalTerbayar])
+  const totalTerbayar = useMemo(() => props?.item?.totalTerbayar?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }), [props.item.totalTerbayar])
 
   return (
     <Tr>

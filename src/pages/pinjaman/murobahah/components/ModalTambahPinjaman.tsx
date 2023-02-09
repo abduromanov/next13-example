@@ -23,7 +23,7 @@ const ModalTambahPinjaman = forwardRef<
         totalPinjaman: "",
         tenor: "",
         totalMargin: "",
-        dp: "",
+        dp: "0",
         tglMulai: "",
         tglSelesai: "",
         pembiayaan: ""
