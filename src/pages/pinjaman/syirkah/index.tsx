@@ -80,7 +80,7 @@ export default function Page() {
   const listSyirkah = listSyirkahQuery.data?.data?.data;
   const metadata = listSyirkahQuery.data?.data?.meta;
 
-  // const refetchQuery = () => listSyirkahQuery.refetch();
+  const refetchQuery = () => listSyirkahQuery.refetch();
 
   useEffect(() => {
     setTotal(metadata?.filter_count);
@@ -93,7 +93,6 @@ export default function Page() {
       <Flex alignItems="center" justify="space-between">
         <Heading size="lg">Data Syirkah Anggota</Heading>
         <Button
-          as="span"
           leftIcon={<Icon as={PlusIcon} />}
           onClick={modalCreateRef.current?.onOpen}
         >
@@ -149,7 +148,7 @@ export default function Page() {
         </CardBody>
       </Card>
 
-      <ModalCreateSyirkah ref={modalCreateRef} />
+      <ModalCreateSyirkah ref={modalCreateRef} refetchFn={refetchQuery} />
     </Stack>
   );
 }

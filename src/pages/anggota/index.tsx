@@ -132,7 +132,6 @@ export default function Page() {
       <Flex alignItems="center" justify="space-between">
         <Heading size="lg">Daftar Anggota</Heading>
         <Button
-          as="span"
           leftIcon={<Icon as={PlusIcon} />}
           onClick={() => {
             modalCreateRef.current?.onOpen();
