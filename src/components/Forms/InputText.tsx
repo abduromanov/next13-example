@@ -22,8 +22,8 @@ export function InputText(props: InputProps & TInputProps) {
       <Input
         id={props.id || props.register.name}
         variant="outline"
-        {...props}
         {...props.register}
+        {...props}
       />
       <FormErrorMessage>{props.errors?.message as string}</FormErrorMessage>
     </FormControl>

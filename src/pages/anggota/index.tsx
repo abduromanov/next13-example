@@ -32,7 +32,6 @@ import {
 } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import TablePagination from "@/layouts/components/TablePagination";
@@ -132,17 +131,14 @@ export default function Page() {
     <Stack spacing="8" px="8" pb="10">
       <Flex alignItems="center" justify="space-between">
         <Heading size="lg">Daftar Anggota</Heading>
-        <Link href="">
-          <Button
-            as="span"
-            leftIcon={<Icon as={PlusIcon} />}
-            onClick={() => {
-              modalCreateRef.current?.onOpen();
-            }}
-          >
-            Tambah Anggota
-          </Button>
-        </Link>
+        <Button
+          leftIcon={<Icon as={PlusIcon} />}
+          onClick={() => {
+            modalCreateRef.current?.onOpen();
+          }}
+        >
+          Tambah Anggota
+        </Button>
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
@@ -168,7 +164,7 @@ export default function Page() {
         <Divider />
         {listAnggotaQuery.isLoading && <Progress size="xs" isIndeterminate />}
         <CardBody>
-          <TableContainer p="0" pb="5">
+          <TableContainer p="0" mb="5">
             <Table>
               <Thead>
                 <Tr>
