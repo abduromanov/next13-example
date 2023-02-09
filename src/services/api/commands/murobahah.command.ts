@@ -1,6 +1,6 @@
 import queryMutation from "../queryMutation";
 
-import { TMurobahah, TMutasiMurobahah } from "@/types";
+import { TMurobahah, TMurobahahRelations, TMutasiMurobahah } from "@/types";
 
 export type TMutasiMurobahahRequest = {
   bulanTidakSesuai: string;
@@ -27,11 +27,16 @@ export type TMurobahahRequest = {
   total: string;
   totalMargin: string;
   totalPinjaman: string;
-  anggota: string;
+  anggota: number;
 };
 
-export const useMurobahah = () =>
-  queryMutation<any, TMurobahah[]>("/api/murobahah", ["murobahah"]);
+export const useMurobahah = (key?: string[]) => {
+  key = key?.filter((item) => item) || [];
+  return queryMutation<any, Array<TMurobahah & TMurobahahRelations>>(
+    "/api/murobahah",
+    ["murobahah", ...key]
+  );
+};
 
 export const useMurobahahDetail = (id: number) =>
   queryMutation<any, TMurobahah>(`/api/murobahah/${id}`, ["murobahah", id]);
