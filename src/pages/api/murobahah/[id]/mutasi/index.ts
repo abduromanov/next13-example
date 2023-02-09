@@ -1,8 +1,9 @@
+import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
-import { TMurobahah, TMutasiMurobahah, TResponse } from "@/types";
+import { TMurobahah, TResponse } from "@/types";
 
 export default async function handler(
   req: NextApiRequest,
@@ -52,9 +53,18 @@ export default async function handler(
     return res.status(200).json(data);
   }
   async function post() {
-    await directus
-      .items<string, TMutasiMurobahah>("mutasiMurobahah")
-      .createOne(req.body);
+    const data = req.body;
+    data.cicilan = parseInt(data.cicilan.replace(/\D/g, ""), 10);
+    data.margin = parseInt(data.margin.replace(/\D/g, ""), 10);
+    data.total = parseInt(data.total.replace(/\D/g, ""), 10);
+    data.tglBayar = moment(data.tglBayar)
+      .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
+      .toISOString();
+    data.tenorTerbayar = parseInt(data.tenorTerbayar);
+    data.bulanTidakSesuai = parseInt(data.bulanTidakSesuai);
+    data.murobahah = parseInt(data.murobahah);
+
+    await directus.items("mutasiMurobahah").createOne(data);
 
     return res.status(200).json({});
   }

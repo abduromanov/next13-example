@@ -1,3 +1,4 @@
+import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -24,6 +25,17 @@ export default async function handler(
   }
 
   async function get() {
+    const filter = {
+      tglDihapus: {
+        _null: true,
+      },
+
+      mutasiMurobahah: {
+        tglDihapus: {
+          _null: true,
+        },
+      },
+    };
     const data = await directus.items("murobahah").readByQuery({
       fields: [
         "*",
@@ -32,11 +44,7 @@ export default async function handler(
         "anggota.id",
         "mutasiMurobahah.total",
       ],
-      filter: {
-        tglDihapus: {
-          _null: true,
-        },
-      },
+      filter: filter,
       meta: "*",
       ...req.query,
     });
@@ -52,7 +60,24 @@ export default async function handler(
     return res.status(200).json(data);
   }
   async function post() {
-    await directus.items<string, TMurobahah>("murobahah").createOne(req.body);
+    const data = req.body;
+    data.tglMulai = moment(data.tglMulai)
+      .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
+      .toISOString();
+    data.tglSelesai = moment(data.tglSelesai)
+      .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
+      .toISOString();
+    data.totalPinjaman = parseInt(data.totalPinjaman.replace(/\D/g, ""), 10);
+    data.totalMargin = parseInt(data.totalMargin.replace(/\D/g, ""), 10);
+    data.dp = parseInt(data.dp.replace(/\D/g, ""), 10);
+    data.tenor = parseInt(data.tenor);
+    data.total = data.totalPinjaman + data.totalMargin - data.dp;
+    data.margin = ~~(data.totalMargin / data.tenor);
+    data.pinjaman = -~((data.totalPinjaman - data.dp) / data.tenor);
+    data.cicilan = data.pinjaman + data.margin;
+
+    // console.log(data);
+    await directus.items("murobahah").createOne(data);
 
     return res.status(200).json({});
   }

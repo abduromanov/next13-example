@@ -139,7 +139,7 @@ export default function PageMurobahah() {
         <Divider />
         {listMurobahahQuery.isLoading && <Progress size="xs" isIndeterminate />}
         <CardBody>
-          <TableContainer p="3">
+          <TableContainer p="3" mb={3}>
             <Table mb={3}>
               <Thead>
                 <Tr>

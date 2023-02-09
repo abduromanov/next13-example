@@ -1,5 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Flex, HStack, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, Textarea, useDisclosure } from "@chakra-ui/react"
-import moment from "moment";
+import { Alert, AlertIcon, Box, Button, Flex, HStack, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Stack, Text, useDisclosure } from "@chakra-ui/react"
 import { forwardRef, useImperativeHandle } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -9,6 +8,7 @@ import { InputText } from "@/components/Forms/InputText";
 import { InputTextarea } from "@/components/Forms/InputTextarea";
 
 import { TMurobahahRequest, useCreateMurobahah } from "@/services/api/commands/murobahah.command";
+import validators from "@/services/utils/validators";
 
 
 
@@ -40,26 +40,7 @@ const ModalTambahPinjaman = forwardRef<
 
     const mutasiMurobahahMutation = useCreateMurobahah().mutate("POST");
     const submitHandler: SubmitHandler<TMurobahahRequest> = (values) => {
-      values.tglMulai = moment(values.tglMulai).set({ h: moment().hour(), m: moment().minute(), s: moment().second() }).toISOString();
-      values.tglSelesai = moment(values.tglSelesai).set({ h: moment().hour(), m: moment().minute(), s: moment().second() }).toISOString();
-      values.totalPinjaman = (values.totalPinjaman as string)?.replace(/\D/g, '');
-      values.totalMargin = (values.totalMargin as string)?.replace(/\D/g, '');
-      values.dp = (values.dp as string)?.replace(/\D/g, '');
 
-      const total = Number(values.totalPinjaman) + Number(values.totalMargin) - Number(values.dp);
-      values.total = String(total);
-
-      const pinjaman = ((Number(values.totalPinjaman) - Number(values.dp)) / Number(values.tenor))
-      values.pinjaman = String(pinjaman);
-
-      const margin = Number(values.totalMargin) / Number(values.tenor)
-      values.margin = String(margin);
-
-      const cicilan = Number(values.pinjaman) + Number(values.margin)
-      values.cicilan = String(cicilan);
-
-      values.lunas = false;
-      // console.log(values)
       mutasiMurobahahMutation.mutate(values, {
         onSuccess() {
           formCallback.onSuccess("Berhasil menambahkan data simpanan");
@@ -96,31 +77,28 @@ const ModalTambahPinjaman = forwardRef<
 
               <Flex gap={5}>
                 <Box w="254px">
-                  {/* <Text mb={2}>Jumlah Pinjaman</Text>
-                    <Input onChange={(e) => {
-                      form.setValue("totalPinjaman", !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '');
-                    }}
-                      value={form.getValues("cicilan")} /> */}
-                  <InputText label="Jumlah Pinjaman" register={'totalPinjaman'} onChange={(e) => {
-                    form.setValue("totalPinjaman", !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '');
-                  }} value={form.getValues("totalPinjaman")} />
+
+                  <InputText label="Jumlah Pinjaman" value={form.getValues("totalPinjaman")}
+                    register={{ ...form.register("totalPinjaman", { ...validators().required() }), onChange: (e) => { form.setValue('totalPinjaman', !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : ''); return e.target.value } }}
+                    errors={form.formState.errors.totalPinjaman}
+                  />
                 </Box>
                 <Box w="254px">
-                  <InputText type="number" label="Tenor" register={{ ...form.register("tenor") }} />
+                  <InputText type="number" label="Tenor" register={{ ...form.register("tenor", { ...validators().required() }) }} errors={form.formState.errors.tenor} />
                   <Text fontSize="xs">* Minimal Tenor adalah 12 Bulan</Text>
                 </Box>
               </Flex>
               <Flex gap={5}>
-                <InputText register={"totalMargin"} label="Total Margin" onChange={(e) => {
-                  form.setValue("totalMargin", !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '');
-                }} value={form.getValues("totalMargin")} />
-                <InputText register={"dp"} label="Jumlah DP" onChange={(e) => {
-                  form.setValue("dp", !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : '');
-                }} value={form.getValues("dp")} />
+                <InputText label="Total Margin" value={form.getValues("totalMargin")} errors={form.formState.errors.totalMargin}
+                  register={{ ...form.register("totalMargin", { ...validators().required() }), onChange: (e) => { form.setValue('totalMargin', !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : ''); return e.target.value } }}
+                />
+                <InputText label="Jumlah DP" value={form.getValues("dp")}
+                  register={{ ...form.register("dp"), onChange: (e) => { form.setValue('dp', !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : ''); return e.target.value } }}
+                />
               </Flex>
               <Flex gap={5}>
-                <InputText type='date' register={{ ...form.register("tglMulai") }} label="Tanggal Mulai" />
-                <InputText type='date' register={{ ...form.register("tglSelesai") }} label="Tanggal Selesai " />
+                <InputText type='date' errors={form.formState.errors.tglMulai} register={{ ...form.register("tglMulai", { ...validators().required() }) }} label="Tanggal Mulai" />
+                <InputText type='date' errors={form.formState.errors.tglSelesai} register={{ ...form.register("tglSelesai", { ...validators().required() }) }} label="Tanggal Selesai " />
               </Flex>
               <Box>
                 <InputTextarea register={{ ...form.register("pembiayaan") }} label="Keperluan" />
