@@ -61,3 +61,6 @@ export const useCreateMutasiMurobahah = (id: number) =>
   );
 export const useCreateMurobahah = () =>
   queryMutation<TMurobahahRequest, TMurobahah>(`/api/murobahah`);
+
+export const useUpdateMurobahah = (id: number) =>
+  queryMutation<TMurobahahRequest, TMurobahah>(`/api/murobahah/${id}`);

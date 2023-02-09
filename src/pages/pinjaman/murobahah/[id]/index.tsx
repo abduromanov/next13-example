@@ -37,12 +37,14 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useMemo, useRef, useState } from "react";
 
+import { useFormCallback } from "@/hooks/useFormCallback";
+
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import ModalCatatan from "@/pages/pinjaman/murobahah/components/ModalCatatan";
 import { TableCatatanPembayaran } from "@/pages/pinjaman/murobahah/components/TableCatatanPembayaran";
 import TableRincianPembayaran from "@/pages/pinjaman/murobahah/components/TableRincianPembayaran";
-import { useMurobahahDetail, useMutasiMurobahah } from "@/services/api/commands/murobahah.command";
+import { useMurobahahDetail, useMutasiMurobahah, useUpdateMurobahah } from "@/services/api/commands/murobahah.command";
 import toIDR from "@/services/utils/toIDR";
 
 import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
@@ -65,7 +67,8 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 export default function PageDetailMurobahah() {
   const [catatanDate, setCatatanDate] = useState<string>();
   const [idMutasi, setIdMutasi] = useState<number>();
-  const router = useRouter()
+  const router = useRouter();
+  const formCallback = useFormCallback();
   const { id } = router.query
 
   const modalCatatanRef = useRef<ReturnType<typeof useDisclosure>>();
@@ -113,6 +116,39 @@ export default function PageDetailMurobahah() {
 
   const refetchQuery = () => mutasiMurobahahQuery.refetch();
 
+  const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");
+  const handleLunasChange = (lunas: boolean) => {
+
+    // console.log({ lunas })
+    murobahahMutation.mutate({ lunas }, {
+      onSuccess() {
+        if (lunas) {
+          formCallback.onSuccess("muroobahah telah lunas");
+        } else {
+          formCallback.onSuccess("muroobahah belum lunas");
+        }
+
+
+      },
+      onError() {
+        formCallback.onError(
+          "terjadi kesalahan"
+        );
+      },
+
+    })
+
+    // if (!id) return
+    // useUpdateMurobahah({
+    //   id: id as string,
+    //   payload: { lunas },
+    //   callback: (isSuccess: boolean) => {
+    //     if (isSuccess) {
+    //       getDataMurobahah()
+    //     }
+    //   }
+    // })
+  }
 
   const breadcrumbData = [
     {
@@ -142,7 +178,7 @@ export default function PageDetailMurobahah() {
         <Flex gap="2" flexWrap="wrap">
           <Center>
             <HStack mr={3}>
-              <Switch size="md" />
+              <Switch size="md" checked={detailMurobahah?.lunas || false} onChange={(e) => handleLunasChange(e.target.checked)} />
               <Text>Pembayaran Lunas</Text>
             </HStack>
           </Center>
