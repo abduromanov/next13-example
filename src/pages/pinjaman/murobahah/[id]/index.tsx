@@ -37,12 +37,14 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useMemo, useRef, useState } from "react";
 
+import { useFormCallback } from "@/hooks/useFormCallback";
+
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import ModalCatatan from "@/pages/pinjaman/murobahah/components/ModalCatatan";
 import { TableCatatanPembayaran } from "@/pages/pinjaman/murobahah/components/TableCatatanPembayaran";
 import TableRincianPembayaran from "@/pages/pinjaman/murobahah/components/TableRincianPembayaran";
-import { useMurobahahDetail, useMutasiMurobahah } from "@/services/api/commands/murobahah.command";
+import { useListTahunMutasiMurobahah, useMurobahahDetail, useMutasiMurobahah, useUpdateMurobahah } from "@/services/api/commands/murobahah.command";
 import toIDR from "@/services/utils/toIDR";
 
 import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
@@ -65,7 +67,10 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 export default function PageDetailMurobahah() {
   const [catatanDate, setCatatanDate] = useState<string>();
   const [idMutasi, setIdMutasi] = useState<number>();
-  const router = useRouter()
+  const [selectedTahun, setSelectedTahun] = useState<string>();
+
+  const router = useRouter();
+  const formCallback = useFormCallback();
   const { id } = router.query
 
   const modalCatatanRef = useRef<ReturnType<typeof useDisclosure>>();
@@ -82,16 +87,24 @@ export default function PageDetailMurobahah() {
         sum: ['total', 'margin', 'cicilan', 'tenorTerbayar', 'bulanTidakSesuai'],
       },
       groupBy: ['month(tglBayar)', 'year(tglBayar)'],
-    }
+      tahun: selectedTahun,
+      // filter: { "tglBayar": { "_between": ["2023-01-01", "2023-12-30"] } }
+    },
   })
+
   const catatanPembayaranQuery = useMutasiMurobahah(Number(id)).paginate({
     params: {
-      sort: "tglBayar"
+      sort: "tglBayar",
     }
   })
-  const detailMurobahah = detailMurobahahQuery.data?.data
+
+  const listTahunMutasiQuery = useListTahunMutasiMurobahah(Number(id)).query()
+
+  const detailMurobahah = detailMurobahahQuery.data?.data?.data
   const mutasiMurobahah = mutasiMurobahahQuery.data?.data?.data
   const catatanPembayaran = catatanPembayaranQuery.data?.data?.data
+  const listTahunMutasi = listTahunMutasiQuery.data?.data?.data
+
 
 
   const rincianPembayaranTotal = {
@@ -104,15 +117,35 @@ export default function PageDetailMurobahah() {
 
   const rangkumanPembayaranTotal = {
     sisaCicilan: {
-      cicilan: useMemo(() => detailMurobahah?.totalPinjaman - rincianPembayaranTotal.cicilan, [detailMurobahah?.totalPinjaman, rincianPembayaranTotal.cicilan]),
-      margin: useMemo(() => detailMurobahah?.totalMargin - rincianPembayaranTotal.margin, [detailMurobahah?.totalMargin, rincianPembayaranTotal.margin]),
-      total: useMemo(() => detailMurobahah?.total - rincianPembayaranTotal.total, [detailMurobahah?.total, rincianPembayaranTotal.total]),
+      cicilan: useMemo(() => detailMurobahah?.totalPinjaman || 0 - rincianPembayaranTotal.cicilan, [detailMurobahah?.totalPinjaman, rincianPembayaranTotal.cicilan]),
+      margin: useMemo(() => detailMurobahah?.totalMargin || 0 - rincianPembayaranTotal.margin, [detailMurobahah?.totalMargin, rincianPembayaranTotal.margin]),
+      total: useMemo(() => detailMurobahah?.total || 0 - rincianPembayaranTotal.total, [detailMurobahah?.total, rincianPembayaranTotal.total]),
     },
-    totalTenor: useMemo(() => detailMurobahah?.tenor - rincianPembayaranTotal.tenorBayar, [detailMurobahah?.tenor, rincianPembayaranTotal.tenorBayar]),
+    totalTenor: useMemo(() => detailMurobahah?.tenor || 0 - rincianPembayaranTotal.tenorBayar, [detailMurobahah?.tenor, rincianPembayaranTotal.tenorBayar]),
   }
 
   const refetchQuery = () => mutasiMurobahahQuery.refetch();
 
+  const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");
+  const handleLunasChange = (lunas: boolean) => {
+
+    murobahahMutation.mutate({ lunas }, {
+      onSuccess() {
+        if (lunas) {
+          formCallback.onSuccess("muroobahah telah lunas");
+        } else {
+          formCallback.onSuccess("muroobahah belum lunas");
+        }
+
+      },
+      onError() {
+        formCallback.onError(
+          "terjadi kesalahan"
+        );
+      },
+
+    })
+  }
 
   const breadcrumbData = [
     {
@@ -126,6 +159,7 @@ export default function PageDetailMurobahah() {
       name: "Detail",
     },
   ];
+
 
   return (
     <Stack spacing="8" px="8" pb="10">
@@ -141,13 +175,16 @@ export default function PageDetailMurobahah() {
         <Spacer />
         <Flex gap="2" flexWrap="wrap">
           <Center>
-            <HStack mr={3}>
-              <Switch size="md" />
-              <Text>Pembayaran Lunas</Text>
-            </HStack>
+            <Skeleton isLoaded={!detailMurobahahQuery?.isLoading}>
+              <HStack mr={3}>
+                <Switch size="md" defaultChecked={detailMurobahah?.lunas} onChange={(e) => handleLunasChange(e.target.checked)} />
+                <Text>Pembayaran Lunas</Text>
+              </HStack>
+            </Skeleton>
+
           </Center>
           <Box>
-            <Button variant="ghost" colorScheme="teal" onClick={() => { modalTambahPembayaranRef.current?.onOpen() }}>
+            <Button onClick={() => { modalTambahPembayaranRef.current?.onOpen() }}>
               <Icon as={PlusIcon} />
               &nbsp;Tambah Pembayaran
             </Button>
@@ -293,9 +330,11 @@ export default function PageDetailMurobahah() {
           <Divider />
           <VStack alignItems="start" w={200} mt={5}>
             <Text>Tahun</Text>
-            <Select placeholder="semua">
-              <option>2022</option>
-              <option>2023</option>
+            <Select onChange={(e) => setSelectedTahun(e.target.value)} placeholder="Semua">
+              {(listTahunMutasi || []).map((v: any) => (
+                <option value={v} key={v}>{v}</option>
+              ))}
+
             </Select>
           </VStack>
         </CardHeader>
@@ -320,7 +359,7 @@ export default function PageDetailMurobahah() {
                 {(mutasiMurobahah || []).map((item: any) => (
                   <TableRincianPembayaran
                     item={item}
-                    key={`${item.tglBayar_month}-${item.tglBayar_year}`}
+                    key={`${item?.tglBayar_month}-${item?.tglBayar_year}`}
                     modalHandler={() => {
                       setCatatanDate(`${item.tglBayar_month}-${item.tglBayar_year}`);
                       modalCatatanRef.current?.onOpen();
@@ -329,7 +368,7 @@ export default function PageDetailMurobahah() {
                 ))}
                 <ModalCatatan
                   ref={modalCatatanRef}
-                  item={catatanPembayaran?.filter((v: any) => moment(v.tglBayar).format("M-YYYY") == catatanDate).map((item_2) => (
+                  item={catatanPembayaran?.filter((v: any) => moment(v.tglBayar).format("M-YYYY") == catatanDate).map((item_2: any) => (
                     <>
                       <TableCatatanPembayaran
                         key={item_2.id}
@@ -340,7 +379,7 @@ export default function PageDetailMurobahah() {
                   ))}
                 />
                 <ModalConfirmDeleteMutasi ref={modalDeleteRef} refetchFn={refetchQuery} id={Number(id) || 0} idMutasi={idMutasi || 0} />
-                <ModalTambahPembayaran ref={modalTambahPembayaranRef} />
+                <ModalTambahPembayaran ref={modalTambahPembayaranRef} refetchFn={refetchQuery} />
               </Tbody>
               <Tfoot>
                 <Tr>
@@ -401,13 +440,13 @@ export default function PageDetailMurobahah() {
                 <Text>Sisa Cicilan</Text>
               </Box>
               <Box w="200px">
-                <Text>{toIDR(rangkumanPembayaranTotal.sisaCicilan.cicilan)}</Text>
+                <Text color="red">{toIDR(rangkumanPembayaranTotal.sisaCicilan.cicilan)}</Text>
               </Box>
               <Box w="200px">
-                <Text>{toIDR(rangkumanPembayaranTotal.sisaCicilan.margin)}</Text>
+                <Text color="red">{toIDR(rangkumanPembayaranTotal.sisaCicilan.margin)}</Text>
               </Box>
               <Box w="200px">
-                <Text>{toIDR(rangkumanPembayaranTotal.sisaCicilan.total)}</Text>
+                <Text color="red">{toIDR(rangkumanPembayaranTotal.sisaCicilan.total)}</Text>
               </Box>
             </Flex>
             <Flex>
@@ -421,7 +460,7 @@ export default function PageDetailMurobahah() {
 
               </Box>
               <Box w="200px">
-                <Text>{rangkumanPembayaranTotal.totalTenor}</Text>
+                <Text color="red">{rangkumanPembayaranTotal.totalTenor}</Text>
               </Box>
             </Flex>
             <Flex>
@@ -435,7 +474,7 @@ export default function PageDetailMurobahah() {
 
               </Box>
               <Box w="200px">
-                <Text>{rincianPembayaranTotal.bulanTidakSesuai}</Text>
+                <Text color="red">{rincianPembayaranTotal.bulanTidakSesuai}</Text>
               </Box>
             </Flex>
           </Stack>

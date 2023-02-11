@@ -17,6 +17,9 @@ export default async function handler(
       case "DELETE":
         return destroy();
 
+      case "PUT":
+        return update();
+
       default:
         return res.status(405).end();
     }
@@ -37,13 +40,24 @@ export default async function handler(
         ...req.query,
       });
 
-    return res.status(200).json(data);
+    return res.status(200).json({ data: data });
   }
 
   async function destroy() {
     await directus.items("murobahah").updateOne(req.query.id as string, {
       tglDihapus: moment(),
     });
+    return res.status(200).end();
+  }
+
+  async function update() {
+    const request = req.body;
+
+    // console.log(request);
+    await directus
+      .items("murobahah")
+      .updateOne(req.query.id as string, request);
+
     return res.status(200).end();
   }
 }

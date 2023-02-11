@@ -56,6 +56,7 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 export default function PageMurobahah() {
   const [total, setTotal] = useState<number>();
   const [idMurobahah, setIdMurobahah] = useState<number>();
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const modalTambahPinjamanRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalConfirmDeleteMurobahahRef = useRef<ReturnType<typeof useDisclosure>>();
 
@@ -70,9 +71,11 @@ export default function PageMurobahah() {
   const listMurobahahQuery = useMurobahah().paginate({
     params: {
       page: pagination.currentPage,
-      limit: pagination.pageSize
+      limit: pagination.pageSize,
+      search: searchTerm
     }
   })
+
   const listMurobahah = listMurobahahQuery.data?.data?.data
   const metadata = listMurobahahQuery.data?.data?.meta;
 
@@ -115,6 +118,7 @@ export default function PageMurobahah() {
                 <Input
                   placeholder="cari berdasarkan nama"
                   focusBorderColor="teal.200"
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </InputGroup>
             </Box>
@@ -165,7 +169,7 @@ export default function PageMurobahah() {
           </Skeleton>
         </CardBody>
       </Card>
-      <ModalTambahPinjaman ref={modalTambahPinjamanRef} />
+      <ModalTambahPinjaman ref={modalTambahPinjamanRef} refetchFn={refetchQuery} />
       <ModalConfirmDeleteMurobahah ref={modalConfirmDeleteMurobahahRef} refetchFn={refetchQuery} id={idMurobahah || 0} />
     </Stack>
   );

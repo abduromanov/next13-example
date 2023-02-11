@@ -24,7 +24,7 @@ export default async function handler(
     return res.status(error.response?.status || 500).json(error);
   }
   async function get() {
-    const filter = {
+    const filter: any = {
       _and: [
         {
           murobahah: {
@@ -36,6 +36,16 @@ export default async function handler(
         },
       ],
     };
+    if (req.query.tahun) {
+      filter._and.push({
+        tglBayar: {
+          _between: [
+            moment(req.query.tahun, "YYYY").startOf("year").toISOString(),
+            moment(req.query.tahun, "YYYY").endOf("year").toISOString(),
+          ],
+        },
+      });
+    }
 
     if (req.query.filter) {
       filter._and.push(JSON.parse(req.query.filter as string));
