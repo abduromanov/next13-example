@@ -25,6 +25,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
+import moment from "moment";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -56,7 +57,9 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 export default function PageMurobahah() {
   const [total, setTotal] = useState<number>();
   const [idMurobahah, setIdMurobahah] = useState<number>();
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchNama, setSearchNama] = useState<string>("");
+  const [searchIdAnggota, setIdAnggota] = useState<string>("");
+  const [searchTglMulai, setSearchTglMulai] = useState<string>("");
   const modalTambahPinjamanRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalConfirmDeleteMurobahahRef = useRef<ReturnType<typeof useDisclosure>>();
 
@@ -68,11 +71,13 @@ export default function PageMurobahah() {
       pageSize: 10,
     },
   });
-  const listMurobahahQuery = useMurobahah().paginate({
+  const listMurobahahQuery = useMurobahah([searchNama, searchIdAnggota, searchTglMulai]).paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
-      search: searchTerm
+      nama: searchNama,
+      idAnggota: searchIdAnggota,
+      tglMulai: searchTglMulai
     }
   })
 
@@ -82,6 +87,7 @@ export default function PageMurobahah() {
   useEffect(() => {
     setTotal(metadata?.filter_count);
   }, [metadata]);
+
 
   const refetchQuery = () => listMurobahahQuery.refetch();
 
@@ -118,7 +124,7 @@ export default function PageMurobahah() {
                 <Input
                   placeholder="cari berdasarkan nama"
                   focusBorderColor="teal.200"
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => setSearchNama(e.target.value)}
                 />
               </InputGroup>
             </Box>
@@ -131,12 +137,13 @@ export default function PageMurobahah() {
                 <Input
                   placeholder="cari berdasarkan ID"
                   focusBorderColor="teal.200"
+                  onChange={(e) => setIdAnggota(e.target.value)}
                 />
               </InputGroup>
             </Box>
             <Box>
               <Text fontSize="sm">Tanggal mulai Cicilan</Text>
-              <Input type="date" focusBorderColor="teal.200" mt={2} />
+              <Input type="date" focusBorderColor="teal.200" mt={2} onChange={(e) => setSearchTglMulai(e.target.value)} />
             </Box>
           </Flex>
         </CardHeader>

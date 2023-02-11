@@ -25,17 +25,56 @@ export default async function handler(
   }
 
   async function get() {
-    const filter = {
-      tglDihapus: {
-        _null: true,
-      },
+    const filter: any = {
+      _and: [
+        {
+          tglDihapus: {
+            _null: true,
+          },
 
-      mutasiMurobahah: {
-        tglDihapus: {
-          _null: true,
+          mutasiMurobahah: {
+            tglDihapus: {
+              _null: true,
+            },
+          },
         },
-      },
+      ],
     };
+
+    if (req.query.nama) {
+      filter._and.push({
+        anggota: {
+          nama: {
+            _contains: req.query.nama,
+          },
+        },
+      });
+    }
+    if (req.query.idAnggota) {
+      filter._and.push({
+        anggota: {
+          idAnggota: {
+            _contains: req.query.idAnggota,
+          },
+        },
+      });
+    }
+    if (req.query.tglMulai) {
+      filter._and.push({
+        tglMulai: {
+          _between: [
+            moment(req.query.tglMulai)
+              .startOf("day")
+              .add(1, "second")
+              .toISOString(),
+            moment(req.query.tglMulai)
+              .endOf("day")
+              .add(1, "second")
+              .toISOString(),
+          ],
+        },
+      });
+    }
     const data = await directus.items("murobahah").readByQuery({
       fields: [
         "*",
@@ -59,6 +98,7 @@ export default async function handler(
 
     return res.status(200).json(data);
   }
+
   async function post() {
     const data = req.body;
     data.tglMulai = moment(data.tglMulai)
