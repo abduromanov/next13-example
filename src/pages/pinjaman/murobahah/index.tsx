@@ -1,15 +1,20 @@
+import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
   Card,
   CardBody,
   CardHeader,
+  Divider,
   Flex,
   Heading,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
+  Progress,
+  Skeleton,
+  Stack,
   Table,
   TableContainer,
   Tbody,
@@ -17,15 +22,23 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import TableMurobahah from "@/pages/pinjaman/murobahah/components/TableMurobahah";
+import { useMurobahah } from "@/services/api/commands/murobahah.command";
+
+import ModalConfirmDeleteMurobahah from "./components/ModalConfirmDeleteMurobahah";
+import ModalTambahPinjaman from "./components/ModalTambahPinjaman";
+
+import { TMurobahah } from "@/types";
 
 type TPageProps = {
   pageTitle: string;
@@ -39,69 +52,39 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   };
 };
 
-const dataMurobahah = [
-  {
-    id: 1,
-    nama: "admin",
-    idanggota: "123456789",
-    pembiayaan: "cicil rumah",
-    totPinjaman: "Rp.10.900.000",
-    totTerbayar: "Rp.27.800.000",
-    tglMulaiCicilan: "30 September 2022",
-    lunas: true,
-  },
-  {
-    id: 2,
-    nama: "admin",
-    idanggota: "123456789",
-    pembiayaan: "jajan seblak",
-    totPinjaman: "Rp. 13.080.000",
-    totTerbayar: "Rp. 11.990.000",
-    tglMulaiCicilan: "31 September 2022",
-    lunas: true,
-  },
-  {
-    id: 3,
-    nama: "juragan",
-    idanggota: "0999",
-    pembiayaan: "jajan cilung",
-    totPinjaman: "Rp.12.900.000",
-    totTerbayar: "Rp.30.800.000",
-    tglMulaiCicilan: "30 Oktober 2022",
-    lunas: true,
-  },
-  {
-    id: 4,
-    nama: "dodi",
-    idanggota: "112233",
-    pembiayaan: "jajan cilok",
-    totPinjaman: "Rp.10.000.000",
-    totTerbayar: "Rp.21.800.000",
-    tglMulaiCicilan: "30 Januari 2022",
-    lunas: true,
-  },
-  {
-    id: 5,
-    nama: "didan",
-    idanggota: "9090",
-    pembiayaan: "bayar pajak",
-    totPinjaman: "Rp.9.900.000",
-    totTerbayar: "Rp.8.800.000",
-    tglMulaiCicilan: "20 September 2022",
-    lunas: true,
-  },
-  {
-    id: 6,
-    nama: "lilik",
-    idanggota: "898767",
-    pembiayaan: "jajan cimol",
-    totPinjaman: "Rp.14.300.000",
-    totTerbayar: "Rp.20.230.000",
-    tglMulaiCicilan: "11 November 2022",
-    lunas: false,
-  },
-];
+
 export default function PageMurobahah() {
+  const [total, setTotal] = useState<number>();
+  const [idMurobahah, setIdMurobahah] = useState<number>();
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const modalTambahPinjamanRef = useRef<ReturnType<typeof useDisclosure>>();
+  const modalConfirmDeleteMurobahahRef = useRef<ReturnType<typeof useDisclosure>>();
+
+
+  const pagination = usePagination({
+    total: total,
+    initialState: {
+      currentPage: 1,
+      pageSize: 10,
+    },
+  });
+  const listMurobahahQuery = useMurobahah().paginate({
+    params: {
+      page: pagination.currentPage,
+      limit: pagination.pageSize,
+      search: searchTerm
+    }
+  })
+
+  const listMurobahah = listMurobahahQuery.data?.data?.data
+  const metadata = listMurobahahQuery.data?.data?.meta;
+
+  useEffect(() => {
+    setTotal(metadata?.filter_count);
+  }, [metadata]);
+
+  const refetchQuery = () => listMurobahahQuery.refetch();
+
   const breadcrumbData = [
     {
       name: "Pinjaman",
@@ -111,14 +94,14 @@ export default function PageMurobahah() {
     },
   ];
   return (
-    <Box>
-      <Box mt="-6">
+    <Stack spacing={8} px={8} pb={10}>
+      <Box >
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
       <Flex alignItems="center" justify="space-between" mx={5}>
         <Heading size="lg">Data Pinjaman Murobahah</Heading>
         <Link href="">
-          <Button as="span" leftIcon={<Icon as={PlusIcon} />}>
+          <Button as="span" leftIcon={<Icon as={PlusIcon} />} onClick={() => { modalTambahPinjamanRef.current?.onOpen() }}>
             Tambah Pinjaman
           </Button>
         </Link>
@@ -135,6 +118,7 @@ export default function PageMurobahah() {
                 <Input
                   placeholder="cari berdasarkan nama"
                   focusBorderColor="teal.200"
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </InputGroup>
             </Box>
@@ -156,9 +140,11 @@ export default function PageMurobahah() {
             </Box>
           </Flex>
         </CardHeader>
+        <Divider />
+        {listMurobahahQuery.isLoading && <Progress size="xs" isIndeterminate />}
         <CardBody>
-          <TableContainer p="0" pb="5">
-            <Table mb={5}>
+          <TableContainer p="3" mb={3}>
+            <Table mb={3}>
               <Thead>
                 <Tr>
                   <Th>Nama Anggota</Th>
@@ -172,15 +158,19 @@ export default function PageMurobahah() {
                 </Tr>
               </Thead>
               <Tbody>
-                {dataMurobahah.map((item, index) => (
-                  <TableMurobahah item={item} key={index} />
+                {(listMurobahah || []).map((item: TMurobahah) => (
+                  <TableMurobahah item={item} key={item.id} modalHandler={() => { modalConfirmDeleteMurobahahRef.current?.onOpen(); setIdMurobahah(Number(item.id)) }} />
                 ))}
               </Tbody>
             </Table>
-            {/* <TablePagination /> */}
           </TableContainer>
+          <Skeleton w="full" isLoaded={!listMurobahahQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton>
         </CardBody>
       </Card>
-    </Box>
+      <ModalTambahPinjaman ref={modalTambahPinjamanRef} refetchFn={refetchQuery} />
+      <ModalConfirmDeleteMurobahah ref={modalConfirmDeleteMurobahahRef} refetchFn={refetchQuery} id={idMurobahah || 0} />
+    </Stack>
   );
 }

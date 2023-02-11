@@ -26,17 +26,24 @@ export default async function handler(
 
   async function get() {
     const data = await directus.items("anggota").readByQuery({
-      fields: ["id", "idAnggota", "nama", "alamat", "mutasiTabungan.saldo"],
+      fields: [
+        "id",
+        "idAnggota",
+        "nama",
+        "alamat",
+        "mutasiTabungan.nominal",
+        "simpananPokok",
+      ],
       meta: "*",
       ...req.query,
     });
 
     data.data?.map((item) => {
-      item.totalSimpanan =
-        _.reduce(
-          item.mutasiTabungan,
-          (total, mutasi) => (total?.saldo || 0) + (mutasi?.saldo || 0)
-        ) || 0;
+      item.totalSimpanan = item.mutasiTabungan
+        .map((v: any) => v.nominal)
+        .reduce((a: any, b: any) => a + b, 0);
+
+      item.totalSimpanan = item.totalSimpanan + item.simpananPokok;
       delete item.mutasiTabungan;
 
       return item;
