@@ -12,7 +12,7 @@ export default async function handler(
     const filter = {
       _and: [
         {
-          murobahah: {
+          syirkah: {
             _eq: parseInt(req.query.id as string),
           },
         },
