@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import {
   CheckIcon,
-  DocumentTextIcon,
+  EyeIcon,
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -47,7 +47,7 @@ export default function TableMurobahah(props: Props) {
         <Flex gap={5}>
           <Link href={`/pinjaman/murobahah/${props.item.id}`}>
             <Tooltip hasArrow label='lihat detail' fontSize='xs'>
-              <Icon as={DocumentTextIcon} color="teal" boxSize={6} />
+              <Icon as={EyeIcon} color="teal" boxSize={6} />
             </Tooltip>
           </Link>
 

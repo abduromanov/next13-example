@@ -40,7 +40,7 @@ export default async function handler(
         ...req.query,
       });
 
-    return res.status(200).json(data);
+    return res.status(200).json({ data: data });
   }
 
   async function destroy() {

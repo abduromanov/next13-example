@@ -12,13 +12,13 @@ type Props = {
 export default function TableRincianPembayaran(props: Props) {
   return (
     <Tr>
-      <Td>{props.item.tglBayar_year}</Td>
-      <Td>{moment().month(props.item.tglBayar_month - 1).format('MMMM')}</Td>
-      <Td>{props.item.sum.tenorTerbayar}</Td>
-      <Td>{props.item.sum.bulanTidakSesuai}</Td>
-      <Td>{toIDR(props.item.sum.cicilan)}</Td>
-      <Td>{toIDR(props.item.sum.margin)}</Td>
-      <Td>{toIDR(props.item.sum.total)}</Td>
+      <Td>{props?.item?.tglBayar_year}</Td>
+      <Td>{moment().month(props?.item?.tglBayar_month - 1).format('MMMM')}</Td>
+      <Td>{props?.item?.sum?.tenorTerbayar}</Td>
+      <Td>{props?.item?.sum?.bulanTidakSesuai}</Td>
+      <Td>{toIDR(props?.item?.sum?.cicilan)}</Td>
+      <Td>{toIDR(props?.item?.sum?.margin)}</Td>
+      <Td>{toIDR(props?.item?.sum?.total)}</Td>
       <Td>
         <Button onClick={props.modalHandler} variant="ghost">
           <Tooltip hasArrow label="detail" fontSize="xs">

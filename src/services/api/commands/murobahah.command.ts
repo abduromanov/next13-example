@@ -39,7 +39,10 @@ export const useMurobahah = (key?: string[]) => {
 };
 
 export const useMurobahahDetail = (id: number) =>
-  queryMutation<any, TMurobahah>(`/api/murobahah/${id}`, ["murobahah", id]);
+  queryMutation<any, Partial<TMurobahah & TMurobahahRelations>>(
+    `/api/murobahah/${id}`,
+    ["murobahah", id]
+  );
 
 export const useDeleteMurobahah = (id: number) =>
   queryMutation<any, TMurobahah>(`/api/murobahah/${id}`);
@@ -63,4 +66,10 @@ export const useCreateMurobahah = () =>
   queryMutation<TMurobahahRequest, TMurobahah>(`/api/murobahah`);
 
 export const useUpdateMurobahah = (id: number) =>
-  queryMutation<TMurobahahRequest, TMurobahah>(`/api/murobahah/${id}`);
+  queryMutation<any, TMurobahah>(`/api/murobahah/${id}`);
+
+export const useListTahunMutasiMurobahah = (id: number) =>
+  queryMutation<TMurobahahRequest, TMutasiMurobahah[]>(
+    `/api/murobahah/${id}/mutasi/tahun`,
+    ["listTahunMutasi", id]
+  );
