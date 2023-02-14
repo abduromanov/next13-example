@@ -1,3 +1,4 @@
+import { isArray, isObject } from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -9,6 +10,21 @@ export default async function handler(
   res: NextApiResponse<TResponse | TMurobahah>
 ) {
   try {
+    switch (req.method) {
+      case "GET":
+        return get();
+
+      case "POST":
+        return post();
+
+      default:
+        return res.status(405).end();
+    }
+  } catch (error: any) {
+    return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function get() {
     const filter = {
       idAnggota: {
         _eq: parseInt(req.query.id as string),
@@ -43,7 +59,25 @@ export default async function handler(
     const dataMerge = { ...data, totalSimpanan };
 
     return res.status(200).json(dataMerge);
-  } catch (error: any) {
-    return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function post() {
+    const data = req.body;
+    if (isArray(data)) {
+      data.map((v: any) => {
+        v.idAnggota = parseInt(v.idAnggota);
+        v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
+        v.saldo = 0;
+      });
+    } else {
+      data.nominal = parseInt(data.nominal.replace(/\D/g, ""), 10) * -1;
+      data.idAnggota = parseInt(req.query.id as string);
+      data.saldo = 0;
+    }
+
+    // console.log(data);
+    await directus.items("mutasiTabungan").createOne(data);
+
+    return res.status(200).json({});
   }
 }

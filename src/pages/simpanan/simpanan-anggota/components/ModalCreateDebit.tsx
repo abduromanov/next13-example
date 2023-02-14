@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertIcon,
-  Box,
   Button,
   HStack,
   Modal,
@@ -12,8 +11,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text,
-  Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -23,11 +20,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useFormCallback } from "@/hooks/useFormCallback";
 
 import { InputText } from "@/components/Forms/InputText";
+import { InputTextarea } from "@/components/Forms/InputTextarea";
 
 import {
-  TSimpananRequest,
   useCreateSimpanan,
-  useSimpananSebelumnya,
 } from "@/services/api/commands/simpanan.command";
 import validators from "@/services/utils/validators";
 
@@ -37,9 +33,9 @@ export type FormType = {
   nominalKhusus: string;
   nominalSukarela: string;
   catatan: string;
-  idAnggota: any;
-  saldo: any;
-  jenisTabungan: any;
+  idAnggota: string;
+  saldo: string;
+  jenisTabungan: string;
 };
 
 const ModalCreateDebit = forwardRef<
@@ -88,54 +84,52 @@ const ModalCreateDebit = forwardRef<
         : parseInt(`${sukarela}`.replace(/\D/g, ""), 10).toLocaleString("id-ID")
     );
   };
-  const watchFields = form.watch([
+  form.watch([
+    "nominal",
     "nominalWajib",
     "nominalKhusus",
     "nominalSukarela",
   ]);
 
-  const saldoSebelumnyaQuery = useSimpananSebelumnya(Number(id)).query();
-  const saldoSebelumnya = saldoSebelumnyaQuery.data?.data;
-  const saldoWajib = saldoSebelumnya?.saldoWajib[0];
-  const saldoKhusus = saldoSebelumnya?.saldoKhusus[0];
-  const saldoSukarela = saldoSebelumnya?.saldoSukarela[0];
+  // const saldoSebelumnyaQuery = useSimpananSebelumnya(Number(id)).query();
+  // const saldoSebelumnya = saldoSebelumnyaQuery.data?.data?.data;
+  // const saldoWajib = saldoSebelumnya?.saldoWajib[0];
+  // const saldoKhusus = saldoSebelumnya?.saldoKhusus[0];
+  // const saldoSukarela = saldoSebelumnya?.saldoSukarela[0];
+  // if (saldoSebelumnya === null) return;
+  const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
-  const simpananMutation = useCreateSimpanan().mutate("POST");
-
-  const submitHandler: SubmitHandler<TSimpananRequest & FormType> = (value) => {
-    const catatan: any = value.catatan;
+  const submitHandler: SubmitHandler<FormType> = (value) => {
 
     const nominalWajib: any = value.nominalWajib;
     const nominalKhusus: any = value.nominalKhusus;
     const nominalSukarela: any = value.nominalSukarela;
 
-    if (saldoSebelumnya === null) return;
-
     const listReq = [];
     if (nominalKhusus > 0) {
       listReq.push({
-        idAnggota: id,
-        nominal: parseInt(nominalKhusus.replace(/\D/g, ""), 10),
-        saldo: parseInt(nominalKhusus.replace(/\D/g, ""), 10) + saldoKhusus,
-        catatan: catatan,
+        idAnggota: String(id),
+        nominal: value.nominalKhusus,
+        saldo: value.nominalKhusus,
+        catatan: value.catatan,
         jenisTabungan: "khusus",
       });
     }
     if (nominalSukarela > 0) {
       listReq.push({
-        idAnggota: id,
-        nominal: parseInt(nominalSukarela.replace(/\D/g, ""), 10),
-        saldo: parseInt(nominalSukarela.replace(/\D/g, ""), 10) + saldoSukarela,
-        catatan: catatan,
+        idAnggota: String(id),
+        nominal: value.nominalSukarela,
+        saldo: value.nominalSukarela,
+        catatan: value.catatan,
         jenisTabungan: "sukarela",
       });
     }
     if (nominalWajib > 0) {
       listReq.push({
-        idAnggota: id,
-        nominal: parseInt(nominalWajib.replace(/\D/g, ""), 10),
-        saldo: parseInt(nominalWajib.replace(/\D/g, ""), 10) + saldoWajib,
-        catatan: catatan,
+        idAnggota: String(id),
+        nominal: value.nominalWajib,
+        saldo: value.nominalWajib,
+        catatan: value.catatan,
         jenisTabungan: "wajib",
       });
     }
@@ -155,6 +149,8 @@ const ModalCreateDebit = forwardRef<
       },
     });
   };
+
+
   return (
     <Modal
       isOpen={disclosure.isOpen}
@@ -165,93 +161,99 @@ const ModalCreateDebit = forwardRef<
       <ModalContent>
         <ModalHeader>Tambah Transaksi Tabungan</ModalHeader>
         <ModalCloseButton />
-        {watchFields && (
-          <ModalBody>
-            <Stack spacing={3}>
-              <Alert status="warning">
-                <AlertIcon />
-                Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data
-                tidak dapat dirubah ataupun dihapus !
-              </Alert>
-              <InputText
-                label="Nominal Simpanan"
-                value={form.getValues("nominal")}
-                onChange={(e) => {
+
+        <ModalBody>
+          <Stack spacing={3}>
+            <Alert status="warning">
+              <AlertIcon />
+              Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data
+              tidak dapat dirubah ataupun dihapus !
+            </Alert>
+            <InputText
+              label="Nominal Simpanan"
+              value={form.getValues("nominal")}
+              register={{
+                ...form.register("nominal", { ...validators().required() }), onChange: (e) => {
                   const nominal = parseInt(
-                    e.currentTarget.value.replace(/\D/g, ""),
+                    e.target.value.replace(/\D/g, ""),
                     10
                   );
                   handleChangeNominal(nominal);
-                }}
-                register={"nominal"}
-              />
-              <InputText
-                label="Simpanan Wajib"
-                name="nominalWajib"
-                onChange={(e) =>
+                  return e.target.value;
+                }
+              }}
+              errors={form.formState.errors.nominal}
+            />
+            <InputText
+              label="Simpanan Wajib"
+              name="nominalWajib"
+              register={{
+                ...form.register("nominalWajib"), onChange: (e) => {
                   form.setValue(
                     "nominalWajib",
                     isNaN(
-                      parseInt(e.currentTarget.value.replace(/\D/g, ""), 10)
-                    ) || !e.currentTarget.value
+                      parseInt(e.target.value.replace(/\D/g, ""), 10)
+                    ) || !e.target.value
                       ? "0"
                       : parseInt(
-                          e.currentTarget.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   )
+                  return e.target.value
                 }
-                // value={form.getValues("nominalWajib")}
-                register={{ ...form.register("nominalWajib") }}
-              />
+              }}
+            />
 
-              <InputText
-                label="Simpanan Khusus"
-                onChange={(e) =>
+            <InputText
+              label="Simpanan Khusus"
+              register={{
+                ...form.register("nominalKhusus"), onChange: (e) => {
                   form.setValue(
                     "nominalKhusus",
                     isNaN(
-                      parseInt(e.currentTarget.value.replace(/\D/g, ""), 10)
-                    ) || !e.currentTarget.value
+                      parseInt(e.target.value.replace(/\D/g, ""), 10)
+                    ) || !e.target.value
                       ? "0"
                       : parseInt(
-                          e.currentTarget.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   )
+                  return e.target.value
                 }
-                // value={form.getValues("nominalKhusus")}
-                register={{ ...form.register("nominalKhusus") }}
-              />
-              <InputText
-                label="Simpanan Sukarela"
-                onChange={(e) =>
+              }}
+            />
+            <InputText
+              label="Simpanan Sukarela"
+              register={{
+                ...form.register("nominalSukarela"), onChange: (e) => {
                   form.setValue(
                     "nominalSukarela",
                     isNaN(
-                      parseInt(e.currentTarget.value.replace(/\D/g, ""), 10)
-                    ) || !e.currentTarget.value
+                      parseInt(e.target.value.replace(/\D/g, ""), 10)
+                    ) || !e.target.value
                       ? "0"
                       : parseInt(
-                          e.currentTarget.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   )
+                  return e.target.value
                 }
-                // value={form.getValues("nominalSukarela")}
-                register={{ ...form.register("nominalSukarela") }}
+              }}
+            />
+            <InputTextarea label="Keterangan" placeholder="masukkan keterangan simpanan" register={{ ...form.register('catatan') }} />
+            {/* <Box>
+              <Text fontWeight="bold">Keterangan</Text>
+              <Textarea
+                placeholder="masukkan keterangan simpanan"
+                h="150px"
+                onChange={(e) => form.setValue("catatan", e.target.value)}
               />
-              <Box>
-                <Text fontWeight="bold">Keterangan</Text>
-                <Textarea
-                  placeholder="masukkan keterangan simpanan"
-                  h="150px"
-                  onChange={(e) => form.setValue("catatan", e.target.value)}
-                />
-              </Box>
-            </Stack>
-          </ModalBody>
-        )}
+            </Box> */}
+          </Stack>
+        </ModalBody>
         <ModalFooter>
           <HStack spacing={3}>
             <Button colorScheme="red" onClick={disclosure.onClose}>

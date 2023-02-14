@@ -12,10 +12,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  Spacer,
   Stack,
   Text,
-  Textarea,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
@@ -26,19 +24,21 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useFormCallback } from "@/hooks/useFormCallback";
 
 import { InputText } from "@/components/Forms/InputText";
+import { InputTextarea } from "@/components/Forms/InputTextarea";
 
 import {
   useCreateSimpanan,
   useSimpananSebelumnya,
 } from "@/services/api/commands/simpanan.command";
+import validators from "@/services/utils/validators";
 
-interface KreditPayload {
+export type KreditPayload = {
   nominal: any;
-  nominalWajib: number;
-  nominalKhusus: number;
-  nominalSukarela: number;
+  nominalWajib: string;
+  nominalKhusus: string;
+  nominalSukarela: string;
   idAnggota: string;
-  saldo: number;
+  saldo: string;
   jenisTabungan: string;
   catatan: string;
 }
@@ -60,25 +60,27 @@ const ModalCreateKredit = forwardRef<
     [disclosure.onOpen]
   );
 
-  const saldoSebelumnyaQuery = useSimpananSebelumnya(Number(id)).query();
-  const simpananMutation = useCreateSimpanan().mutate("POST");
+  // const saldoSebelumnyaQuery = useSimpananSebelumnya(Number(id)).query();
+  // const saldoSebelumnya = saldoSebelumnyaQuery.data?.data?.data;
+  // const saldoWajib = saldoSebelumnya?.saldoWajib[0];
+  // const saldoKhusus = saldoSebelumnya?.saldoKhusus[0];
+  // const saldoSukarela = saldoSebelumnya?.saldoSukarela[0];
+
+  const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
   const submitHandler: SubmitHandler<KreditPayload> = (value) => {
-    const saldoSebelumnya = saldoSebelumnyaQuery.data?.data;
-    const saldoWajib = saldoSebelumnya?.saldoWajib[0];
-    const saldoKhusus = saldoSebelumnya?.saldoKhusus[0];
-    const saldoSukarela = saldoSebelumnya?.saldoSukarela[0];
 
-    value.nominal = parseInt(value.nominal.replace(/\D/g, ""), 10) * -1;
-    value.idAnggota = String(id);
 
-    if (value.jenisTabungan === "wajib") {
-      value.saldo = saldoWajib + value.nominal;
-    } else if (value.jenisTabungan === "khusus") {
-      value.saldo = saldoKhusus + value.nominal;
-    } else if (value.jenisTabungan === "sukarela") {
-      value.saldo = saldoSukarela + value.nominal;
-    }
+    // value.nominal = parseInt(value.nominal.replace(/\D/g, ""), 10) * -1;
+    // value.idAnggota = String(id);
+
+    // if (value.jenisTabungan === "wajib") {
+    //   value.saldo = saldoWajib + value.nominal;
+    // } else if (value.jenisTabungan === "khusus") {
+    //   value.saldo = saldoKhusus + value.nominal;
+    // } else if (value.jenisTabungan === "sukarela") {
+    //   value.saldo = saldoSukarela + value.nominal;
+    // }
 
     // console.log(value)
     simpananMutation.mutate(value, {
@@ -94,7 +96,7 @@ const ModalCreateKredit = forwardRef<
       },
     });
   };
-  const watchField = form.watch(["nominal"]);
+  form.watch(["nominal"]);
   return (
     <Modal
       isOpen={disclosure.isOpen}
@@ -114,23 +116,26 @@ const ModalCreateKredit = forwardRef<
             </Alert>
             <HStack gap={3} flexWrap="wrap">
               <Box>
-                {watchField && (
-                  <InputText
-                    label="Nominal"
-                    onChange={(e) => {
+
+                <InputText
+                  label="Nominal"
+                  value={form.getValues("nominal")}
+                  register={{
+                    ...form.register("nominal", { ...validators().required() }), onChange: (e) => {
                       form.setValue(
                         "nominal",
-                        e.currentTarget.value &&
-                          parseInt(
-                            e.currentTarget.value.replace(/\D/g, ""),
-                            10
-                          ).toLocaleString("id-ID")
+                        e.target.value &&
+                        parseInt(
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                       );
-                    }}
-                    value={form.getValues("nominal")}
-                    register={"nominal"}
-                  />
-                )}
+                      return e.target.value
+                    }
+                  }}
+                  errors={form.formState.errors.nominal}
+                />
+
               </Box>
               <VStack alignItems="start">
                 <Text>Jenis Simpanan</Text>
@@ -145,10 +150,10 @@ const ModalCreateKredit = forwardRef<
                 </Select>
               </VStack>
             </HStack>
-            <Text>Catatan</Text>
-            <Textarea
+            <InputTextarea
+              label="Catatan"
               placeholder="masukkan Catatan"
-              onChange={(e) => form.setValue("catatan", e.target.value)}
+              register={{ ...form.register("catatan") }}
             />
           </Stack>
         </ModalBody>
@@ -166,5 +171,6 @@ const ModalCreateKredit = forwardRef<
 });
 
 export default ModalCreateKredit;
+ModalCreateKredit.displayName = "ModalCreateKredit"
 
-ModalCreateKredit.displayName = "ModalCreateKredit";
+

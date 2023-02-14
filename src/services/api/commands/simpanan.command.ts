@@ -8,7 +8,7 @@ export type TSimpananRequest = {
   saldo: string;
   catatan: string;
   jenisTabungan: string;
-};
+}[];
 
 export type Saldo = {
   saldoWajib: any;
@@ -27,5 +27,5 @@ export const useSimpananSebelumnya = (id: number) =>
     id,
   ]);
 
-export const useCreateSimpanan = () =>
-  queryMutation<TSimpananRequest, TSimpanan>("/api/simpanan");
+export const useCreateSimpanan = (id: number) =>
+  queryMutation<TSimpananRequest, TSimpanan>(`/api/simpanan/${id}`);

@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -14,8 +13,8 @@ export default async function handler(
       case "GET":
         return get();
 
-      case "POST":
-        return post();
+      // case "POST":
+      //   return post();
 
       default:
         return res.status(405).end();
@@ -51,11 +50,11 @@ export default async function handler(
 
     return res.status(200).json(data);
   }
-  async function post() {
-    await directus
-      .items<string, TSimpanan>("mutasiTabungan")
-      .createOne(req.body);
+  // async function post() {
+  //   await directus
+  //     .items<string, TSimpanan>("mutasiTabungan")
+  //     .createOne(req.body);
 
-    return res.status(200).json({});
-  }
+  //   return res.status(200).json({});
+  // }
 }
