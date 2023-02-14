@@ -42,7 +42,7 @@ import BreadcrumbSection from "@/components/BreadcrumbSection";
 import TablePagination from "@/layouts/components/TablePagination";
 import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
 import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
-import { useSimpananDetail } from "@/services/api/commands/simpanan.command";
+import { useSimpananDetail, useTotalSimpanan } from "@/services/api/commands/simpanan.command";
 import toIDR from "@/services/utils/toIDR";
 
 import ModalCreateDebit from "../../components/ModalCreateDebit";
@@ -90,11 +90,12 @@ export default function PageMutasi() {
   });
 
   const anggotaQuery = useAnggotaDetail(Number(id)).query();
+  const totalSimpananQuery = useTotalSimpanan(Number(id)).query();
 
   const anggota = anggotaQuery.data?.data?.data;
   const simpananDetail = simpananDetailQuery.data?.data?.data;
   const metaData = simpananDetailQuery.data?.data?.meta;
-  const totalSimpanan = simpananDetailQuery.data?.data?.totalSimpanan;
+  const totalSimpanan = totalSimpananQuery.data?.data?.data;
 
   useEffect(() => {
     setTotal(metaData?.filter_count);
