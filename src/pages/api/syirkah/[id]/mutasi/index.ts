@@ -1,3 +1,4 @@
+import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -9,10 +10,25 @@ export default async function handler(
   res: NextApiResponse<TResponse | TMutasiSyirkah>
 ) {
   try {
+    switch (req.method) {
+      case "GET":
+        return get();
+
+      case "POST":
+        return post();
+
+      default:
+        return;
+    }
+  } catch (error: any) {
+    return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function get() {
     const filter = {
       _and: [
         {
-          murobahah: {
+          syirkah: {
             _eq: parseInt(req.query.id as string),
           },
         },
@@ -33,7 +49,22 @@ export default async function handler(
     });
 
     return res.status(200).json(data);
-  } catch (error: any) {
-    return res.status(error.response?.status || 500).json(error);
+  }
+
+  async function post() {
+    const data = req.body;
+
+    data.modalAwal = parseInt(data.modalAwal.replace(/\D/g, ''), 10);
+    data.modalHamasah = parseInt(data.modalHamasah.replace(/\D/g, ''), 10);
+    data.bonusBersih = parseInt(data.bonusBersih.replace(/\D/g, ''), 10);
+    data.bagiHasil = parseInt(data.bagiHasil.replace(/\D/g, ''), 10);
+    data.tglBayar = moment(data.tglBayar);
+
+    await directus.items("mutasiSyirkah").createOne({
+      ...data,
+      syirkah: req.query.id
+    });
+
+    return res.status(200).json({});
   }
 }

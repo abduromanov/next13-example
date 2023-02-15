@@ -1,6 +1,6 @@
 import queryMutation from "../queryMutation";
 
-import { TSyirkah, TSyirkahRelations } from "@/types";
+import { TMutasiSyirkah, TSyirkah, TSyirkahRelations } from "@/types";
 
 export type TSyirkahRequest = {
   anggota: number;
@@ -11,6 +11,16 @@ export type TSyirkahRequest = {
   tglSelesai: string;
 };
 
+export type TMutasiSyirkahRequest = {
+  modalAwal: string;
+  modalHamasah: string;
+  bonusBersih: string;
+  presentaseBonus: string;
+  bagiHasil: string;
+  tglBayar: string;
+  catatan: string;
+}
+
 export const useSyirkah = (key?: string[]) => {
   key = key?.filter((item) => item) || [];
 
@@ -18,4 +28,13 @@ export const useSyirkah = (key?: string[]) => {
 };
 
 export const useCreateSyirkah = () =>
-  queryMutation<TSyirkahRequest, any>("/api/syirkah"); 
+  queryMutation<TSyirkahRequest, any>("/api/syirkah");
+
+export const useDetailSyirkah = (id: number | string) =>
+  queryMutation<any, TSyirkah & TSyirkahRelations>(`/api/syirkah/${id}`, ["syirkah", id]);
+
+export const useMutasiSyirkah = (id: number | string) =>
+  queryMutation<any, TMutasiSyirkah[]>(`/api/syirkah/${id}/mutasi`, ["mutasiSyirkah", id]);
+
+export const useCreateMutasiSyirkah = (id: number | string) =>
+  queryMutation<TMutasiSyirkahRequest>(`/api/syirkah/${id}/mutasi`);
