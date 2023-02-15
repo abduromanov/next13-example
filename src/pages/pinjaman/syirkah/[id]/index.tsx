@@ -96,6 +96,8 @@ export default function PageDetailSyirkah() {
   const tglMulai = useMemo(() => moment(detailSyirkah?.tglMulai).format('DD MMMM YYYY'), [detailSyirkah?.tglMulai]);
   const tglSelesai = useMemo(() => moment(detailSyirkah?.tglSelesai).format('DD MMMM YYYY'), [detailSyirkah?.tglSelesai]);
 
+  const refetchQuery = () => listMutasiQuery.refetch();
+
   useEffect(() => {
     setTotal(metadata?.filter_count || 0);
   }, [metadata?.filter_count])
@@ -229,7 +231,7 @@ export default function PageDetailSyirkah() {
         </CardBody>
       </Card>
 
-      <ModalCreateMutasiSyirkah ref={modalCreateRef} />
+      <ModalCreateMutasiSyirkah ref={modalCreateRef} refetchFn={refetchQuery} />
     </Stack>
   );
 }

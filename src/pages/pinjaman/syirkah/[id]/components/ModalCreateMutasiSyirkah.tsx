@@ -90,15 +90,13 @@ const ModalCreateMutasiSyirkah = forwardRef<Partial<ReturnType<typeof useDisclos
               <InputText
                 register={{ ...form.register('tglBayar', { ...validators().required() }) }}
                 label='Tgl. Bayar'
-                onChange={e => form.setValue('tglBayar', !isNaN(parseInt(e.currentTarget.value)) ? parseInt(e.currentTarget.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : "")}
                 errors={form.formState.errors.tglBayar}
                 type='date'
               />
             </Stack>
             <InputTextarea
-              register={{ ...form.register('catatan', { ...validators().required() }) }}
+              register={{ ...form.register('catatan') }}
               label='Catatan'
-              onChange={e => form.setValue('catatan', !isNaN(parseInt(e.currentTarget.value)) ? parseInt(e.currentTarget.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : "")}
               errors={form.formState.errors.catatan}
               rows={5}
             />
