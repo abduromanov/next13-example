@@ -25,13 +25,14 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { ArrowLongRightIcon, PlusIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
@@ -39,6 +40,7 @@ import TablePagination from "@/layouts/components/TablePagination";
 import { useDetailSyirkah, useMutasiSyirkah } from "@/services/api/commands/syirkah.command";
 import toIDR from "@/services/utils/toIDR";
 
+import ModalCreateMutasiSyirkah from "./components/ModalCreateMutasiSyirkah";
 import TableDetilSyirkah from "../components/TableDetilSyirkah";
 
 type TPageProps = {
@@ -68,6 +70,7 @@ export default function PageDetailSyirkah() {
 
   const router = useRouter();
   const [total, setTotal] = useState(0);
+  const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
 
   const pagination = usePagination({
     total: total,
@@ -106,9 +109,9 @@ export default function PageDetailSyirkah() {
         </Skeleton>
         <Button
           leftIcon={<Icon as={PlusIcon} />}
-        // onClick={modalCreateRef.current?.onOpen}
+          onClick={modalCreateRef.current?.onOpen}
         >
-          Tambah Pinjaman
+          Tambah Pembayaran
         </Button>
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
@@ -135,7 +138,7 @@ export default function PageDetailSyirkah() {
             <VStack flex={1} alignItems='start'>
               <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
                 <Flex gap={2} flexWrap="wrap">
-                  <Text fontWeight="bold" mr={38}>
+                  <Text fontWeight="bold" mr='43px'>
                     Tanggal Mulai
                   </Text>
                   <Text>{tglMulai}</Text>
@@ -225,6 +228,8 @@ export default function PageDetailSyirkah() {
           </Skeleton>
         </CardBody>
       </Card>
+
+      <ModalCreateMutasiSyirkah ref={modalCreateRef} />
     </Stack>
   );
 }

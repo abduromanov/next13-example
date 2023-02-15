@@ -21,7 +21,7 @@ export default function SearchableSelect(props: TInputProps & SelectFieldProps) 
     rules: props.rules
   });
 
-  return <FormControl isInvalid={!controller.formState.errors}>
+  return <FormControl isInvalid={!!controller.formState.errors[controller.field.name]}>
     <FormLabel>
       {props.label}
     </FormLabel>
@@ -47,7 +47,7 @@ export default function SearchableSelect(props: TInputProps & SelectFieldProps) 
       loadOptions={props.loadOptions}
       placeholder={props.placeholder}
     />
-    <FormErrorMessage>{controller.fieldState.error?.message || ''}</FormErrorMessage>
+    <FormErrorMessage>{controller.formState.errors[controller.field.name]?.message as string || ''}</FormErrorMessage>
   </FormControl>;
 };
 

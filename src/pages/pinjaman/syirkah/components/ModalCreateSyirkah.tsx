@@ -9,6 +9,7 @@ import SearchableSelect from "@/components/Forms/SearchableSelect";
 
 import { useAnggota } from "@/services/api/commands/anggota.command";
 import { TSyirkahRequest, useCreateSyirkah } from "@/services/api/commands/syirkah.command";
+import validators from "@/services/utils/validators";
 
 type Props = {
   refetchFn?: () => void;
@@ -68,6 +69,7 @@ const ModalCreateSyirkah = forwardRef<Partial<ReturnType<typeof useDisclosure>> 
               label="Nama Anggota"
               control={form.control}
               name='anggota'
+              rules={{ ...validators().required() }}
               loadOptions={(inputValue, callback) => {
                 setSearchAnggota(inputValue);
 
@@ -83,31 +85,36 @@ const ModalCreateSyirkah = forwardRef<Partial<ReturnType<typeof useDisclosure>> 
               placeholder="Ketik untuk mencari anggota"
             />
             <InputText
-              register={{ ...form.register('namaBc') }}
+              register={{ ...form.register('namaBc', { ...validators().required() }) }}
               label='Nama BC'
+              errors={form.formState.errors.namaBc}
             />
             <Stack direction={['column', 'row']} spacing='3'>
               <InputText
-                register={{ ...form.register('modalAwal') }}
+                register={{ ...form.register('modalAwal', { ...validators().required() }) }}
                 label='Modal Awal'
                 onChange={e => form.setValue('modalAwal', !isNaN(parseInt(e.currentTarget.value)) ? parseInt(e.currentTarget.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : "")}
+                errors={form.formState.errors.modalAwal}
               />
               <InputText
-                register={{ ...form.register('modalHamasah') }}
+                register={{ ...form.register('modalHamasah', { ...validators().required() }) }}
                 label='Modal Hamasah'
                 onChange={e => form.setValue('modalHamasah', !isNaN(parseInt(e.currentTarget.value)) ? parseInt(e.currentTarget.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : "")}
+                errors={form.formState.errors.modalHamasah}
               />
             </Stack>
             <Stack direction={['column', 'row']} spacing='3'>
               <InputText
-                register={{ ...form.register('tglMulai') }}
+                register={{ ...form.register('tglMulai', { ...validators().required() }) }}
                 label='Tgl Mulai'
                 type='date'
+                errors={form.formState.errors.tglMulai}
               />
               <InputText
-                register={{ ...form.register('tglSelesai') }}
+                register={{ ...form.register('tglSelesai', { ...validators().required() }) }}
                 label='Tgl Selesai'
                 type='date'
+                errors={form.formState.errors.tglSelesai}
               />
             </Stack>
           </Stack>

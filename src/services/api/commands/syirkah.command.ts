@@ -11,6 +11,16 @@ export type TSyirkahRequest = {
   tglSelesai: string;
 };
 
+export type TMutasiSyirkahRequest = {
+  modalAwal: string;
+  modalHamasah: string;
+  bonusBersih: string;
+  presentaseBonus: string;
+  bagiHasil: string;
+  tglBayar: string;
+  catatan: string;
+}
+
 export const useSyirkah = (key?: string[]) => {
   key = key?.filter((item) => item) || [];
 
@@ -25,3 +35,6 @@ export const useDetailSyirkah = (id: number | string) =>
 
 export const useMutasiSyirkah = (id: number | string) =>
   queryMutation<any, TMutasiSyirkah[]>(`/api/syirkah/${id}/mutasi`, ["mutasiSyirkah", id]);
+
+export const useCreateMutasiSyirkah = (id: number | string) =>
+  queryMutation<TMutasiSyirkahRequest>(`/api/syirkah/${id}`);
