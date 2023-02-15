@@ -33,7 +33,9 @@ export default async function handler(
         ?.filter((item) => item.jenisTabungan == "wajib")
         .map((item) => item.nominal)
         .reduce((a, b) => a + b, 0),
-      pokok: dataSimpanaanPokok.simpananPokok,
+      pokok: dataSimpanaanPokok?.simpananPokok
+        ? dataSimpanaanPokok.simpananPokok
+        : 0,
       sukarela: data.data
         ?.filter((item) => item.jenisTabungan == "sukarela")
         .map((item) => item.nominal)

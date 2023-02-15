@@ -23,28 +23,20 @@ import { InputText } from "@/components/Forms/InputText";
 import { InputTextarea } from "@/components/Forms/InputTextarea";
 
 import {
+  TSimpananDebitRequest,
   useCreateSimpanan,
 } from "@/services/api/commands/simpanan.command";
 import validators from "@/services/utils/validators";
 
-export type FormType = {
-  nominal: string;
-  nominalWajib: string;
-  nominalKhusus: string;
-  nominalSukarela: string;
-  catatan: string;
-  idAnggota: string;
-  saldo: string;
-  jenisTabungan: string;
-};
 
-const ModalCreateDebit = forwardRef<
-  Partial<ReturnType<typeof useDisclosure>> | undefined,
-  any
->((_, ref) => {
+type Props = {
+  refetchFn?: () => void;
+}
+
+const ModalCreateDebit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | undefined, Props>((props, ref) => {
   const disclosure = useDisclosure();
   const formCallback = useFormCallback();
-  const form = useForm<FormType>();
+  const form = useForm<TSimpananDebitRequest>();
   const router = useRouter();
   const { id } = router.query;
 
@@ -99,7 +91,7 @@ const ModalCreateDebit = forwardRef<
   // if (saldoSebelumnya === null) return;
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
-  const submitHandler: SubmitHandler<FormType> = (value) => {
+  const submitHandler: SubmitHandler<TSimpananDebitRequest> = (value) => {
 
     const nominalWajib: any = value.nominalWajib;
     const nominalKhusus: any = value.nominalKhusus;
@@ -141,6 +133,7 @@ const ModalCreateDebit = forwardRef<
         formCallback.onSuccess("Berhasil menambahkan data simpanan");
         form.reset();
         disclosure.onClose();
+        props.refetchFn?.()
       },
       onError() {
         formCallback.onError(

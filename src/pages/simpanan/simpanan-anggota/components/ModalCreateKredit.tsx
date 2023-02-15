@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { forwardRef, useImperativeHandle } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldError, SubmitHandler, useForm } from "react-hook-form";
 
 import { useFormCallback } from "@/hooks/useFormCallback";
 
@@ -27,27 +27,18 @@ import { InputText } from "@/components/Forms/InputText";
 import { InputTextarea } from "@/components/Forms/InputTextarea";
 
 import {
+  TSimpananKreditRequest,
   useCreateSimpanan,
-  useSimpananSebelumnya,
 } from "@/services/api/commands/simpanan.command";
 import validators from "@/services/utils/validators";
 
-export type KreditPayload = {
-  nominal: any;
-  nominalWajib: string;
-  nominalKhusus: string;
-  nominalSukarela: string;
-  idAnggota: string;
-  saldo: string;
-  jenisTabungan: string;
-  catatan: string;
+
+type Props = {
+  refetchFn?: () => void;
 }
-const ModalCreateKredit = forwardRef<
-  Partial<ReturnType<typeof useDisclosure>> | undefined,
-  any
->((_, ref) => {
+const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | undefined, Props>((props, ref) => {
   const disclosure = useDisclosure();
-  const form = useForm<KreditPayload>();
+  const form = useForm<TSimpananKreditRequest>();
   const formCallback = useFormCallback();
   const router = useRouter();
   const { id } = router.query;
@@ -68,7 +59,7 @@ const ModalCreateKredit = forwardRef<
 
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
-  const submitHandler: SubmitHandler<KreditPayload> = (value) => {
+  const submitHandler: SubmitHandler<TSimpananKreditRequest> = (value) => {
 
 
     // value.nominal = parseInt(value.nominal.replace(/\D/g, ""), 10) * -1;
@@ -88,6 +79,7 @@ const ModalCreateKredit = forwardRef<
         formCallback.onSuccess("Berhasil menambahkan data simpanan");
         form.reset();
         disclosure.onClose();
+        props.refetchFn?.();
       },
       onError() {
         formCallback.onError(
@@ -116,7 +108,6 @@ const ModalCreateKredit = forwardRef<
             </Alert>
             <HStack gap={3} flexWrap="wrap">
               <Box>
-
                 <InputText
                   label="Nominal"
                   value={form.getValues("nominal")}
@@ -130,17 +121,19 @@ const ModalCreateKredit = forwardRef<
                           10
                         ).toLocaleString("id-ID")
                       );
-                      return e.target.value
+
+                      return e.target.value;
                     }
                   }}
-                  errors={form.formState.errors.nominal}
+                  errors={form.formState.errors.nominal as FieldError}
                 />
 
               </Box>
-              <VStack alignItems="start">
+              <Box>
                 <Text>Jenis Simpanan</Text>
                 <Select
                   placeholder="pilih jenis simpanan"
+                  isRequired
                   onChange={(e) =>
                     form.setValue("jenisTabungan", e.target.value)
                   }
@@ -148,7 +141,7 @@ const ModalCreateKredit = forwardRef<
                   <option value="khusus">Simpanan Khusus</option>
                   <option value="sukarela">Simpanan Sukarela</option>
                 </Select>
-              </VStack>
+              </Box>
             </HStack>
             <InputTextarea
               label="Catatan"

@@ -1,4 +1,5 @@
-import { isArray, isObject } from "lodash";
+import { isArray } from "lodash";
+import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -25,11 +26,46 @@ export default async function handler(
   }
 
   async function get() {
-    const filter = {
-      idAnggota: {
-        _eq: parseInt(req.query.id as string),
-      },
+    const filter: any = {
+      _and: [
+        {
+          idAnggota: {
+            _eq: parseInt(req.query.id as string),
+          },
+        },
+      ],
     };
+
+    if (req.query.jenisSimpanan) {
+      filter._and.push({
+        jenisTabungan: {
+          _eq: req.query.jenisSimpanan,
+        },
+      });
+    }
+    if (req.query.tglDibuatAwal && req.query.tglDibuatAkhir) {
+      filter._and.push({
+        tglDibuat: {
+          _between: [
+            moment(req.query.tglDibuatAwal)
+              .set({
+                h: moment().hour(),
+                m: moment().minute(),
+                s: moment().second(),
+              })
+              .toISOString(),
+            moment(req.query.tglDibuatAkhir)
+              .set({
+                h: moment().hour(),
+                m: moment().minute(),
+                s: moment().second(),
+              })
+              .toISOString(),
+          ],
+        },
+      });
+    }
+    // console.log(filter._and.map((v) => v.tglDibuat));
     const data = await directus.items("mutasiTabungan").readByQuery({
       fields: ["*"],
       meta: "*",
@@ -37,37 +73,28 @@ export default async function handler(
       ...req.query,
     });
 
-    const totalSimpanan = {
-      wajib: data.data
-        ?.filter((item) => item.jenisTabungan == "wajib")
-        .map((item) => item.nominal)
-        .reduce((a, b) => a + b, 0),
-      pokok: data.data
-        ?.filter((item) => item.jenisTabungan == "pokok")
-        .map((item) => item.nominal)
-        .reduce((a, b) => a + b, 0),
-      sukarela: data.data
-        ?.filter((item) => item.jenisTabungan == "sukarela")
-        .map((item) => item.nominal)
-        .reduce((a, b) => a + b, 0),
-      khusus: data.data
-        ?.filter((item) => item.jenisTabungan == "khusus")
-        .map((item) => item.nominal)
-        .reduce((a, b) => a + b, 0),
-    };
-
-    const dataMerge = { ...data, totalSimpanan };
-
-    return res.status(200).json(dataMerge);
+    return res.status(200).json(data);
   }
 
   async function post() {
     const data = req.body;
     if (isArray(data)) {
       data.map((v: any) => {
-        v.idAnggota = parseInt(v.idAnggota);
-        v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
-        v.saldo = 0;
+        if (v.jenisTabungan == "khusus") {
+          v.idAnggota = parseInt(v.idAnggota);
+          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
+          v.saldo = 0;
+        }
+        if (v.jenisTabungan == "sukarela") {
+          v.idAnggota = parseInt(v.idAnggota);
+          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
+          v.saldo = 0;
+        }
+        if (v.jenisTabungan == "wajib") {
+          v.idAnggota = parseInt(v.idAnggota);
+          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
+          v.saldo = 0;
+        }
       });
     } else {
       data.nominal = parseInt(data.nominal.replace(/\D/g, ""), 10) * -1;
@@ -76,8 +103,7 @@ export default async function handler(
     }
 
     // console.log(data);
-    await directus.items("mutasiTabungan").createOne(data);
-
+    await directus.items("mutasiTabungan").createMany(data);
     return res.status(200).json({});
   }
 }

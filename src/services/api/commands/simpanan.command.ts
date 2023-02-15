@@ -22,6 +22,29 @@ export type TotalSimpanan = {
   pokok: any;
   sukarela: any;
 };
+
+export type TSimpananKreditRequest = {
+  nominal: any;
+  nominalWajib: string;
+  nominalKhusus: string;
+  nominalSukarela: string;
+  idAnggota: string;
+  saldo: string;
+  jenisTabungan: string;
+  catatan: string;
+};
+
+export type TSimpananDebitRequest = {
+  nominal: string;
+  nominalWajib: string;
+  nominalKhusus: string;
+  nominalSukarela: string;
+  catatan: string;
+  idAnggota: string;
+  saldo: string;
+  jenisTabungan: string;
+};
+
 export const useSimpanan = () =>
   queryMutation<any, TAnggota[]>("/api/simpanan", ["simpanan"]);
 
@@ -41,4 +64,6 @@ export const useSimpananSebelumnya = (id: number) =>
   ]);
 
 export const useCreateSimpanan = (id: number) =>
-  queryMutation<TSimpananRequest, TSimpanan>(`/api/simpanan/${id}`);
+  queryMutation<TSimpananRequest | TSimpananKreditRequest, TSimpanan>(
+    `/api/simpanan/${id}`
+  );
