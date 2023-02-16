@@ -2,11 +2,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
-import { DirectusResponse, TResponse, TSyirkah, TSyirkahRelations } from "@/types";
+import {
+  DirectusResponse,
+  TResponse,
+  TSyirkah,
+  TSyirkahRelations,
+} from "@/types";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<TResponse | DirectusResponse<(TSyirkah & Partial<TSyirkahRelations>)>>
+  res: NextApiResponse<
+    TResponse | DirectusResponse<TSyirkah & Partial<TSyirkahRelations>>
+  >
 ) {
   try {
     if (!req.query.id) {

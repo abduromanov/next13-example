@@ -5,7 +5,6 @@ import { useMemo } from "react";
 
 import toIDR from "@/services/utils/toIDR";
 
-
 export const TableCatatanPembayaran = (props: {
   modalHandler?: () => void;
   item: any;
@@ -32,4 +31,4 @@ export const TableCatatanPembayaran = (props: {
       </Td>
     </Tr>
   );
-}
+};

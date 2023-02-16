@@ -101,8 +101,8 @@ export default function Page() {
       </Flex>
 
       <Card m={5} variant="outline" shadow="sm">
-        <CardHeader display='flex' justifyContent='flex-end'>
-          <InputGroup w='25%'>
+        <CardHeader display="flex" justifyContent="flex-end">
+          <InputGroup w="25%">
             <InputLeftElement pointerEvents="none">
               <Icon as={MagnifyingGlassIcon} color="gray" />
             </InputLeftElement>
@@ -115,9 +115,7 @@ export default function Page() {
         </CardHeader>
 
         <Divider />
-        {listSyirkahQuery.isLoading && (
-          <Progress size="xs" isIndeterminate />
-        )}
+        {listSyirkahQuery.isLoading && <Progress size="xs" isIndeterminate />}
 
         <CardBody>
           <TableContainer p="0" mb="5">
@@ -127,15 +125,15 @@ export default function Page() {
                   <Th>Nama BC</Th>
                   <Th>Nama Anggota</Th>
                   <Th>ID Anggota</Th>
-                  <Th textAlign='right'>Modal Awal</Th>
-                  <Th textAlign='right'>Modal Hamasah</Th>
+                  <Th textAlign="right">Modal Awal</Th>
+                  <Th textAlign="right">Modal Hamasah</Th>
                   <Th>Tanggal Mulai</Th>
                   <Th>Tanggal Selesai</Th>
                   <Th>Aksi</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {(listSyirkah || []).map(item => (
+                {(listSyirkah || []).map((item) => (
                   <TableSyirkah key={item.id} item={item} />
                 ))}
               </Tbody>

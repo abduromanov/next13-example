@@ -53,7 +53,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
   };
 };
 
-
 export default function PageMurobahah() {
   const [total, setTotal] = useState<number>();
   const [idMurobahah, setIdMurobahah] = useState<number>();
@@ -61,8 +60,8 @@ export default function PageMurobahah() {
   const [searchIdAnggota, setIdAnggota] = useState<string>("");
   const [searchTglMulai, setSearchTglMulai] = useState<string>("");
   const modalTambahPinjamanRef = useRef<ReturnType<typeof useDisclosure>>();
-  const modalConfirmDeleteMurobahahRef = useRef<ReturnType<typeof useDisclosure>>();
-
+  const modalConfirmDeleteMurobahahRef =
+    useRef<ReturnType<typeof useDisclosure>>();
 
   const pagination = usePagination({
     total: total,
@@ -71,23 +70,26 @@ export default function PageMurobahah() {
       pageSize: 10,
     },
   });
-  const listMurobahahQuery = useMurobahah([searchNama, searchIdAnggota, searchTglMulai]).paginate({
+  const listMurobahahQuery = useMurobahah([
+    searchNama,
+    searchIdAnggota,
+    searchTglMulai,
+  ]).paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
       nama: searchNama,
       idAnggota: searchIdAnggota,
-      tglMulai: searchTglMulai
-    }
-  })
+      tglMulai: searchTglMulai,
+    },
+  });
 
-  const listMurobahah = listMurobahahQuery.data?.data?.data
+  const listMurobahah = listMurobahahQuery.data?.data?.data;
   const metadata = listMurobahahQuery.data?.data?.meta;
 
   useEffect(() => {
     setTotal(metadata?.filter_count);
   }, [metadata]);
-
 
   const refetchQuery = () => listMurobahahQuery.refetch();
 
@@ -101,13 +103,19 @@ export default function PageMurobahah() {
   ];
   return (
     <Stack spacing={8} px={8} pb={10}>
-      <Box >
+      <Box>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
       <Flex alignItems="center" justify="space-between" mx={5}>
         <Heading size="lg">Data Pinjaman Murobahah</Heading>
         <Link href="">
-          <Button as="span" leftIcon={<Icon as={PlusIcon} />} onClick={() => { modalTambahPinjamanRef.current?.onOpen() }}>
+          <Button
+            as="span"
+            leftIcon={<Icon as={PlusIcon} />}
+            onClick={() => {
+              modalTambahPinjamanRef.current?.onOpen();
+            }}
+          >
             Tambah Pinjaman
           </Button>
         </Link>
@@ -143,7 +151,12 @@ export default function PageMurobahah() {
             </Box>
             <Box>
               <Text fontSize="sm">Tanggal mulai Cicilan</Text>
-              <Input type="date" focusBorderColor="teal.200" mt={2} onChange={(e) => setSearchTglMulai(e.target.value)} />
+              <Input
+                type="date"
+                focusBorderColor="teal.200"
+                mt={2}
+                onChange={(e) => setSearchTglMulai(e.target.value)}
+              />
             </Box>
           </Flex>
         </CardHeader>
@@ -166,7 +179,14 @@ export default function PageMurobahah() {
               </Thead>
               <Tbody>
                 {(listMurobahah || []).map((item: TMurobahah) => (
-                  <TableMurobahah item={item} key={item.id} modalHandler={() => { modalConfirmDeleteMurobahahRef.current?.onOpen(); setIdMurobahah(Number(item.id)) }} />
+                  <TableMurobahah
+                    item={item}
+                    key={item.id}
+                    modalHandler={() => {
+                      modalConfirmDeleteMurobahahRef.current?.onOpen();
+                      setIdMurobahah(Number(item.id));
+                    }}
+                  />
                 ))}
               </Tbody>
             </Table>
@@ -176,8 +196,15 @@ export default function PageMurobahah() {
           </Skeleton>
         </CardBody>
       </Card>
-      <ModalTambahPinjaman ref={modalTambahPinjamanRef} refetchFn={refetchQuery} />
-      <ModalConfirmDeleteMurobahah ref={modalConfirmDeleteMurobahahRef} refetchFn={refetchQuery} id={idMurobahah || 0} />
+      <ModalTambahPinjaman
+        ref={modalTambahPinjamanRef}
+        refetchFn={refetchQuery}
+      />
+      <ModalConfirmDeleteMurobahah
+        ref={modalConfirmDeleteMurobahahRef}
+        refetchFn={refetchQuery}
+        id={idMurobahah || 0}
+      />
     </Stack>
   );
 }

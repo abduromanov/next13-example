@@ -1,5 +1,21 @@
-import { Alert, AlertIcon, Box, Button, Flex, HStack, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useDisclosure } from "@chakra-ui/react"
-import { forwardRef, useImperativeHandle, useState } from "react"
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Stack,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { useFormCallback } from "@/hooks/useFormCallback";
@@ -9,19 +25,23 @@ import { InputTextarea } from "@/components/Forms/InputTextarea";
 import SearchableSelect from "@/components/Forms/SearchableSelect";
 
 import { useAnggota } from "@/services/api/commands/anggota.command";
-import { TMurobahahRequest, useCreateMurobahah } from "@/services/api/commands/murobahah.command";
+import {
+  TMurobahahRequest,
+  useCreateMurobahah,
+} from "@/services/api/commands/murobahah.command";
 import validators from "@/services/utils/validators";
-
 
 type Props = {
   refetchFn?: () => void;
-}
+};
 
-const ModalTambahPinjaman = forwardRef<Partial<ReturnType<typeof useDisclosure>> | undefined, Props>((props, ref) => {
+const ModalTambahPinjaman = forwardRef<
+  Partial<ReturnType<typeof useDisclosure>> | undefined,
+  Props
+>((props, ref) => {
   const disclosure = useDisclosure();
   const formCallback = useFormCallback();
-  const [searchAnggota, setSearchAnggota] = useState('');
-
+  const [searchAnggota, setSearchAnggota] = useState("");
 
   const form = useForm<TMurobahahRequest>({
     defaultValues: {
@@ -31,9 +51,9 @@ const ModalTambahPinjaman = forwardRef<Partial<ReturnType<typeof useDisclosure>>
       dp: "0",
       tglMulai: "",
       tglSelesai: "",
-      pembiayaan: ""
+      pembiayaan: "",
     },
-  })
+  });
   useImperativeHandle(
     ref,
     () => ({
@@ -42,17 +62,15 @@ const ModalTambahPinjaman = forwardRef<Partial<ReturnType<typeof useDisclosure>>
     [disclosure.onOpen]
   );
 
-  const listAnggotaQuery = useAnggota(['murobahah', searchAnggota]).query({
+  const listAnggotaQuery = useAnggota(["murobahah", searchAnggota]).query({
     params: {
       search: searchAnggota,
       limit: 5,
-    }
+    },
   });
-
 
   const mutasiMurobahahMutation = useCreateMurobahah().mutate("POST");
   const submitHandler: SubmitHandler<TMurobahahRequest> = (values) => {
-
     mutasiMurobahahMutation.mutate(values, {
       onSuccess() {
         formCallback.onSuccess("Berhasil menambahkan data simpanan");
@@ -66,11 +84,15 @@ const ModalTambahPinjaman = forwardRef<Partial<ReturnType<typeof useDisclosure>>
         );
       },
     });
-  }
+  };
 
-  form.watch(["totalPinjaman", "totalMargin", "dp"])
+  form.watch(["totalPinjaman", "totalMargin", "dp"]);
   return (
-    <Modal isOpen={disclosure.isOpen} onClose={disclosure.onClose} size={["full", "xl"]}>
+    <Modal
+      isOpen={disclosure.isOpen}
+      onClose={disclosure.onClose}
+      size={["full", "xl"]}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Tambah Murobahah</ModalHeader>
@@ -79,54 +101,135 @@ const ModalTambahPinjaman = forwardRef<Partial<ReturnType<typeof useDisclosure>>
           <Stack spacing={3}>
             <Alert status="warning">
               <AlertIcon />
-              Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data tidak dapat dirubah ataupun dihapus !
+              Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data
+              tidak dapat dirubah ataupun dihapus !
             </Alert>
             <SearchableSelect
               label="Nama Anggota"
               control={form.control}
-              name='anggota'
+              name="anggota"
               loadOptions={(inputValue, callback) => {
                 setSearchAnggota(inputValue);
 
                 if (!listAnggotaQuery.isLoading) {
-                  const data = listAnggotaQuery.data?.data?.data.map(item => ({
-                    value: item.id,
-                    label: `${item.nama} (${item.idAnggota})`
-                  }));
+                  const data = listAnggotaQuery.data?.data?.data.map(
+                    (item) => ({
+                      value: item.id,
+                      label: `${item.nama} (${item.idAnggota})`,
+                    })
+                  );
 
                   callback(data || []);
-                };
+                }
               }}
               placeholder="Ketik untuk mencari anggota"
             />
 
             <Flex gap={5}>
               <Box w="254px">
-
-                <InputText label="Jumlah Pinjaman" value={form.getValues("totalPinjaman")}
-                  register={{ ...form.register("totalPinjaman", { ...validators().required() }), onChange: (e) => { form.setValue('totalPinjaman', !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : ''); return e.target.value } }}
+                <InputText
+                  label="Jumlah Pinjaman"
+                  value={form.getValues("totalPinjaman")}
+                  register={{
+                    ...form.register("totalPinjaman", {
+                      ...validators().required(),
+                    }),
+                    onChange: (e) => {
+                      form.setValue(
+                        "totalPinjaman",
+                        !isNaN(parseInt(e.target.value))
+                          ? parseInt(
+                              e.target.value.replace(/\D/g, ""),
+                              10
+                            ).toLocaleString("id-ID")
+                          : ""
+                      );
+                      return e.target.value;
+                    },
+                  }}
                   errors={form.formState.errors.totalPinjaman}
                 />
               </Box>
               <Box w="254px">
-                <InputText type="number" label="Tenor" register={{ ...form.register("tenor", { ...validators().required() }) }} errors={form.formState.errors.tenor} />
+                <InputText
+                  type="number"
+                  label="Tenor"
+                  register={{
+                    ...form.register("tenor", { ...validators().required() }),
+                  }}
+                  errors={form.formState.errors.tenor}
+                />
                 <Text fontSize="xs">* Minimal Tenor adalah 12 Bulan</Text>
               </Box>
             </Flex>
             <Flex gap={5}>
-              <InputText label="Total Margin" value={form.getValues("totalMargin")} errors={form.formState.errors.totalMargin}
-                register={{ ...form.register("totalMargin", { ...validators().required() }), onChange: (e) => { form.setValue('totalMargin', !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : ''); return e.target.value } }}
+              <InputText
+                label="Total Margin"
+                value={form.getValues("totalMargin")}
+                errors={form.formState.errors.totalMargin}
+                register={{
+                  ...form.register("totalMargin", {
+                    ...validators().required(),
+                  }),
+                  onChange: (e) => {
+                    form.setValue(
+                      "totalMargin",
+                      !isNaN(parseInt(e.target.value))
+                        ? parseInt(
+                            e.target.value.replace(/\D/g, ""),
+                            10
+                          ).toLocaleString("id-ID")
+                        : ""
+                    );
+                    return e.target.value;
+                  },
+                }}
               />
-              <InputText label="Jumlah DP" value={form.getValues("dp")}
-                register={{ ...form.register("dp"), onChange: (e) => { form.setValue('dp', !isNaN(parseInt(e.target.value)) ? parseInt(e.target.value.replace(/\D/g, ''), 10).toLocaleString('id-ID') : ''); return e.target.value } }}
+              <InputText
+                label="Jumlah DP"
+                value={form.getValues("dp")}
+                register={{
+                  ...form.register("dp"),
+                  onChange: (e) => {
+                    form.setValue(
+                      "dp",
+                      !isNaN(parseInt(e.target.value))
+                        ? parseInt(
+                            e.target.value.replace(/\D/g, ""),
+                            10
+                          ).toLocaleString("id-ID")
+                        : ""
+                    );
+                    return e.target.value;
+                  },
+                }}
               />
             </Flex>
             <Flex gap={5}>
-              <InputText type='date' errors={form.formState.errors.tglMulai} register={{ ...form.register("tglMulai", { ...validators().required() }) }} label="Tanggal Mulai" />
-              <InputText type='date' errors={form.formState.errors.tglSelesai} register={{ ...form.register("tglSelesai", { ...validators().required() }) }} label="Tanggal Selesai " />
+              <InputText
+                type="date"
+                errors={form.formState.errors.tglMulai}
+                register={{
+                  ...form.register("tglMulai", { ...validators().required() }),
+                }}
+                label="Tanggal Mulai"
+              />
+              <InputText
+                type="date"
+                errors={form.formState.errors.tglSelesai}
+                register={{
+                  ...form.register("tglSelesai", {
+                    ...validators().required(),
+                  }),
+                }}
+                label="Tanggal Selesai "
+              />
             </Flex>
             <Box>
-              <InputTextarea register={{ ...form.register("pembiayaan") }} label="Keperluan" />
+              <InputTextarea
+                register={{ ...form.register("pembiayaan") }}
+                label="Keperluan"
+              />
             </Box>
           </Stack>
         </ModalBody>
@@ -141,8 +244,8 @@ const ModalTambahPinjaman = forwardRef<Partial<ReturnType<typeof useDisclosure>>
         </ModalFooter>
       </ModalContent>
     </Modal>
-  )
-})
+  );
+});
 
 export default ModalTambahPinjaman;
 ModalTambahPinjaman.displayName = "ModalTambahPinjaman";
