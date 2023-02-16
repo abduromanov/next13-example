@@ -2,7 +2,6 @@ import { Td, Tr } from "@chakra-ui/react";
 
 import toIDR from "@/services/utils/toIDR";
 
-
 type Props = {
   item: any;
 };

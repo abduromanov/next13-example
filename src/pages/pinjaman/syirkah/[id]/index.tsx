@@ -27,7 +27,11 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { ArrowDownIcon, ArrowRightIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownIcon,
+  ArrowRightIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -36,7 +40,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import { useDetailSyirkah, useMutasiSyirkah } from "@/services/api/commands/syirkah.command";
+import {
+  useDetailSyirkah,
+  useMutasiSyirkah,
+} from "@/services/api/commands/syirkah.command";
 import toIDR from "@/services/utils/toIDR";
 
 import ModalCreateMutasiSyirkah from "./components/ModalCreateMutasiSyirkah";
@@ -83,32 +90,45 @@ export default function PageDetailSyirkah() {
     },
   });
 
-  const detailSyirkahQuery = useDetailSyirkah(router.query.id as string).query();
+  const detailSyirkahQuery = useDetailSyirkah(
+    router.query.id as string
+  ).query();
   const detailSyirkah = detailSyirkahQuery.data?.data?.data;
 
   const listMutasiQuery = useMutasiSyirkah(router.query.id as string).paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
-    }
+    },
   });
 
   const listMutasi = listMutasiQuery.data?.data?.data;
   const metadata = listMutasiQuery.data?.data?.meta;
 
-  const tglMulai = useMemo(() => moment(detailSyirkah?.tglMulai).format('DD MMMM YYYY'), [detailSyirkah?.tglMulai]);
-  const tglSelesai = useMemo(() => moment(detailSyirkah?.tglSelesai).format('DD MMMM YYYY'), [detailSyirkah?.tglSelesai]);
+  const tglMulai = useMemo(
+    () => moment(detailSyirkah?.tglMulai).format("DD MMMM YYYY"),
+    [detailSyirkah?.tglMulai]
+  );
+  const tglSelesai = useMemo(
+    () => moment(detailSyirkah?.tglSelesai).format("DD MMMM YYYY"),
+    [detailSyirkah?.tglSelesai]
+  );
 
   const refetchQuery = () => listMutasiQuery.refetch();
 
   useEffect(() => {
     setTotal(metadata?.filter_count || 0);
-  }, [metadata?.filter_count])
+  }, [metadata?.filter_count]);
 
   return (
     <Stack spacing="8" px="8" pb="10">
       <BreadcrumbSection data={breadcrumbData} />
-      <Flex alignItems="center" justify="space-between" display={['grid', 'flex']} gap={3}>
+      <Flex
+        alignItems="center"
+        justify="space-between"
+        display={["grid", "flex"]}
+        gap={3}
+      >
         <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
           <Heading size="lg">{detailSyirkah?.namaBc}</Heading>
         </Skeleton>
@@ -121,10 +141,10 @@ export default function PageDetailSyirkah() {
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
         <CardBody>
-          <Flex mb={8} alignItems='start' display={['grid', 'flex']} gap={3}>
-            <VStack flex={1} alignItems='start'>
+          <Flex mb={8} alignItems="start" display={["grid", "flex"]} gap={3}>
+            <VStack flex={1} alignItems="start">
               <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
-                <Flex flexWrap='wrap'>
+                <Flex flexWrap="wrap">
                   <Text fontWeight="bold" mr={[10, 74]}>
                     Nama BC
                   </Text>
@@ -132,18 +152,21 @@ export default function PageDetailSyirkah() {
                 </Flex>
               </Skeleton>
               <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
-                <Flex flexWrap='wrap'>
+                <Flex flexWrap="wrap">
                   <Text fontWeight="bold" mr={88}>
                     Pemilik
                   </Text>
-                  <Text>{detailSyirkah?.anggota.nama} ({detailSyirkah?.anggota.idAnggota})</Text>
+                  <Text>
+                    {detailSyirkah?.anggota.nama} (
+                    {detailSyirkah?.anggota.idAnggota})
+                  </Text>
                 </Flex>
               </Skeleton>
             </VStack>
-            <VStack flex={1} alignItems='start'>
+            <VStack flex={1} alignItems="start">
               <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
                 <Flex flexWrap="wrap">
-                  <Text fontWeight="bold" mr='43px'>
+                  <Text fontWeight="bold" mr="43px">
                     Tanggal Mulai
                   </Text>
                   <Text>{tglMulai}</Text>
@@ -174,32 +197,39 @@ export default function PageDetailSyirkah() {
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
           <Box mb={5}>
-            <Text fontSize='sm' mb={3}>
+            <Text fontSize="sm" mb={3}>
               Filter Tanggal
             </Text>
-            <InputGroup borderRadius="md" bg="gray.100" w={['full', 'fit-content']} display={['block', 'flex']}>
+            <InputGroup
+              borderRadius="md"
+              bg="gray.100"
+              w={["full", "fit-content"]}
+              display={["block", "flex"]}
+            >
               <Input
                 type="date"
-                w={['100%', '200px']}
+                w={["100%", "200px"]}
                 border={0}
                 focusBorderColor="none"
               />
-              <Flex justifyContent="center" alignItems='center'>
-                <Icon as={ArrowRightIcon} w='20px' display={['none', 'block']} />
-                <Icon as={ArrowDownIcon} w='20px' display={['block', 'none']} />
+              <Flex justifyContent="center" alignItems="center">
+                <Icon
+                  as={ArrowRightIcon}
+                  w="20px"
+                  display={["none", "block"]}
+                />
+                <Icon as={ArrowDownIcon} w="20px" display={["block", "none"]} />
               </Flex>
               <Input
                 type="date"
-                w={['100%', '200px']}
+                w={["100%", "200px"]}
                 border={0}
                 focusBorderColor="none"
               />
             </InputGroup>
           </Box>
         </CardHeader>
-        {listMutasiQuery.isLoading && (
-          <Progress size="xs" isIndeterminate />
-        )}
+        {listMutasiQuery.isLoading && <Progress size="xs" isIndeterminate />}
         <CardBody>
           <TableContainer p="0" mb="5">
             <Table mb={5}>
@@ -216,8 +246,15 @@ export default function PageDetailSyirkah() {
                 </Tr>
               </Thead>
               <Tbody>
-                {(listMutasi || []).map(item => (
-                  <TableDetilSyirkah item={item} key={item.id} editHandler={() => { modalEditRef.current?.onOpen(); setIdMutasi(item.id) }} />
+                {(listMutasi || []).map((item) => (
+                  <TableDetilSyirkah
+                    item={item}
+                    key={item.id}
+                    editHandler={() => {
+                      modalEditRef.current?.onOpen();
+                      setIdMutasi(item.id);
+                    }}
+                  />
                 ))}
               </Tbody>
             </Table>
@@ -230,7 +267,11 @@ export default function PageDetailSyirkah() {
       </Card>
 
       <ModalCreateMutasiSyirkah ref={modalCreateRef} refetchFn={refetchQuery} />
-      <ModalEditMutasiSyirkah ref={modalEditRef} refetchFn={refetchQuery} idMutasi={idMutasi} />
+      <ModalEditMutasiSyirkah
+        ref={modalEditRef}
+        refetchFn={refetchQuery}
+        idMutasi={idMutasi}
+      />
     </Stack>
   );
 }

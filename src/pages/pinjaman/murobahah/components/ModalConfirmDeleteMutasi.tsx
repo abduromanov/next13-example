@@ -19,7 +19,6 @@ type Props = {
   id: number;
   idMutasi: number;
   refetchFn?: () => void;
-
 };
 const ModalConfirmDeleteMutasi = forwardRef<
   Partial<ReturnType<typeof useDisclosure>> | undefined,
@@ -27,7 +26,10 @@ const ModalConfirmDeleteMutasi = forwardRef<
 >((props, ref) => {
   const disclosure = useDisclosure();
   const formCallback = useFormCallback();
-  const mutasiMurobahahQuery = useDeleteMutasiMurobahah(props.id, props.idMutasi).mutate("DELETE");
+  const mutasiMurobahahQuery = useDeleteMutasiMurobahah(
+    props.id,
+    props.idMutasi
+  ).mutate("DELETE");
   useImperativeHandle(
     ref,
     () => ({
@@ -64,15 +66,19 @@ const ModalConfirmDeleteMutasi = forwardRef<
           <Button onClick={disclosure.onClose} variant="ghost">
             Batalkan
           </Button>
-          <Button colorScheme="red" variant="ghost" onClick={submitHandler} isLoading={mutasiMurobahahQuery.isLoading}>
+          <Button
+            colorScheme="red"
+            variant="ghost"
+            onClick={submitHandler}
+            isLoading={mutasiMurobahahQuery.isLoading}
+          >
             Ya, Hapus data
           </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
   );
-})
-
+});
 
 export default ModalConfirmDeleteMutasi;
 

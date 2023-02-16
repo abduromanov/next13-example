@@ -25,10 +25,15 @@ export function InputNumber(props: InputProps & TInputProps) {
       <FormLabel htmlFor={props.id || props.register.name}>
         {props.label}
       </FormLabel>
-      <NumberInput defaultValue={props.defaultValue} min={props.min} max={props.max} id={props.id || props.register.name}
+      <NumberInput
+        defaultValue={props.defaultValue}
+        min={props.min}
+        max={props.max}
+        id={props.id || props.register.name}
         variant="outline"
         {...props}
-        {...props.register}>
+        {...props.register}
+      >
         <NumberInputField />
         <NumberInputStepper>
           <NumberIncrementStepper />
@@ -36,7 +41,6 @@ export function InputNumber(props: InputProps & TInputProps) {
         </NumberInputStepper>
       </NumberInput>
     </FormControl>
-
   );
 }
 

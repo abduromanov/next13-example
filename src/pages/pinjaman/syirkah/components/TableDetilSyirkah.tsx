@@ -14,7 +14,10 @@ type Props = {
 };
 
 export default function TableDetilSyirkah(props: Props) {
-  const tglBayar = useMemo(() => moment(props.item.tglBayar).format('DD MMMM YYYY'), [props.item.tglBayar]);
+  const tglBayar = useMemo(
+    () => moment(props.item.tglBayar).format("DD MMMM YYYY"),
+    [props.item.tglBayar]
+  );
 
   return (
     <Tr>
@@ -22,7 +25,9 @@ export default function TableDetilSyirkah(props: Props) {
       <Td>{toIDR(props.item.modalAwal)}</Td>
       <Td>{toIDR(props.item.modalHamasah)}</Td>
       <Td>{toIDR(props.item.bonusBersih)}</Td>
-      <Td>{props.item.presentaseBonus ? `${props.item.presentaseBonus}%` : '-'}</Td>
+      <Td>
+        {props.item.presentaseBonus ? `${props.item.presentaseBonus}%` : "-"}
+      </Td>
       <Td>{toIDR(props.item.bagiHasil)}</Td>
       <Td>{props.item.catatan}</Td>
       <Td>

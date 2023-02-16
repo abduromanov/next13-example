@@ -38,8 +38,8 @@ export default async function handler(
     const data = req.body;
 
     data.anggota = data.anggota.value;
-    data.modalAwal = parseInt(data.modalAwal.replace(/\D/g, ''), 10);
-    data.modalHamasah = parseInt(data.modalHamasah.replace(/\D/g, ''), 10);
+    data.modalAwal = parseInt(data.modalAwal.replace(/\D/g, ""), 10);
+    data.modalHamasah = parseInt(data.modalHamasah.replace(/\D/g, ""), 10);
     data.tglMulai = moment(data.tglMulai);
     data.tglSelesai = moment(data.tglSelesai);
 

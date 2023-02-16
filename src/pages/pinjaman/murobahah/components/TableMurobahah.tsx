@@ -21,16 +21,26 @@ import toIDR from "@/services/utils/toIDR";
 
 type Props = {
   item: any;
-  modalHandler?: () => void
+  modalHandler?: () => void;
 };
 
 export default function TableMurobahah(props: Props) {
-  const totalPinjaman = useMemo(() => toIDR(props.item.totalPinjaman), [props.item.totalPinjaman])
+  const totalPinjaman = useMemo(
+    () => toIDR(props.item.totalPinjaman),
+    [props.item.totalPinjaman]
+  );
   const tglMulaiCicilan = useMemo(
     () => moment(props.item?.tglMulai).format("DD MMMM YYYY"),
     [props.item?.tglMulai]
   );
-  const totalTerbayar = useMemo(() => props?.item?.totalTerbayar?.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }), [props.item.totalTerbayar])
+  const totalTerbayar = useMemo(
+    () =>
+      props?.item?.totalTerbayar?.toLocaleString("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }),
+    [props.item.totalTerbayar]
+  );
 
   return (
     <Tr>
@@ -46,13 +56,20 @@ export default function TableMurobahah(props: Props) {
       <Td>
         <Flex gap={5}>
           <Link href={`/pinjaman/murobahah/${props.item.id}`}>
-            <Tooltip hasArrow label='lihat detail' fontSize='xs'>
+            <Tooltip hasArrow label="lihat detail" fontSize="xs">
               <Icon as={EyeIcon} color="teal" boxSize={6} />
             </Tooltip>
           </Link>
 
-          <Tooltip hasArrow label='hapus' fontSize='xs'>
-            <IconButton variant="ghost" onClick={props.modalHandler} icon={<TrashIcon />} size="xs" color='red' aria-label="delete murobahah" />
+          <Tooltip hasArrow label="hapus" fontSize="xs">
+            <IconButton
+              variant="ghost"
+              onClick={props.modalHandler}
+              icon={<TrashIcon />}
+              size="xs"
+              color="red"
+              aria-label="delete murobahah"
+            />
           </Tooltip>
           {/* <Tooltip hasArrow label='hapus' fontSize='xs'>
               <Icon as={TrashIcon} color="red" boxSize={5} />

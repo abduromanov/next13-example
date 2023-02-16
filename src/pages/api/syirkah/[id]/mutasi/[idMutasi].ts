@@ -35,12 +35,12 @@ export default async function handler(
   }
 
   async function update() {
-    const data = req.body
+    const data = req.body;
 
-    data.modalAwal = parseInt(data.modalAwal.replace(/\D/g, ''), 10);
-    data.modalHamasah = parseInt(data.modalHamasah.replace(/\D/g, ''), 10);
-    data.bonusBersih = parseInt(data.bonusBersih.replace(/\D/g, ''), 10);
-    data.bagiHasil = parseInt(data.bagiHasil.replace(/\D/g, ''), 10);
+    data.modalAwal = parseInt(data.modalAwal.replace(/\D/g, ""), 10);
+    data.modalHamasah = parseInt(data.modalHamasah.replace(/\D/g, ""), 10);
+    data.bonusBersih = parseInt(data.bonusBersih.replace(/\D/g, ""), 10);
+    data.bagiHasil = parseInt(data.bagiHasil.replace(/\D/g, ""), 10);
     data.tglBayar = moment(data.tglBayar);
 
     await directus.items("mutasiSyirkah").updateOne(idMutasi, data);

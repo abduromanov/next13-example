@@ -13,16 +13,28 @@ type Props = {
 };
 
 export default function TableSyirkah(props: Props) {
-  const tglMulai = useMemo(() => props.item.tglMulai ? moment(props.item.tglMulai).format('DD MMMM YYYY') : '', [props.item.tglMulai]);
-  const tglSelesai = useMemo(() => props.item.tglSelesai ? moment(props.item.tglSelesai).format('DD MMMM YYYY') : '', [props.item.tglSelesai]);
+  const tglMulai = useMemo(
+    () =>
+      props.item.tglMulai
+        ? moment(props.item.tglMulai).format("DD MMMM YYYY")
+        : "",
+    [props.item.tglMulai]
+  );
+  const tglSelesai = useMemo(
+    () =>
+      props.item.tglSelesai
+        ? moment(props.item.tglSelesai).format("DD MMMM YYYY")
+        : "",
+    [props.item.tglSelesai]
+  );
 
   return (
     <Tr>
       <Td>{props.item.namaBc}</Td>
       <Td>{props.item.anggota.nama}</Td>
       <Td>{props.item.anggota.idAnggota}</Td>
-      <Td textAlign='right'>{toIDR(props.item.modalAwal)}</Td>
-      <Td textAlign='right'>{toIDR(props.item.modalHamasah)}</Td>
+      <Td textAlign="right">{toIDR(props.item.modalAwal)}</Td>
+      <Td textAlign="right">{toIDR(props.item.modalHamasah)}</Td>
       <Td>{tglMulai}</Td>
       <Td>{tglSelesai}</Td>
       <Td>
