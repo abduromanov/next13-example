@@ -30,13 +30,13 @@ const ModalCreateMutasiSyirkah = forwardRef<Partial<ReturnType<typeof useDisclos
   const submitHandler = (values: TMutasiSyirkahRequest) => {
     mutasiSyirkahMutation.mutate(values, {
       onSuccess() {
-        formCallback.onSuccess("Berhasil menambahkan Syirkah");
+        formCallback.onSuccess("Berhasil menambahkan data");
         form.reset();
         disclosure.onClose();
         props.refetchFn?.();
       },
       onError() {
-        formCallback.onError("Gagal menambahkan Syirkah");
+        formCallback.onError("Gagal menambahkan data");
       }
     });
   }

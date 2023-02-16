@@ -1,4 +1,4 @@
-import { Flex, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { Button, Flex, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { TMutasiSyirkah } from "@/types";
 
 type Props = {
   item: TMutasiSyirkah;
+  editHandler?: () => void;
 };
 
 export default function TableDetilSyirkah(props: Props) {
@@ -26,13 +27,13 @@ export default function TableDetilSyirkah(props: Props) {
       <Td>{props.item.catatan}</Td>
       <Td>
         <Flex gap={3}>
-          <Link href="#">
-            <Tooltip hasArrow label="edit data" fontSize="xs">
+          <Button variant="link" onClick={props.editHandler}>
+            <Tooltip hasArrow label="Ubah Data" fontSize="xs">
               <Icon as={PencilSquareIcon} color="teal" fontSize="lg" />
             </Tooltip>
-          </Link>
+          </Button>
           <Link href="#">
-            <Tooltip hasArrow label="hapus" fontSize="xs">
+            <Tooltip hasArrow label="Hapus" fontSize="xs">
               <Icon as={TrashIcon} color="red" fontSize="lg" />
             </Tooltip>
           </Link>
