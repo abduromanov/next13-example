@@ -106,43 +106,41 @@ const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> |
               Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data
               tidak dapat dirubah ataupun dihapus !
             </Alert>
-            <HStack gap={3} flexWrap="wrap">
-              <Box>
-                <InputText
-                  label="Nominal"
-                  value={form.getValues("nominal")}
-                  register={{
-                    ...form.register("nominal", { ...validators().required() }), onChange: (e) => {
-                      form.setValue(
-                        "nominal",
-                        e.target.value &&
-                        parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
-                      );
+            <Box>
+              <Text>Jenis Simpanan</Text>
+              <Select
+                placeholder="pilih jenis simpanan"
+                isRequired
+                onChange={(e) =>
+                  form.setValue("jenisTabungan", e.target.value)
+                }
+              >
+                <option value="khusus">Simpanan Khusus</option>
+                <option value="sukarela">Simpanan Sukarela</option>
+              </Select>
+            </Box>
 
-                      return e.target.value;
-                    }
-                  }}
-                  errors={form.formState.errors.nominal as FieldError}
-                />
+            <InputText
+              label="Nominal"
+              value={form.getValues("nominal")}
+              register={{
+                ...form.register("nominal", { ...validators().required() }), onChange: (e) => {
+                  form.setValue(
+                    "nominal",
+                    e.target.value &&
+                    parseInt(
+                      e.target.value.replace(/\D/g, ""),
+                      10
+                    ).toLocaleString("id-ID")
+                  );
 
-              </Box>
-              <Box>
-                <Text>Jenis Simpanan</Text>
-                <Select
-                  placeholder="pilih jenis simpanan"
-                  isRequired
-                  onChange={(e) =>
-                    form.setValue("jenisTabungan", e.target.value)
-                  }
-                >
-                  <option value="khusus">Simpanan Khusus</option>
-                  <option value="sukarela">Simpanan Sukarela</option>
-                </Select>
-              </Box>
-            </HStack>
+                  return e.target.value;
+                }
+              }}
+              errors={form.formState.errors.nominal as FieldError}
+            />
+
+
             <InputTextarea
               label="Catatan"
               placeholder="masukkan Catatan"
