@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
-import { DirectusResponse, TAnggota, TResponse, TSimpanan } from "@/types";
+import { DirectusResponse, TAnggota, TResponse } from "@/types";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,9 +12,6 @@ export default async function handler(
     switch (req.method) {
       case "GET":
         return get();
-
-      // case "POST":
-      //   return post();
 
       default:
         return res.status(405).end();
@@ -50,11 +47,4 @@ export default async function handler(
 
     return res.status(200).json(data);
   }
-  // async function post() {
-  //   await directus
-  //     .items<string, TSimpanan>("mutasiTabungan")
-  //     .createOne(req.body);
-
-  //   return res.status(200).json({});
-  // }
 }

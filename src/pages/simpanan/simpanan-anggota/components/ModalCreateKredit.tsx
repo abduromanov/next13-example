@@ -15,7 +15,6 @@ import {
   Stack,
   Text,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { forwardRef, useImperativeHandle } from "react";
@@ -51,27 +50,10 @@ const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> |
     [disclosure.onOpen]
   );
 
-  // const saldoSebelumnyaQuery = useSimpananSebelumnya(Number(id)).query();
-  // const saldoSebelumnya = saldoSebelumnyaQuery.data?.data?.data;
-  // const saldoWajib = saldoSebelumnya?.saldoWajib[0];
-  // const saldoKhusus = saldoSebelumnya?.saldoKhusus[0];
-  // const saldoSukarela = saldoSebelumnya?.saldoSukarela[0];
 
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
   const submitHandler: SubmitHandler<TSimpananKreditRequest> = (value) => {
-
-
-    // value.nominal = parseInt(value.nominal.replace(/\D/g, ""), 10) * -1;
-    // value.idAnggota = String(id);
-
-    // if (value.jenisTabungan === "wajib") {
-    //   value.saldo = saldoWajib + value.nominal;
-    // } else if (value.jenisTabungan === "khusus") {
-    //   value.saldo = saldoKhusus + value.nominal;
-    // } else if (value.jenisTabungan === "sukarela") {
-    //   value.saldo = saldoSukarela + value.nominal;
-    // }
 
     // console.log(value)
     simpananMutation.mutate(value, {

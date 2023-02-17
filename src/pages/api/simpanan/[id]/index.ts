@@ -65,7 +65,7 @@ export default async function handler(
         },
       });
     }
-    // console.log(filter._and.map((v) => v.tglDibuat));
+
     const data = await directus.items("mutasiTabungan").readByQuery({
       fields: ["*"],
       meta: "*",
@@ -102,7 +102,6 @@ export default async function handler(
       data.saldo = 0;
     }
 
-    // console.log(data);
     await directus.items("mutasiTabungan").createMany(data);
     return res.status(200).json({});
   }

@@ -83,12 +83,7 @@ const ModalCreateDebit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | 
     "nominalSukarela",
   ]);
 
-  // const saldoSebelumnyaQuery = useSimpananSebelumnya(Number(id)).query();
-  // const saldoSebelumnya = saldoSebelumnyaQuery.data?.data?.data;
-  // const saldoWajib = saldoSebelumnya?.saldoWajib[0];
-  // const saldoKhusus = saldoSebelumnya?.saldoKhusus[0];
-  // const saldoSukarela = saldoSebelumnya?.saldoSukarela[0];
-  // if (saldoSebelumnya === null) return;
+
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
   const submitHandler: SubmitHandler<TSimpananDebitRequest> = (value) => {
