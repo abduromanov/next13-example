@@ -139,25 +139,28 @@ export default function PageDetailMurobahah() {
     sisaCicilan: {
       cicilan: useMemo(
         () =>
-          detailMurobahah?.totalPinjaman || 0 - rincianPembayaranTotal.cicilan,
+          (detailMurobahah?.totalPinjaman || 0) - rincianPembayaranTotal.cicilan,
         [detailMurobahah?.totalPinjaman, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
-        () => detailMurobahah?.totalMargin || 0 - rincianPembayaranTotal.margin,
+        () => (detailMurobahah?.totalMargin || 0) - rincianPembayaranTotal.margin,
         [detailMurobahah?.totalMargin, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
-        () => detailMurobahah?.total || 0 - rincianPembayaranTotal.total,
+        () => (detailMurobahah?.total || 0) - rincianPembayaranTotal.total,
         [detailMurobahah?.total, rincianPembayaranTotal.total]
       ),
     },
     totalTenor: useMemo(
-      () => detailMurobahah?.tenor || 0 - rincianPembayaranTotal.tenorBayar,
+      () => (detailMurobahah?.tenor || 0) - rincianPembayaranTotal.tenorBayar,
       [detailMurobahah?.tenor, rincianPembayaranTotal.tenorBayar]
     ),
   };
 
-  const refetchQuery = () => mutasiMurobahahQuery.refetch();
+  const refetchQuery = () => {
+    mutasiMurobahahQuery.refetch();
+    catatanPembayaranQuery.refetch();
+  }
 
   const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");
   const handleLunasChange = (lunas: boolean) => {
@@ -348,10 +351,7 @@ export default function PageDetailMurobahah() {
                   </Tag>
                 )}
               </HStack>
-              {/* <Box flexWrap='wrap' >
-                {rincianCicilan.cicilanPerbulan.lunas ? <Badge colorScheme='green' rounded='md' variant='solid'>Lunas</Badge> : <Badge variant='solid' colorScheme='red'>Belum Lunas</Badge>}
 
-              </Box> */}
             </VStack>
           </Box>
           <Divider />

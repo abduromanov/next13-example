@@ -1,4 +1,3 @@
-import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -24,9 +23,7 @@ export default async function handler(
   async function destroy() {
     await directus
       .items("mutasiMurobahah")
-      .updateOne(req.query.idMutasi as string, {
-        tglDihapus: moment(),
-      });
+      .deleteOne(req.query.idMutasi as string);
     return res.status(200).end();
   }
 }

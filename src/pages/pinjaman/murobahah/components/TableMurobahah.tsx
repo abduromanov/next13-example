@@ -1,5 +1,4 @@
 import {
-  Button,
   Flex,
   Icon,
   IconButton,
@@ -26,20 +25,16 @@ type Props = {
 
 export default function TableMurobahah(props: Props) {
   const totalPinjaman = useMemo(
-    () => toIDR(props.item.totalPinjaman),
-    [props.item.totalPinjaman]
+    () => toIDR(props?.item?.total),
+    [props?.item?.total]
   );
   const tglMulaiCicilan = useMemo(
-    () => moment(props.item?.tglMulai).format("DD MMMM YYYY"),
-    [props.item?.tglMulai]
+    () => moment(props?.item?.tglMulai).format("DD MMMM YYYY"),
+    [props?.item?.tglMulai]
   );
   const totalTerbayar = useMemo(
-    () =>
-      props?.item?.totalTerbayar?.toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      }),
-    [props.item.totalTerbayar]
+    () => toIDR(props?.item?.totalTerbayar),
+    [props?.item?.totalTerbayar]
   );
 
   return (
@@ -71,10 +66,6 @@ export default function TableMurobahah(props: Props) {
               aria-label="delete murobahah"
             />
           </Tooltip>
-          {/* <Tooltip hasArrow label='hapus' fontSize='xs'>
-              <Icon as={TrashIcon} color="red" boxSize={5} />
-            </Tooltip>
-          </IconButton> */}
         </Flex>
       </Td>
     </Tr>

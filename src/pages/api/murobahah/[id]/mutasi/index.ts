@@ -30,9 +30,6 @@ export default async function handler(
           murobahah: {
             _eq: parseInt(req.query.id as string),
           },
-          tglDihapus: {
-            _null: true,
-          },
         },
       ],
     };
