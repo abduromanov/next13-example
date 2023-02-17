@@ -18,7 +18,6 @@ import { useDeleteMurobahah } from "@/services/api/commands/murobahah.command";
 type Props = {
   id: number;
   refetchFn?: () => void;
-
 };
 const ModalConfirmDeleteMurobahah = forwardRef<
   Partial<ReturnType<typeof useDisclosure>> | undefined,
@@ -63,15 +62,19 @@ const ModalConfirmDeleteMurobahah = forwardRef<
           <Button onClick={disclosure.onClose} variant="ghost">
             Batalkan
           </Button>
-          <Button colorScheme="red" variant="ghost" onClick={submitHandler} isLoading={mutasiMurobahahQuery.isLoading}>
+          <Button
+            colorScheme="red"
+            variant="ghost"
+            onClick={submitHandler}
+            isLoading={mutasiMurobahahQuery.isLoading}
+          >
             Ya, Hapus data
           </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
   );
-})
-
+});
 
 export default ModalConfirmDeleteMurobahah;
 

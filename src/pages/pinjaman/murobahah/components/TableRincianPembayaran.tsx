@@ -4,7 +4,6 @@ import moment from "moment";
 
 import toIDR from "@/services/utils/toIDR";
 
-
 type Props = {
   item: any;
   modalHandler?: () => void;
@@ -13,7 +12,11 @@ export default function TableRincianPembayaran(props: Props) {
   return (
     <Tr>
       <Td>{props?.item?.tglBayar_year}</Td>
-      <Td>{moment().month(props?.item?.tglBayar_month - 1).format('MMMM')}</Td>
+      <Td>
+        {moment()
+          .month(props?.item?.tglBayar_month - 1)
+          .format("MMMM")}
+      </Td>
       <Td>{props?.item?.sum?.tenorTerbayar}</Td>
       <Td>{props?.item?.sum?.bulanTidakSesuai}</Td>
       <Td>{toIDR(props?.item?.sum?.cicilan)}</Td>

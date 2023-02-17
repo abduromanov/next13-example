@@ -3,19 +3,21 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
-import { TMutasiSyirkah, TResponse } from "@/types";
+import { DirectusResponse, TMutasiSyirkah, TResponse } from "@/types";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<TResponse | TMutasiSyirkah>
+  res: NextApiResponse<TResponse | DirectusResponse<TMutasiSyirkah>>
 ) {
+  const idMutasi = req.query.idMutasi as string;
+
   try {
     switch (req.method) {
       case "GET":
         return get();
 
-      case "POST":
-        return post();
+      case "PATCH":
+        return update();
 
       default:
         return;
@@ -25,33 +27,14 @@ export default async function handler(
   }
 
   async function get() {
-    const filter = {
-      _and: [
-        {
-          syirkah: {
-            _eq: parseInt(req.query.id as string),
-          },
-        },
-      ],
-    };
-
-    if (req.query.filter) {
-      filter._and.push(JSON.parse(req.query.filter as string));
-    }
-
-    delete req.query.filter;
-
-    const data = await directus.items("mutasiSyirkah").readByQuery({
+    const data = await directus.items("mutasiSyirkah").readOne(idMutasi, {
       fields: ["*"],
-      meta: "*",
-      filter: filter,
-      ...req.query,
     });
 
-    return res.status(200).json(data);
+    return res.status(200).json({ data: data });
   }
 
-  async function post() {
+  async function update() {
     const data = req.body;
 
     data.modalAwal = parseInt(data.modalAwal.replace(/\D/g, ""), 10);
@@ -60,10 +43,7 @@ export default async function handler(
     data.bagiHasil = parseInt(data.bagiHasil.replace(/\D/g, ""), 10);
     data.tglBayar = moment(data.tglBayar);
 
-    await directus.items("mutasiSyirkah").createOne({
-      ...data,
-      syirkah: req.query.id,
-    });
+    await directus.items("mutasiSyirkah").updateOne(idMutasi, data);
 
     return res.status(200).json({});
   }
