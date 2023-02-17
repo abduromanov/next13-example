@@ -255,7 +255,6 @@ export default function PageMutasi() {
                   </Th>
                   <Th>Tipe</Th>
                   <Th>Nominal</Th>
-                  <Th>Saldo</Th>
                   <Th>Keterangan</Th>
                   <Th>jenis simpanan</Th>
                 </Tr>
