@@ -31,7 +31,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { CheckIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import _ from "lodash";
+import _, { isError } from "lodash";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -193,6 +193,10 @@ export default function PageDetailMurobahah() {
       name: "Detail",
     },
   ];
+
+  if (detailMurobahahQuery?.isError) {
+    return <Text>Forbidden</Text>
+  }
 
   return (
     <Stack spacing="8" px="8" pb="10">
