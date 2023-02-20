@@ -8,18 +8,54 @@ export type TSimpananRequest = {
   saldo: string;
   catatan: string;
   jenisTabungan: string;
-};
+}[];
 
 export type Saldo = {
   saldoWajib: any;
   saldoKhusus: any;
   saldoSukarela: any;
 };
+
+export type TotalSimpanan = {
+  wajib: any;
+  khusus: any;
+  pokok: any;
+  sukarela: any;
+};
+
+export type TSimpananKreditRequest = {
+  nominal: any;
+  nominalWajib: string;
+  nominalKhusus: string;
+  nominalSukarela: string;
+  idAnggota: string;
+  saldo: string;
+  jenisTabungan: string;
+  catatan: string;
+};
+
+export type TSimpananDebitRequest = {
+  nominal: string;
+  nominalWajib: string;
+  nominalKhusus: string;
+  nominalSukarela: string;
+  catatan: string;
+  idAnggota: string;
+  saldo: string;
+  jenisTabungan: string;
+};
+
 export const useSimpanan = () =>
   queryMutation<any, TAnggota[]>("/api/simpanan", ["simpanan"]);
 
 export const useSimpananDetail = (id: number) =>
   queryMutation<any, TSimpanan[]>(`/api/simpanan/${id}`, ["simpanan", id]);
+
+export const useTotalSimpanan = (id: number) =>
+  queryMutation<any, TotalSimpanan>(`/api/simpanan/${id}/totalSimpanan`, [
+    "simpanan",
+    id,
+  ]);
 
 export const useSimpananSebelumnya = (id: number) =>
   queryMutation<any, Saldo>(`/api/simpanan/${id}/saldoSebelumnya`, [
@@ -27,5 +63,7 @@ export const useSimpananSebelumnya = (id: number) =>
     id,
   ]);
 
-export const useCreateSimpanan = () =>
-  queryMutation<TSimpananRequest, TSimpanan>("/api/simpanan");
+export const useCreateSimpanan = (id: number) =>
+  queryMutation<TSimpananRequest | TSimpananKreditRequest, TSimpanan>(
+    `/api/simpanan/${id}`
+  );
