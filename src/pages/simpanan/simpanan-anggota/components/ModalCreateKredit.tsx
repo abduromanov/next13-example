@@ -12,42 +12,32 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  Spacer,
   Stack,
   Text,
-  Textarea,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { forwardRef, useImperativeHandle } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldError, SubmitHandler, useForm } from "react-hook-form";
 
 import { useFormCallback } from "@/hooks/useFormCallback";
 
 import { InputText } from "@/components/Forms/InputText";
+import { InputTextarea } from "@/components/Forms/InputTextarea";
 
 import {
+  TSimpananKreditRequest,
   useCreateSimpanan,
-  useSimpananSebelumnya,
 } from "@/services/api/commands/simpanan.command";
+import validators from "@/services/utils/validators";
 
-interface KreditPayload {
-  nominal: any;
-  nominalWajib: number;
-  nominalKhusus: number;
-  nominalSukarela: number;
-  idAnggota: string;
-  saldo: number;
-  jenisTabungan: string;
-  catatan: string;
+
+type Props = {
+  refetchFn?: () => void;
 }
-const ModalCreateKredit = forwardRef<
-  Partial<ReturnType<typeof useDisclosure>> | undefined,
-  any
->((_, ref) => {
+const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | undefined, Props>((props, ref) => {
   const disclosure = useDisclosure();
-  const form = useForm<KreditPayload>();
+  const form = useForm<TSimpananKreditRequest>();
   const formCallback = useFormCallback();
   const router = useRouter();
   const { id } = router.query;
@@ -60,25 +50,10 @@ const ModalCreateKredit = forwardRef<
     [disclosure.onOpen]
   );
 
-  const saldoSebelumnyaQuery = useSimpananSebelumnya(Number(id)).query();
-  const simpananMutation = useCreateSimpanan().mutate("POST");
 
-  const submitHandler: SubmitHandler<KreditPayload> = (value) => {
-    const saldoSebelumnya = saldoSebelumnyaQuery.data?.data;
-    const saldoWajib = saldoSebelumnya?.saldoWajib[0];
-    const saldoKhusus = saldoSebelumnya?.saldoKhusus[0];
-    const saldoSukarela = saldoSebelumnya?.saldoSukarela[0];
+  const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
-    value.nominal = parseInt(value.nominal.replace(/\D/g, ""), 10) * -1;
-    value.idAnggota = String(id);
-
-    if (value.jenisTabungan === "wajib") {
-      value.saldo = saldoWajib + value.nominal;
-    } else if (value.jenisTabungan === "khusus") {
-      value.saldo = saldoKhusus + value.nominal;
-    } else if (value.jenisTabungan === "sukarela") {
-      value.saldo = saldoSukarela + value.nominal;
-    }
+  const submitHandler: SubmitHandler<TSimpananKreditRequest> = (value) => {
 
     // console.log(value)
     simpananMutation.mutate(value, {
@@ -86,6 +61,7 @@ const ModalCreateKredit = forwardRef<
         formCallback.onSuccess("Berhasil menambahkan data simpanan");
         form.reset();
         disclosure.onClose();
+        props.refetchFn?.();
       },
       onError() {
         formCallback.onError(
@@ -94,7 +70,7 @@ const ModalCreateKredit = forwardRef<
       },
     });
   };
-  const watchField = form.watch(["nominal"]);
+  form.watch(["nominal"]);
   return (
     <Modal
       isOpen={disclosure.isOpen}
@@ -112,43 +88,45 @@ const ModalCreateKredit = forwardRef<
               Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data
               tidak dapat dirubah ataupun dihapus !
             </Alert>
-            <HStack gap={3} flexWrap="wrap">
-              <Box>
-                {watchField && (
-                  <InputText
-                    label="Nominal"
-                    onChange={(e) => {
-                      form.setValue(
-                        "nominal",
-                        e.currentTarget.value &&
-                          parseInt(
-                            e.currentTarget.value.replace(/\D/g, ""),
-                            10
-                          ).toLocaleString("id-ID")
-                      );
-                    }}
-                    value={form.getValues("nominal")}
-                    register={"nominal"}
-                  />
-                )}
-              </Box>
-              <VStack alignItems="start">
-                <Text>Jenis Simpanan</Text>
-                <Select
-                  placeholder="pilih jenis simpanan"
-                  onChange={(e) =>
-                    form.setValue("jenisTabungan", e.target.value)
-                  }
-                >
-                  <option value="khusus">Simpanan Khusus</option>
-                  <option value="sukarela">Simpanan Sukarela</option>
-                </Select>
-              </VStack>
-            </HStack>
-            <Text>Catatan</Text>
-            <Textarea
+            <Box>
+              <Text>Jenis Simpanan</Text>
+              <Select
+                placeholder="pilih jenis simpanan"
+                isRequired
+                onChange={(e) =>
+                  form.setValue("jenisTabungan", e.target.value)
+                }
+              >
+                <option value="khusus">Simpanan Khusus</option>
+                <option value="sukarela">Simpanan Sukarela</option>
+              </Select>
+            </Box>
+
+            <InputText
+              label="Nominal"
+              value={form.getValues("nominal")}
+              register={{
+                ...form.register("nominal", { ...validators().required() }), onChange: (e) => {
+                  form.setValue(
+                    "nominal",
+                    e.target.value &&
+                    parseInt(
+                      e.target.value.replace(/\D/g, ""),
+                      10
+                    ).toLocaleString("id-ID")
+                  );
+
+                  return e.target.value;
+                }
+              }}
+              errors={form.formState.errors.nominal as FieldError}
+            />
+
+
+            <InputTextarea
+              label="Catatan"
               placeholder="masukkan Catatan"
-              onChange={(e) => form.setValue("catatan", e.target.value)}
+              register={{ ...form.register("catatan") }}
             />
           </Stack>
         </ModalBody>
@@ -166,5 +144,6 @@ const ModalCreateKredit = forwardRef<
 });
 
 export default ModalCreateKredit;
+ModalCreateKredit.displayName = "ModalCreateKredit"
 
-ModalCreateKredit.displayName = "ModalCreateKredit";
+

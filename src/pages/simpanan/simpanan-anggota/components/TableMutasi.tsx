@@ -27,7 +27,6 @@ export default function TableMutasi(props: Props) {
       <Td color={props.item.nominal < 0 ? "red" : "green"}>
         {toIDR(props.item.nominal)}
       </Td>
-      <Td>{toIDR(props.item.saldo)}</Td>
       <Td>{props.item.catatan}</Td>
       <Td textTransform="uppercase">{props.item.jenisTabungan}</Td>
     </Tr>

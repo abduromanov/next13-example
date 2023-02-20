@@ -42,7 +42,7 @@ import BreadcrumbSection from "@/components/BreadcrumbSection";
 import TablePagination from "@/layouts/components/TablePagination";
 import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
 import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
-import { useSimpananDetail } from "@/services/api/commands/simpanan.command";
+import { useSimpananDetail, useTotalSimpanan } from "@/services/api/commands/simpanan.command";
 import toIDR from "@/services/utils/toIDR";
 
 import ModalCreateDebit from "../../components/ModalCreateDebit";
@@ -67,6 +67,8 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
 export default function PageMutasi() {
   const [total, setTotal] = useState<number>();
   const [jenisTabungan, setJenisTabungan] = useState<string>();
+  const [tglDibuatAwal, settglDibuatAwal] = useState<string>();
+  const [tglDibuatAkhir, settglDibuatAkhir] = useState<string>();
 
   const router = useRouter();
   const { id } = router.query;
@@ -86,15 +88,24 @@ export default function PageMutasi() {
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
+      jenisSimpanan: jenisTabungan,
+      tglDibuatAwal: tglDibuatAwal,
+      tglDibuatAkhir: tglDibuatAkhir
     },
   });
 
   const anggotaQuery = useAnggotaDetail(Number(id)).query();
+  const totalSimpananQuery = useTotalSimpanan(Number(id)).query();
 
   const anggota = anggotaQuery.data?.data?.data;
   const simpananDetail = simpananDetailQuery.data?.data?.data;
   const metaData = simpananDetailQuery.data?.data?.meta;
-  const totalSimpanan = simpananDetailQuery.data?.data?.totalSimpanan;
+  const totalSimpanan = totalSimpananQuery.data?.data?.data;
+
+  const refetchQuery = () => {
+    simpananDetailQuery.refetch();
+    totalSimpananQuery.refetch();
+  }
 
   useEffect(() => {
     setTotal(metaData?.filter_count);
@@ -121,7 +132,7 @@ export default function PageMutasi() {
       name: "Mutasi",
     },
   ];
-
+  // console.log(moment(tglDibuatAwal).toISOString())
   return (
     <Stack spacing={8} px={8} pb={10}>
       <BreadcrumbSection data={breadcrumbData} />
@@ -196,6 +207,7 @@ export default function PageMutasi() {
                       w="200px"
                       border={0}
                       focusBorderColor="none"
+                      onChange={(e) => settglDibuatAwal(e.target.value)}
                     />
                     <Flex mx={2} justifyContent="center">
                       <ArrowLongRightIcon width="20px" />
@@ -205,6 +217,7 @@ export default function PageMutasi() {
                       w="200px"
                       border={0}
                       focusBorderColor="none"
+                      onChange={(e) => settglDibuatAkhir(e.target.value)}
                     />
                   </InputGroup>
                 </HStack>
@@ -215,13 +228,11 @@ export default function PageMutasi() {
                 </Text>
                 <Select
                   onChange={(e) => setJenisTabungan(e.target.value)}
-                  defaultValue=""
+                  placeholder="Semua Simpanan"
                 >
-                  <option>Semua Simpanan</option>
                   <option value="khusus">Khusus</option>
                   <option value="wajib">Wajib</option>
                   <option value="sukarela">Sukarela</option>
-                  <option value="pokok">Pokok</option>
                 </Select>
               </Box>
             </Flex>
@@ -244,7 +255,6 @@ export default function PageMutasi() {
                   </Th>
                   <Th>Tipe</Th>
                   <Th>Nominal</Th>
-                  <Th>Saldo</Th>
                   <Th>Keterangan</Th>
                   <Th>jenis simpanan</Th>
                 </Tr>
@@ -262,8 +272,8 @@ export default function PageMutasi() {
         </CardBody>
       </Card>
 
-      <ModalCreateDebit ref={modalCreateDebitRef} />
-      <ModalCreateKredit ref={modalCreateKreditRef} />
+      <ModalCreateDebit ref={modalCreateDebitRef} refetchFn={refetchQuery} />
+      <ModalCreateKredit ref={modalCreateKreditRef} refetchFn={refetchQuery} />
     </Stack>
   );
 }

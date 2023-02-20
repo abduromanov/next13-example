@@ -81,7 +81,7 @@ export default async function handler(
       saldoSukarela,
     };
 
-    return res.status(200).json(dataMerge);
+    return res.status(200).json({ data: dataMerge });
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
