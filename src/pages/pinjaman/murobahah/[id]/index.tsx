@@ -54,6 +54,7 @@ import toIDR from "@/services/utils/toIDR";
 
 import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
 import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
+import TableRangkumanPembayaran from "../components/TableRangkumanPembayaran";
 
 type TPageProps = {
   pageTitle: string;
@@ -482,81 +483,7 @@ export default function PageDetailMurobahah() {
         </CardHeader>
         <Divider />
         <CardBody>
-          <Stack spacing={5}>
-            <Flex>
-              <Box w="300px">
-                <Text>Keterangan</Text>
-              </Box>
-              <Box w="200px">
-                <Text>Cicilan</Text>
-              </Box>
-              <Box w="200px">
-                <Text>Margin</Text>
-              </Box>
-              <Box w="200px">
-                <Text>Total</Text>
-              </Box>
-            </Flex>
-            <Divider />
-            <Flex>
-              <Box w="300px">
-                <Text>Total Terbayar</Text>
-              </Box>
-              <Box w="200px">
-                <Text>{toIDR(rincianPembayaranTotal?.cicilan)}</Text>
-              </Box>
-              <Box w="200px">
-                <Text>{toIDR(rincianPembayaranTotal?.margin)}</Text>
-              </Box>
-              <Box w="200px">
-                <Text>{toIDR(rincianPembayaranTotal?.total)}</Text>
-              </Box>
-            </Flex>
-            <Flex>
-              <Box w="300px">
-                <Text>Sisa Cicilan</Text>
-              </Box>
-              <Box w="200px">
-                <Text color="red">
-                  {toIDR(rangkumanPembayaranTotal.sisaCicilan.cicilan)}
-                </Text>
-              </Box>
-              <Box w="200px">
-                <Text color="red">
-                  {toIDR(rangkumanPembayaranTotal.sisaCicilan.margin)}
-                </Text>
-              </Box>
-              <Box w="200px">
-                <Text color="red">
-                  {toIDR(rangkumanPembayaranTotal.sisaCicilan.total)}
-                </Text>
-              </Box>
-            </Flex>
-            <Flex>
-              <Box w="300px">
-                <Text>Tenor</Text>
-              </Box>
-              <Box w="200px"></Box>
-              <Box w="200px"></Box>
-              <Box w="200px">
-                <Text color="red">{rangkumanPembayaranTotal.totalTenor}</Text>
-              </Box>
-            </Flex>
-            <Flex>
-              <Box w="300px">
-                <Text>bulan tidak sesuai</Text>
-              </Box>
-              <Box w="200px"></Box>
-              <Box w="200px"></Box>
-              <Box w="200px">
-                <Text color="red">
-                  {rincianPembayaranTotal.bulanTidakSesuai}
-                </Text>
-              </Box>
-            </Flex>
-          </Stack>
-
-          {/* <TableContainer>
+          <TableContainer>
             <Table>
               <Thead>
                 <Tr>
@@ -567,12 +494,10 @@ export default function PageDetailMurobahah() {
                 </Tr>
               </Thead>
               <Tbody>
-                {rangkumanPembayaran.map((item, index) => (
-                  <TableRangkumanPembayaran item={mutasiMurobahahTotal} />
-                ))}
+                <TableRangkumanPembayaran item={rangkumanPembayaranTotal} />
               </Tbody>
             </Table>
-          </TableContainer> */}
+          </TableContainer>
         </CardBody>
       </Card>
     </Stack>
