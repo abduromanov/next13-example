@@ -36,6 +36,11 @@ export default async function handler(
       .items("murobahah")
       .readOne(req.query.id as string, {
         fields: ["*", "anggota.id", "anggota.nama"],
+        filter: {
+          tglDihapus: {
+            _null: true,
+          },
+        },
         meta: "*",
         ...req.query,
       });

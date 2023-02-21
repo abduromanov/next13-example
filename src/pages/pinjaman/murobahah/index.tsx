@@ -25,7 +25,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
-import moment from "moment";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";

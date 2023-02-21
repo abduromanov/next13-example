@@ -29,7 +29,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
-  ArrowLongRightIcon,
+  ArrowDownIcon,
+  ArrowRightIcon,
   ChevronUpDownIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
@@ -201,20 +202,25 @@ export default function PageMutasi() {
                   Filter Tanggal
                 </Text>
                 <HStack>
-                  <InputGroup borderRadius="md" bg="gray.100">
+                  <InputGroup borderRadius="md" bg="gray.100" w={["full", "fit-content"]} display={["block", "flex"]}>
                     <Input
                       type="date"
-                      w="200px"
+                      w={["100%", "200px"]}
                       border={0}
                       focusBorderColor="none"
                       onChange={(e) => settglDibuatAwal(e.target.value)}
                     />
-                    <Flex mx={2} justifyContent="center">
-                      <ArrowLongRightIcon width="20px" />
+                    <Flex justifyContent="center" alignItems="center">
+                      <Icon
+                        as={ArrowRightIcon}
+                        w="20px"
+                        display={["none", "block"]}
+                      />
+                      <Icon as={ArrowDownIcon} w="20px" display={["block", "none"]} />
                     </Flex>
                     <Input
                       type="date"
-                      w="200px"
+                      w={["100%", "200px"]}
                       border={0}
                       focusBorderColor="none"
                       onChange={(e) => settglDibuatAkhir(e.target.value)}

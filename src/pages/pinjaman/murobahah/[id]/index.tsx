@@ -31,7 +31,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { CheckIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import _ from "lodash";
+import _, { isError } from "lodash";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -54,6 +54,7 @@ import toIDR from "@/services/utils/toIDR";
 
 import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
 import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
+import TableRangkumanPembayaran from "../components/TableRangkumanPembayaran";
 
 type TPageProps = {
   pageTitle: string;
@@ -139,25 +140,28 @@ export default function PageDetailMurobahah() {
     sisaCicilan: {
       cicilan: useMemo(
         () =>
-          detailMurobahah?.totalPinjaman || 0 - rincianPembayaranTotal.cicilan,
+          (detailMurobahah?.totalPinjaman || 0) - rincianPembayaranTotal.cicilan,
         [detailMurobahah?.totalPinjaman, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
-        () => detailMurobahah?.totalMargin || 0 - rincianPembayaranTotal.margin,
+        () => (detailMurobahah?.totalMargin || 0) - rincianPembayaranTotal.margin,
         [detailMurobahah?.totalMargin, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
-        () => detailMurobahah?.total || 0 - rincianPembayaranTotal.total,
+        () => (detailMurobahah?.total || 0) - rincianPembayaranTotal.total,
         [detailMurobahah?.total, rincianPembayaranTotal.total]
       ),
     },
     totalTenor: useMemo(
-      () => detailMurobahah?.tenor || 0 - rincianPembayaranTotal.tenorBayar,
+      () => (detailMurobahah?.tenor || 0) - rincianPembayaranTotal.tenorBayar,
       [detailMurobahah?.tenor, rincianPembayaranTotal.tenorBayar]
     ),
   };
 
-  const refetchQuery = () => mutasiMurobahahQuery.refetch();
+  const refetchQuery = () => {
+    mutasiMurobahahQuery.refetch();
+    catatanPembayaranQuery.refetch();
+  }
 
   const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");
   const handleLunasChange = (lunas: boolean) => {
@@ -190,6 +194,10 @@ export default function PageDetailMurobahah() {
       name: "Detail",
     },
   ];
+
+  if (detailMurobahahQuery?.isError) {
+    return <Text>Forbidden</Text>
+  }
 
   return (
     <Stack spacing="8" px="8" pb="10">
@@ -348,10 +356,7 @@ export default function PageDetailMurobahah() {
                   </Tag>
                 )}
               </HStack>
-              {/* <Box flexWrap='wrap' >
-                {rincianCicilan.cicilanPerbulan.lunas ? <Badge colorScheme='green' rounded='md' variant='solid'>Lunas</Badge> : <Badge variant='solid' colorScheme='red'>Belum Lunas</Badge>}
 
-              </Box> */}
             </VStack>
           </Box>
           <Divider />
@@ -478,81 +483,7 @@ export default function PageDetailMurobahah() {
         </CardHeader>
         <Divider />
         <CardBody>
-          <Stack spacing={5}>
-            <Flex>
-              <Box w="300px">
-                <Text>Keterangan</Text>
-              </Box>
-              <Box w="200px">
-                <Text>Cicilan</Text>
-              </Box>
-              <Box w="200px">
-                <Text>Margin</Text>
-              </Box>
-              <Box w="200px">
-                <Text>Total</Text>
-              </Box>
-            </Flex>
-            <Divider />
-            <Flex>
-              <Box w="300px">
-                <Text>Total Terbayar</Text>
-              </Box>
-              <Box w="200px">
-                <Text>{toIDR(rincianPembayaranTotal?.cicilan)}</Text>
-              </Box>
-              <Box w="200px">
-                <Text>{toIDR(rincianPembayaranTotal?.margin)}</Text>
-              </Box>
-              <Box w="200px">
-                <Text>{toIDR(rincianPembayaranTotal?.total)}</Text>
-              </Box>
-            </Flex>
-            <Flex>
-              <Box w="300px">
-                <Text>Sisa Cicilan</Text>
-              </Box>
-              <Box w="200px">
-                <Text color="red">
-                  {toIDR(rangkumanPembayaranTotal.sisaCicilan.cicilan)}
-                </Text>
-              </Box>
-              <Box w="200px">
-                <Text color="red">
-                  {toIDR(rangkumanPembayaranTotal.sisaCicilan.margin)}
-                </Text>
-              </Box>
-              <Box w="200px">
-                <Text color="red">
-                  {toIDR(rangkumanPembayaranTotal.sisaCicilan.total)}
-                </Text>
-              </Box>
-            </Flex>
-            <Flex>
-              <Box w="300px">
-                <Text>Tenor</Text>
-              </Box>
-              <Box w="200px"></Box>
-              <Box w="200px"></Box>
-              <Box w="200px">
-                <Text color="red">{rangkumanPembayaranTotal.totalTenor}</Text>
-              </Box>
-            </Flex>
-            <Flex>
-              <Box w="300px">
-                <Text>bulan tidak sesuai</Text>
-              </Box>
-              <Box w="200px"></Box>
-              <Box w="200px"></Box>
-              <Box w="200px">
-                <Text color="red">
-                  {rincianPembayaranTotal.bulanTidakSesuai}
-                </Text>
-              </Box>
-            </Flex>
-          </Stack>
-
-          {/* <TableContainer>
+          <TableContainer>
             <Table>
               <Thead>
                 <Tr>
@@ -563,12 +494,10 @@ export default function PageDetailMurobahah() {
                 </Tr>
               </Thead>
               <Tbody>
-                {rangkumanPembayaran.map((item, index) => (
-                  <TableRangkumanPembayaran item={mutasiMurobahahTotal} />
-                ))}
+                <TableRangkumanPembayaran item={rangkumanPembayaranTotal} />
               </Tbody>
             </Table>
-          </TableContainer> */}
+          </TableContainer>
         </CardBody>
       </Card>
     </Stack>

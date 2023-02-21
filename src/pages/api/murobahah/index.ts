@@ -31,12 +31,6 @@ export default async function handler(
           tglDihapus: {
             _null: true,
           },
-
-          mutasiMurobahah: {
-            tglDihapus: {
-              _null: true,
-            },
-          },
         },
       ],
     };
@@ -101,6 +95,7 @@ export default async function handler(
 
   async function post() {
     const data = req.body;
+    data.anggota = data.anggota.value;
     data.tglMulai = moment(data.tglMulai)
       .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
       .toISOString();
@@ -116,7 +111,6 @@ export default async function handler(
     data.pinjaman = -~((data.totalPinjaman - data.dp) / data.tenor);
     data.cicilan = data.pinjaman + data.margin;
 
-    // console.log(data);
     await directus.items("murobahah").createOne(data);
 
     return res.status(200).json({});
