@@ -31,11 +31,13 @@ import {
 } from "@/services/api/commands/simpanan.command";
 import validators from "@/services/utils/validators";
 
-
 type Props = {
   refetchFn?: () => void;
-}
-const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | undefined, Props>((props, ref) => {
+};
+const ModalCreateKredit = forwardRef<
+  Partial<ReturnType<typeof useDisclosure>> | undefined,
+  Props
+>((props, ref) => {
   const disclosure = useDisclosure();
   const form = useForm<TSimpananKreditRequest>();
   const formCallback = useFormCallback();
@@ -50,11 +52,9 @@ const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> |
     [disclosure.onOpen]
   );
 
-
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
   const submitHandler: SubmitHandler<TSimpananKreditRequest> = (value) => {
-
     // console.log(value)
     simpananMutation.mutate(value, {
       onSuccess() {
@@ -93,9 +93,7 @@ const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> |
               <Select
                 placeholder="pilih jenis simpanan"
                 isRequired
-                onChange={(e) =>
-                  form.setValue("jenisTabungan", e.target.value)
-                }
+                onChange={(e) => form.setValue("jenisTabungan", e.target.value)}
               >
                 <option value="khusus">Simpanan Khusus</option>
                 <option value="sukarela">Simpanan Sukarela</option>
@@ -106,22 +104,22 @@ const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> |
               label="Nominal"
               value={form.getValues("nominal")}
               register={{
-                ...form.register("nominal", { ...validators().required() }), onChange: (e) => {
+                ...form.register("nominal", { ...validators().required() }),
+                onChange: (e) => {
                   form.setValue(
                     "nominal",
                     e.target.value &&
-                    parseInt(
-                      e.target.value.replace(/\D/g, ""),
-                      10
-                    ).toLocaleString("id-ID")
+                      parseInt(
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
 
                   return e.target.value;
-                }
+                },
               }}
               errors={form.formState.errors.nominal as FieldError}
             />
-
 
             <InputTextarea
               label="Catatan"
@@ -144,6 +142,4 @@ const ModalCreateKredit = forwardRef<Partial<ReturnType<typeof useDisclosure>> |
 });
 
 export default ModalCreateKredit;
-ModalCreateKredit.displayName = "ModalCreateKredit"
-
-
+ModalCreateKredit.displayName = "ModalCreateKredit";

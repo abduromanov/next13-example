@@ -43,7 +43,10 @@ import BreadcrumbSection from "@/components/BreadcrumbSection";
 import TablePagination from "@/layouts/components/TablePagination";
 import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
 import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
-import { useSimpananDetail, useTotalSimpanan } from "@/services/api/commands/simpanan.command";
+import {
+  useSimpananDetail,
+  useTotalSimpanan,
+} from "@/services/api/commands/simpanan.command";
 import toIDR from "@/services/utils/toIDR";
 
 import ModalCreateDebit from "../../components/ModalCreateDebit";
@@ -91,7 +94,7 @@ export default function PageMutasi() {
       limit: pagination.pageSize,
       jenisSimpanan: jenisTabungan,
       tglDibuatAwal: tglDibuatAwal,
-      tglDibuatAkhir: tglDibuatAkhir
+      tglDibuatAkhir: tglDibuatAkhir,
     },
   });
 
@@ -106,7 +109,7 @@ export default function PageMutasi() {
   const refetchQuery = () => {
     simpananDetailQuery.refetch();
     totalSimpananQuery.refetch();
-  }
+  };
 
   useEffect(() => {
     setTotal(metaData?.filter_count);
@@ -202,7 +205,12 @@ export default function PageMutasi() {
                   Filter Tanggal
                 </Text>
                 <HStack>
-                  <InputGroup borderRadius="md" bg="gray.100" w={["full", "fit-content"]} display={["block", "flex"]}>
+                  <InputGroup
+                    borderRadius="md"
+                    bg="gray.100"
+                    w={["full", "fit-content"]}
+                    display={["block", "flex"]}
+                  >
                     <Input
                       type="date"
                       w={["100%", "200px"]}
@@ -216,7 +224,11 @@ export default function PageMutasi() {
                         w="20px"
                         display={["none", "block"]}
                       />
-                      <Icon as={ArrowDownIcon} w="20px" display={["block", "none"]} />
+                      <Icon
+                        as={ArrowDownIcon}
+                        w="20px"
+                        display={["block", "none"]}
+                      />
                     </Flex>
                     <Input
                       type="date"

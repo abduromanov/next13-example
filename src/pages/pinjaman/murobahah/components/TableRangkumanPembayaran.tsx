@@ -16,23 +16,32 @@ export default function TableRangkumanPembayaran(props: Props) {
       </Tr>
       <Tr>
         <Td>Sisa Cicilan</Td>
-        <Td><Text color="red">{toIDR(props?.item?.sisaCicilan?.cicilan)}</Text></Td>
-        <Td><Text color="red">{toIDR(props?.item?.sisaCicilan?.margin)}</Text></Td>
-        <Td><Text color="red">{toIDR(props?.item?.sisaCicilan?.total)}</Text></Td>
+        <Td>
+          <Text color="red">{toIDR(props?.item?.sisaCicilan?.cicilan)}</Text>
+        </Td>
+        <Td>
+          <Text color="red">{toIDR(props?.item?.sisaCicilan?.margin)}</Text>
+        </Td>
+        <Td>
+          <Text color="red">{toIDR(props?.item?.sisaCicilan?.total)}</Text>
+        </Td>
       </Tr>
       <Tr>
         <Td>Tenor</Td>
         <Td></Td>
         <Td></Td>
-        <Td><Text color='red'>{props?.item?.totalTenor}</Text></Td>
+        <Td>
+          <Text color="red">{props?.item?.totalTenor}</Text>
+        </Td>
       </Tr>
       <Tr>
         <Td>Bulan Tidak Sesuai</Td>
         <Td></Td>
         <Td></Td>
-        <Td><Text color="red">{props?.item?.bulanTidakSesuai}</Text></Td>
+        <Td>
+          <Text color="red">{props?.item?.bulanTidakSesuai}</Text>
+        </Td>
       </Tr>
     </>
-
   );
 }

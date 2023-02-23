@@ -28,12 +28,14 @@ import {
 } from "@/services/api/commands/simpanan.command";
 import validators from "@/services/utils/validators";
 
-
 type Props = {
   refetchFn?: () => void;
-}
+};
 
-const ModalCreateDebit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | undefined, Props>((props, ref) => {
+const ModalCreateDebit = forwardRef<
+  Partial<ReturnType<typeof useDisclosure>> | undefined,
+  Props
+>((props, ref) => {
   const disclosure = useDisclosure();
   const formCallback = useFormCallback();
   const form = useForm<TSimpananDebitRequest>();
@@ -76,18 +78,11 @@ const ModalCreateDebit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | 
         : parseInt(`${sukarela}`.replace(/\D/g, ""), 10).toLocaleString("id-ID")
     );
   };
-  form.watch([
-    "nominal",
-    "nominalWajib",
-    "nominalKhusus",
-    "nominalSukarela",
-  ]);
-
+  form.watch(["nominal", "nominalWajib", "nominalKhusus", "nominalSukarela"]);
 
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
   const submitHandler: SubmitHandler<TSimpananDebitRequest> = (value) => {
-
     const nominalWajib: any = value.nominalWajib;
     const nominalKhusus: any = value.nominalKhusus;
     const nominalSukarela: any = value.nominalSukarela;
@@ -128,7 +123,7 @@ const ModalCreateDebit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | 
         formCallback.onSuccess("Berhasil menambahkan data simpanan");
         form.reset();
         disclosure.onClose();
-        props.refetchFn?.()
+        props.refetchFn?.();
       },
       onError() {
         formCallback.onError(
@@ -137,7 +132,6 @@ const ModalCreateDebit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | 
       },
     });
   };
-
 
   return (
     <Modal
@@ -161,14 +155,15 @@ const ModalCreateDebit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | 
               label="Nominal Simpanan"
               value={form.getValues("nominal")}
               register={{
-                ...form.register("nominal", { ...validators().required() }), onChange: (e) => {
+                ...form.register("nominal", { ...validators().required() }),
+                onChange: (e) => {
                   const nominal = parseInt(
                     e.target.value.replace(/\D/g, ""),
                     10
                   );
                   handleChangeNominal(nominal);
                   return e.target.value;
-                }
+                },
               }}
               errors={form.formState.errors.nominal}
             />
@@ -176,62 +171,66 @@ const ModalCreateDebit = forwardRef<Partial<ReturnType<typeof useDisclosure>> | 
               label="Simpanan Wajib"
               name="nominalWajib"
               register={{
-                ...form.register("nominalWajib"), onChange: (e) => {
+                ...form.register("nominalWajib"),
+                onChange: (e) => {
                   form.setValue(
                     "nominalWajib",
-                    isNaN(
-                      parseInt(e.target.value.replace(/\D/g, ""), 10)
-                    ) || !e.target.value
+                    isNaN(parseInt(e.target.value.replace(/\D/g, ""), 10)) ||
+                      !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
-                  )
-                  return e.target.value
-                }
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
+                  );
+                  return e.target.value;
+                },
               }}
             />
 
             <InputText
               label="Simpanan Khusus"
               register={{
-                ...form.register("nominalKhusus"), onChange: (e) => {
+                ...form.register("nominalKhusus"),
+                onChange: (e) => {
                   form.setValue(
                     "nominalKhusus",
-                    isNaN(
-                      parseInt(e.target.value.replace(/\D/g, ""), 10)
-                    ) || !e.target.value
+                    isNaN(parseInt(e.target.value.replace(/\D/g, ""), 10)) ||
+                      !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
-                  )
-                  return e.target.value
-                }
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
+                  );
+                  return e.target.value;
+                },
               }}
             />
             <InputText
               label="Simpanan Sukarela"
               register={{
-                ...form.register("nominalSukarela"), onChange: (e) => {
+                ...form.register("nominalSukarela"),
+                onChange: (e) => {
                   form.setValue(
                     "nominalSukarela",
-                    isNaN(
-                      parseInt(e.target.value.replace(/\D/g, ""), 10)
-                    ) || !e.target.value
+                    isNaN(parseInt(e.target.value.replace(/\D/g, ""), 10)) ||
+                      !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
-                  )
-                  return e.target.value
-                }
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
+                  );
+                  return e.target.value;
+                },
               }}
             />
-            <InputTextarea label="Keterangan" placeholder="masukkan keterangan simpanan" register={{ ...form.register('catatan') }} />
+            <InputTextarea
+              label="Keterangan"
+              placeholder="masukkan keterangan simpanan"
+              register={{ ...form.register("catatan") }}
+            />
             {/* <Box>
               <Text fontWeight="bold">Keterangan</Text>
               <Textarea

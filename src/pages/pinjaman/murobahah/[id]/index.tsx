@@ -31,7 +31,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { CheckIcon, PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import _, { isError } from "lodash";
+import _ from "lodash";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -140,11 +140,13 @@ export default function PageDetailMurobahah() {
     sisaCicilan: {
       cicilan: useMemo(
         () =>
-          (detailMurobahah?.totalPinjaman || 0) - rincianPembayaranTotal.cicilan,
+          (detailMurobahah?.totalPinjaman || 0) -
+          rincianPembayaranTotal.cicilan,
         [detailMurobahah?.totalPinjaman, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
-        () => (detailMurobahah?.totalMargin || 0) - rincianPembayaranTotal.margin,
+        () =>
+          (detailMurobahah?.totalMargin || 0) - rincianPembayaranTotal.margin,
         [detailMurobahah?.totalMargin, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
@@ -161,7 +163,7 @@ export default function PageDetailMurobahah() {
   const refetchQuery = () => {
     mutasiMurobahahQuery.refetch();
     catatanPembayaranQuery.refetch();
-  }
+  };
 
   const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");
   const handleLunasChange = (lunas: boolean) => {
@@ -196,7 +198,7 @@ export default function PageDetailMurobahah() {
   ];
 
   if (detailMurobahahQuery?.isError) {
-    return <Text>Forbidden</Text>
+    return <Text>Forbidden</Text>;
   }
 
   return (
@@ -356,7 +358,6 @@ export default function PageDetailMurobahah() {
                   </Tag>
                 )}
               </HStack>
-
             </VStack>
           </Box>
           <Divider />

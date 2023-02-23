@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Icon,
-  IconButton,
-  Td,
-  Tooltip,
-  Tr,
-} from "@chakra-ui/react";
+import { Flex, Icon, IconButton, Td, Tooltip, Tr } from "@chakra-ui/react";
 import {
   CheckIcon,
   EyeIcon,
