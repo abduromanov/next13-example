@@ -378,7 +378,7 @@ export default function PageDetailMurobahah() {
               <Text fontWeight="bold" mr={["155px", "275px"]}>
                 Total
               </Text>
-              <Text>{toIDR(detailMurobahah?.cicilan)}</Text>
+              <Text>{toIDR(~~(detailMurobahah?.cicilan || 0))}</Text>
             </HStack>
           </VStack>
 
