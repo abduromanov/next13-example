@@ -4,15 +4,16 @@ import toIDR from "@/services/utils/toIDR";
 
 type Props = {
   item: any;
+  item2: any
 };
 export default function TableRangkumanPembayaran(props: Props) {
   return (
     <>
       <Tr>
         <Td>Tenor Terbayar</Td>
-        <Td>{toIDR(props?.item?.cicilan)}</Td>
-        <Td>{toIDR(props?.item?.margin)}</Td>
-        <Td>{toIDR(props?.item?.total)}</Td>
+        <Td>{toIDR(props?.item2?.cicilan)}</Td>
+        <Td>{toIDR(props?.item2?.margin)}</Td>
+        <Td>{toIDR(props?.item2?.total)}</Td>
       </Tr>
       <Tr>
         <Td>Sisa Cicilan</Td>

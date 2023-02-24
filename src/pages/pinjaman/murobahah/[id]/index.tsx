@@ -139,24 +139,28 @@ export default function PageDetailMurobahah() {
   const rangkumanPembayaranTotal = {
     sisaCicilan: {
       cicilan: useMemo(
-        () =>
+        () => detailMurobahah?.lunas ? 0 :
           (detailMurobahah?.totalPinjaman || 0) -
           rincianPembayaranTotal.cicilan,
-        [detailMurobahah?.totalPinjaman, rincianPembayaranTotal.cicilan]
+        [detailMurobahah, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
-        () =>
+        () => detailMurobahah?.lunas ? 0 :
           (detailMurobahah?.totalMargin || 0) - rincianPembayaranTotal.margin,
-        [detailMurobahah?.totalMargin, rincianPembayaranTotal.margin]
+        [detailMurobahah, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
-        () => (detailMurobahah?.total || 0) - rincianPembayaranTotal.total,
-        [detailMurobahah?.total, rincianPembayaranTotal.total]
+        () => detailMurobahah?.lunas ? 0 : (detailMurobahah?.total || 0) - rincianPembayaranTotal.total,
+        [detailMurobahah, rincianPembayaranTotal.total]
       ),
     },
     totalTenor: useMemo(
-      () => (detailMurobahah?.tenor || 0) - rincianPembayaranTotal.tenorBayar,
-      [detailMurobahah?.tenor, rincianPembayaranTotal.tenorBayar]
+      () => detailMurobahah?.lunas ? 0 : (detailMurobahah?.tenor || 0) - rincianPembayaranTotal.tenorBayar,
+      [detailMurobahah, rincianPembayaranTotal.tenorBayar]
+    ),
+    bulanTidakSesuai: useMemo(
+      () => detailMurobahah?.lunas ? 0 : _.sumBy(mutasiMurobahah, "sum.bulanTidakSesuai"),
+      [detailMurobahah, mutasiMurobahah]
     ),
   };
 
@@ -172,9 +176,9 @@ export default function PageDetailMurobahah() {
       {
         onSuccess() {
           if (lunas) {
-            formCallback.onSuccess("muroobahah telah lunas");
+            formCallback.onSuccess("Murobahah Telah Lunas");
           } else {
-            formCallback.onSuccess("muroobahah belum lunas");
+            formCallback.onSuccess("Murobahah Belum Lunas");
           }
         },
         onError() {
@@ -495,7 +499,7 @@ export default function PageDetailMurobahah() {
                 </Tr>
               </Thead>
               <Tbody>
-                <TableRangkumanPembayaran item={rangkumanPembayaranTotal} />
+                <TableRangkumanPembayaran item={rangkumanPembayaranTotal} item2={rincianPembayaranTotal} />
               </Tbody>
             </Table>
           </TableContainer>
