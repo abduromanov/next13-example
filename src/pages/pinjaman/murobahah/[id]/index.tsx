@@ -210,7 +210,10 @@ export default function PageDetailMurobahah() {
       <Box>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
-      <Flex mx={5} p={3} mt={-2} gap="3" flexWrap="wrap">
+      <Flex alignItems="center"
+        justify="space-between"
+        display={["grid", "flex"]}
+        gap={3}>
         <Box>
           <Skeleton isLoaded={!detailMurobahahQuery.isLoading} w="300px">
             <Heading size="md">
@@ -219,7 +222,7 @@ export default function PageDetailMurobahah() {
           </Skeleton>
         </Box>
         <Spacer />
-        <Flex gap="2" flexWrap="wrap">
+        <Flex gap="4" flexWrap="wrap">
           <Center>
             <Skeleton isLoaded={!detailMurobahahQuery?.isLoading}>
               <HStack mr={3}>
@@ -245,141 +248,142 @@ export default function PageDetailMurobahah() {
         </Flex>
       </Flex>
 
-      <Flex
+      <Stack
         flexWrap="wrap"
-        gap={5}
-        mx={5}
-        alignItems="center"
-        justifyContent="center"
+        direction={["column", "row"]}
+        spacing={5}
+      // mx={5}
+      // alignItems="center"
+      // justifyContent="center"
       >
-        <Box rounded="md" boxShadow="md" p={5}>
-          <Box mb={3}>
+        <Box rounded="md" boxShadow="md" p={5} >
+          <Box mb={3} mr={[2, 24]}>
             <Heading size="md">Rincian Cicilan</Heading>
           </Box>
           <Divider />
           {detailMurobahahQuery.isLoading && (
             <Progress size="xs" isIndeterminate />
           )}
-          <Box my={3} mr={40}>
-            <VStack spacing={3} alignItems="start">
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr={40}>
-                  Nama
-                </Text>
-                <Skeleton isLoaded={!detailMurobahahQuery.isLoading}>
-                  <Text>{detailMurobahah?.anggota?.nama}</Text>
-                </Skeleton>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr={28}>
-                  Pembiayaan
-                </Text>
-                <Skeleton isLoaded={!detailMurobahahQuery.isLoading}>
-                  <Text>{detailMurobahah?.pembiayaan}</Text>
-                </Skeleton>
-              </HStack>
-            </VStack>
-          </Box>
+
+          <VStack spacing={3} alignItems="start" my={3} mr={[2, 24]}>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={[32, "222px"]}>
+                Nama
+              </Text>
+              <Skeleton isLoaded={!detailMurobahahQuery.isLoading}>
+                <Text>{detailMurobahah?.anggota?.nama}</Text>
+              </Skeleton>
+            </HStack>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={[24, "175px"]}>
+                Pembiayaan
+              </Text>
+              <Skeleton isLoaded={!detailMurobahahQuery.isLoading}>
+                <Text>{detailMurobahah?.pembiayaan}</Text>
+              </Skeleton>
+            </HStack>
+          </VStack>
+
           <Divider />
           {detailMurobahahQuery.isLoading && (
             <Progress size="xs" isIndeterminate />
           )}
-          <Box my={3} mr={40}>
-            <VStack alignItems="start" spacing={3}>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="133px">
-                  Pinjaman
-                </Text>
-                <Text>{toIDR(detailMurobahah?.totalPinjaman)}</Text>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="150px">
-                  Margin
-                </Text>
-                <Text>{toIDR(detailMurobahah?.totalMargin)}</Text>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="184px">
-                  DP
-                </Text>
-                <Text>{toIDR(detailMurobahah?.dp)}</Text>
-              </HStack>
-            </VStack>
-          </Box>
+
+          <VStack alignItems="start" spacing={3} my={3} mr={[2, 24]}>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={[24, "193px"]}>
+                Pinjaman
+              </Text>
+              <Text>{toIDR(detailMurobahah?.totalPinjaman)}</Text>
+            </HStack>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={[28, "210px"]}>
+                Margin
+              </Text>
+              <Text>{toIDR(detailMurobahah?.totalMargin)}</Text>
+            </HStack>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={[36, "244px"]}>
+                DP
+              </Text>
+              <Text>{toIDR(detailMurobahah?.dp)}</Text>
+            </HStack>
+          </VStack>
+
           <Divider />
           {detailMurobahahQuery.isLoading && (
             <Progress size="xs" isIndeterminate />
           )}
-          <Box mt={3} mr={40} color="teal.400">
-            <VStack alignItems="start" spacing={3}>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="170px">
-                  Total
-                </Text>
-                <Text>{toIDR(detailMurobahah?.total)}</Text>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="165px">
-                  Tenor
-                </Text>
-                <Text>{detailMurobahah?.tenor}</Text>
-              </HStack>
-            </VStack>
-          </Box>
+
+          <VStack alignItems="start" spacing={3} my={3} color="teal.400" mr={[2, 24]}>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={[32, "230px"]}>
+                Total
+              </Text>
+              <Text>{toIDR(detailMurobahah?.total)}</Text>
+            </HStack>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={[32, "225px"]}>
+                Tenor
+              </Text>
+              <Text>{detailMurobahah?.tenor}</Text>
+            </HStack>
+          </VStack>
+
         </Box>
-        <Box rounded="md" boxShadow="md" h={72} p={5}>
-          <Box mb={3}>
+        <Box rounded="md" boxShadow="md" h={72} p={5} >
+          <Box mb={3} mr={[2, 40]}>
             <Heading size="md">Cicilan Perbulan</Heading>
           </Box>
           <Divider />
           {detailMurobahahQuery.isLoading && (
             <Progress size="xs" isIndeterminate />
           )}
-          <Box my={3}>
-            <VStack alignItems="start" spacing={3}>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr={48}>
-                  Pinjaman/bulan
-                </Text>
-                <Text>{toIDR(detailMurobahah?.pinjaman)}</Text>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="208px">
-                  Margin/bulan
-                </Text>
-                <Text>{toIDR(detailMurobahah?.margin)}</Text>
-              </HStack>
-              <HStack spacing={4}>
-                {detailMurobahah?.lunas ? (
-                  <Tag colorScheme="green" rounded="md" variant="solid">
-                    <TagLeftIcon boxSize="12px" as={CheckIcon} />
-                    <TagLabel>Lunas</TagLabel>
-                  </Tag>
-                ) : (
-                  <Tag colorScheme="yellow" rounded="md" variant="solid">
-                    <TagLeftIcon boxSize="12px" as={XMarkIcon} />
-                    <TagLabel>Belum Lunas</TagLabel>
-                  </Tag>
-                )}
-              </HStack>
-            </VStack>
-          </Box>
+
+          <VStack alignItems="start" spacing={3} my={3} mr={[2, 40]}>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={["75px", 48]}>
+                Pinjaman/bulan
+              </Text>
+              <Text>{toIDR(detailMurobahah?.pinjaman)}</Text>
+            </HStack>
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={[24, "208px"]}>
+                Margin/bulan
+              </Text>
+              <Text>{toIDR(detailMurobahah?.margin)}</Text>
+            </HStack>
+            <HStack spacing={4}>
+              {detailMurobahah?.lunas ? (
+                <Tag colorScheme="green" rounded="md" variant="solid">
+                  <TagLeftIcon boxSize="12px" as={CheckIcon} />
+                  <TagLabel>Lunas</TagLabel>
+                </Tag>
+              ) : (
+                <Tag colorScheme="yellow" rounded="md" variant="solid">
+                  <TagLeftIcon boxSize="12px" as={XMarkIcon} />
+                  <TagLabel>Belum Lunas</TagLabel>
+                </Tag>
+              )}
+            </HStack>
+          </VStack>
+
           <Divider />
           {detailMurobahahQuery.isLoading && (
             <Progress size="xs" isIndeterminate />
           )}
-          <Box mt={3} color="teal.400">
-            <VStack spacing={3} alignItems="start">
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="275px">
-                  Total
-                </Text>
-                <Text>{toIDR(detailMurobahah?.cicilan)}</Text>
-              </HStack>
-            </VStack>
-          </Box>
+
+          <VStack spacing={3} alignItems="start" mr={[2, 40]} color="teal.400">
+            <HStack spacing={2} flexWrap="wrap">
+              <Text fontWeight="bold" mr={["155px", "275px"]}>
+                Total
+              </Text>
+              <Text>{toIDR(detailMurobahah?.cicilan)}</Text>
+            </HStack>
+          </VStack>
+
         </Box>
-      </Flex>
+      </Stack>
 
       <Card boxShadow="md" mx={5} my={7}>
         <CardHeader mb={-3}>
