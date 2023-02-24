@@ -373,7 +373,7 @@ export default function PageDetailMurobahah() {
             <Progress size="xs" isIndeterminate />
           )}
 
-          <VStack spacing={3} alignItems="start" mr={[2, 40]} color="teal.400">
+          <VStack spacing={3} alignItems="start" mr={[2, 40]} color="teal.400" my={3}>
             <HStack spacing={2} flexWrap="wrap">
               <Text fontWeight="bold" mr={["155px", "275px"]}>
                 Total
