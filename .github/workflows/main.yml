@@ -26,16 +26,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      # - name: Save code linting report JSON
-      #   run: yarn lint --output-file eslint_report.json --format json src
-      #   continue-on-error: true
-
-      # - name: Annotate code linting results
-      #   uses: ataylorme/eslint-annotate-action@v2
-      #   with:
-      #     repo-token: "${{ secrets.GITHUB_TOKEN }}"
-      #     report-json: "eslint_report.json"
-
       - name: Run eslint on changed files
         uses: tj-actions/eslint-changed-files@v18
         with:
@@ -46,8 +36,15 @@ jobs:
             **/*.ts
             **/*.tsx
 
-      - name: Typecheck
-        uses: icrawl/action-tsc@v1
+      # - name: Typecheck
+      #   uses: icrawl/action-tsc@v1
+
+      - uses: EPMatt/reviewdog-action-tsc@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-check
+          level: warning
+          workdir: src
 # name: Check code
 
 # on: [push]
