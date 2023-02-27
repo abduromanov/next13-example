@@ -14,10 +14,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Typecheck
-        uses: andoshin11/typescript-error-reporter-action@v1.0.2
+      - name: Get changed typescript files
+        id: changed-typescript-files
+        uses: tj-actions/changed-files@v20
+        with:
+          base_sha: ${{ github.event.pull_request.base.sha }}
+          files: |
+            **/*.ts
+            **/*.tsx
+
+      - name: TypeScript report
+        if: steps.changed-typescript-files.outputs.any_changed == 'true'
+        uses: fersilva16/ts-report-action@1.1.0
+        with:
+          files: ${{ steps.changed-typescript-files.outputs.all_changed_files }}
 # name: Check code
 
 # on: [push]
