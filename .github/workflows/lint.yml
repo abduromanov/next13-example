@@ -1,4 +1,4 @@
-name: Test
+name: Lint Code
 
 on: [pull_request]
 
@@ -45,21 +45,3 @@ jobs:
           reporter: github-pr-check
           level: warning
           workdir: src
-# name: Check code
-
-# on: [push]
-
-# jobs:
-#   lint:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
-
-#       - name: Run linter
-#         uses: actionsx/prettier@v2
-
-#       - uses: stefanzweifel/git-auto-commit-action@v4
-#         with:
-#           commit_message: Apply Prettier
-#           skip_fetch: true
