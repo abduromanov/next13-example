@@ -50,6 +50,9 @@ export default function Page(pageProps: TPageProps) {
     pageProps.anggota
   );
 
+  console.log(pageProps.nama);
+
+
   const pengumumanQuery = usePengumuman(["home"]).query({
     params: {
       limit: 5,
