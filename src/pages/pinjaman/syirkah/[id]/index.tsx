@@ -145,20 +145,24 @@ export default function PageDetailSyirkah() {
         <CardBody>
           <Flex mb={8} alignItems="start" display={["grid", "flex"]} gap={5}>
             <VStack flex={1} alignItems="start">
-              <Stack direction={['column', 'row']} justifyContent='space-between' w='full'>
-                <Text fontWeight="bold">
-                  Nama BC
-                </Text>
-                <Skeleton isLoaded={!detailSyirkahQuery.isLoading} minW='40%'>
-                  <Text textAlign='right'>{detailSyirkah?.namaBc}</Text>
+              <Stack
+                direction={["column", "row"]}
+                justifyContent="space-between"
+                w="full"
+              >
+                <Text fontWeight="bold">Nama BC</Text>
+                <Skeleton isLoaded={!detailSyirkahQuery.isLoading} minW="40%">
+                  <Text textAlign="right">{detailSyirkah?.namaBc}</Text>
                 </Skeleton>
               </Stack>
-              <Stack direction={['column', 'row']} justifyContent='space-between' w='full'>
-                <Text fontWeight="bold">
-                  Pemilik
-                </Text>
-                <Skeleton isLoaded={!detailSyirkahQuery.isLoading} minW='40%'>
-                  <Text textAlign='right'>
+              <Stack
+                direction={["column", "row"]}
+                justifyContent="space-between"
+                w="full"
+              >
+                <Text fontWeight="bold">Pemilik</Text>
+                <Skeleton isLoaded={!detailSyirkahQuery.isLoading} minW="40%">
+                  <Text textAlign="right">
                     {detailSyirkah?.anggota.nama} (
                     {detailSyirkah?.anggota.idAnggota})
                   </Text>
@@ -166,18 +170,22 @@ export default function PageDetailSyirkah() {
               </Stack>
             </VStack>
             <VStack flex={1} alignItems="start">
-              <Stack direction={['column', 'row']} justifyContent='space-between' w='full'>
-                <Text fontWeight="bold">
-                  Tanggal Mulai
-                </Text>
+              <Stack
+                direction={["column", "row"]}
+                justifyContent="space-between"
+                w="full"
+              >
+                <Text fontWeight="bold">Tanggal Mulai</Text>
                 <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
                   <Text>{tglMulai}</Text>
                 </Skeleton>
               </Stack>
-              <Stack direction={['column', 'row']} justifyContent='space-between' w='full'>
-                <Text fontWeight="bold">
-                  Tanggal Selesai
-                </Text>
+              <Stack
+                direction={["column", "row"]}
+                justifyContent="space-between"
+                w="full"
+              >
+                <Text fontWeight="bold">Tanggal Selesai</Text>
                 <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
                   <Text>{tglSelesai}</Text>
                 </Skeleton>

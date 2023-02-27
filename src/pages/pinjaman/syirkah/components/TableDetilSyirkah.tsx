@@ -37,7 +37,7 @@ export default function TableDetilSyirkah(props: Props) {
               <Icon as={PencilSquareIcon} color="teal" fontSize="lg" />
             </Tooltip>
           </Button>
-          <Button variant='link' onClick={props.deleteHandler}>
+          <Button variant="link" onClick={props.deleteHandler}>
             <Tooltip hasArrow label="Hapus" fontSize="xs">
               <Icon as={TrashIcon} color="red" fontSize="lg" />
             </Tooltip>

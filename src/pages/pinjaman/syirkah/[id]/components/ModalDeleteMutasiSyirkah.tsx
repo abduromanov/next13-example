@@ -15,9 +15,7 @@ import { forwardRef, useImperativeHandle } from "react";
 
 import { useFormCallback } from "@/hooks/useFormCallback";
 
-import {
-  useDeleteMutasiSyirkah,
-} from "@/services/api/commands/syirkah.command";
+import { useDeleteMutasiSyirkah } from "@/services/api/commands/syirkah.command";
 
 type Props = {
   idMutasi: number;
@@ -31,19 +29,25 @@ const ModalDeleteMutasiSyirkah = forwardRef<
   const disclosure = useDisclosure();
   const formCallback = useFormCallback();
   const router = useRouter();
-  const mutasiSyirkahMutation = useDeleteMutasiSyirkah(router.query.id as string, props.idMutasi).mutate("DELETE");
+  const mutasiSyirkahMutation = useDeleteMutasiSyirkah(
+    router.query.id as string,
+    props.idMutasi
+  ).mutate("DELETE");
 
   const submitHandler = () => {
-    mutasiSyirkahMutation.mutate({}, {
-      onSuccess() {
-        formCallback.onSuccess("Berhasil mengubah data");
-        disclosure.onClose();
-        props.refetchFn?.();
-      },
-      onError() {
-        formCallback.onError("Gagal mengubah data");
-      },
-    });
+    mutasiSyirkahMutation.mutate(
+      {},
+      {
+        onSuccess() {
+          formCallback.onSuccess("Berhasil mengubah data");
+          disclosure.onClose();
+          props.refetchFn?.();
+        },
+        onError() {
+          formCallback.onError("Gagal mengubah data");
+        },
+      }
+    );
   };
 
   useImperativeHandle(
