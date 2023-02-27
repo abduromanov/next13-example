@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";

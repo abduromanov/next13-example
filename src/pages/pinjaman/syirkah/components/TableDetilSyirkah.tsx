@@ -1,7 +1,6 @@
 import { Button, Flex, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
-import Link from "next/link";
 import { useMemo } from "react";
 
 import toIDR from "@/services/utils/toIDR";
@@ -11,6 +10,7 @@ import { TMutasiSyirkah } from "@/types";
 type Props = {
   item: TMutasiSyirkah;
   editHandler?: () => void;
+  deleteHandler?: () => void;
 };
 
 export default function TableDetilSyirkah(props: Props) {
@@ -37,11 +37,11 @@ export default function TableDetilSyirkah(props: Props) {
               <Icon as={PencilSquareIcon} color="teal" fontSize="lg" />
             </Tooltip>
           </Button>
-          <Link href="#">
+          <Button variant='link' onClick={props.deleteHandler}>
             <Tooltip hasArrow label="Hapus" fontSize="xs">
               <Icon as={TrashIcon} color="red" fontSize="lg" />
             </Tooltip>
-          </Link>
+          </Button>
         </Flex>
       </Td>
     </Tr>
