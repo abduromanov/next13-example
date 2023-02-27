@@ -8,15 +8,26 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<TResponse | TAnggota>
 ) {
-  if (req.method !== 'POST') {
-    return res.status(405);
-  }
-
   try {
-    await directus.items<string, TAnggota>('anggota').createOne(req.body);
+    switch (req.method) {
+      case "PUT":
+        return update();
 
-    return res.status(200).json({});
+      case "PATCH":
+        return update();
+
+      default:
+        return res.status(405).end();
+    }
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
-};
+
+  async function update() {
+    await directus
+      .items("pengumuman")
+      .updateOne(req.query.id as string, req.body);
+
+    return res.status(200).json({});
+  }
+}

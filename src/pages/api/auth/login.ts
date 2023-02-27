@@ -7,24 +7,39 @@ import { TAnggota, TResponse } from "@/types";
 
 export default async function login(
   req: NextApiRequest,
-  res: NextApiResponse<TResponse | Partial<TAnggota>>,
+  res: NextApiResponse<TResponse | Partial<TAnggota>>
 ) {
   try {
-    const data = await directus.items('anggota').readByQuery({
-      fields: ['id', 'idAnggota', 'nama', 'alamat', 'isPasswordBaru', 'status', 'password'],
+    if (req.method !== "POST") {
+      return res.status(405).end();
+    }
+
+    const data = await directus.items("anggota").readByQuery({
+      fields: [
+        "id",
+        "idAnggota",
+        "nama",
+        "alamat",
+        "isPasswordBaru",
+        "status",
+        "password",
+      ],
       limit: 1,
       filter: {
         idAnggota: {
-          _eq: req.body.idAnggota
-        }
-      }
+          _eq: req.body.idAnggota,
+        },
+      },
     });
 
     const dataAnggota: Partial<TAnggota> = _.head(data.data);
-    const isPasswordTrue = await directus.utils.hash.verify(req.body.password, dataAnggota?.password || '');
+    const isPasswordTrue = await directus.utils.hash.verify(
+      req.body.password,
+      dataAnggota?.password || ""
+    );
 
     if (data.data?.length === 0 || !isPasswordTrue) {
-      return res.status(404).json({})
+      return res.status(404).json({});
     }
 
     delete dataAnggota?.password;
@@ -33,4 +48,4 @@ export default async function login(
   } catch (error: any) {
     return res.status(error.response.status).json(error);
   }
-};
+}

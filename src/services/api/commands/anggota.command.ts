@@ -7,10 +7,22 @@ export type TAnggotaRequest = {
   nama: string;
   password: string;
   alamat: string;
-}
+};
 
-export const useAnggota = () => queryMutation<any, TAnggota[]>('/api/anggota', ['anggota']);
+export const useAnggota = (key?: string[]) => {
+  key = key?.filter((item) => item) || [];
 
-export const useAnggotaDetail = (id: number) => queryMutation<any, TAnggota>(`/api/anggota/${id}`, ['anggota', id]);
+  return queryMutation<any, TAnggota[]>("/api/anggota", ["anggota", ...key]);
+};
 
-export const useCreateAnggota = () => queryMutation<TAnggotaRequest, TAnggota>('/api/anggota/create', ['anggota', 'creeate']);
+export const useAnggotaDetail = (id: number) =>
+  queryMutation<any, TAnggota>(`/api/anggota/${id}`, ["anggota", id]);
+
+export const useCreateAnggota = () =>
+  queryMutation<TAnggotaRequest, TAnggota>("/api/anggota");
+
+export const useUpdateAnggota = (id: number) =>
+  queryMutation<TAnggotaRequest, TAnggota>(`/api/anggota/${id}`);
+
+export const useDeleteAnggota = (id: number) =>
+  queryMutation<any, TAnggota>(`/api/anggota/${id}`);

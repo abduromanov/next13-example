@@ -1,3 +1,4 @@
+import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
@@ -9,12 +10,38 @@ export default async function handler(
   res: NextApiResponse<TResponse | TMurobahah>
 ) {
   try {
-    const filter = {
-      _and: [{
-        murobahah: {
-          _eq: parseInt(req.query.id as string)
-        }
-      }]
+    switch (req.method) {
+      case "GET":
+        return get();
+
+      case "POST":
+        return post();
+
+      default:
+        return res.status(405).end();
+    }
+  } catch (error: any) {
+    return res.status(error.response?.status || 500).json(error);
+  }
+  async function get() {
+    const filter: any = {
+      _and: [
+        {
+          murobahah: {
+            _eq: parseInt(req.query.id as string),
+          },
+        },
+      ],
+    };
+    if (req.query.tahun) {
+      filter._and.push({
+        tglBayar: {
+          _between: [
+            moment(req.query.tahun, "YYYY").startOf("year").toISOString(),
+            moment(req.query.tahun, "YYYY").endOf("year").toISOString(),
+          ],
+        },
+      });
     }
 
     if (req.query.filter) {
@@ -23,15 +50,29 @@ export default async function handler(
 
     delete req.query.filter;
 
-    const data = await directus.items('mutasiMurobahah').readByQuery({
-      fields: ['*'],
-      meta: '*',
+    const data = await directus.items("mutasiMurobahah").readByQuery({
+      fields: ["*"],
+      meta: "*",
       filter: filter,
       ...req.query,
     });
 
     return res.status(200).json(data);
-  } catch (error: any) {
-    return res.status(error.response?.status || 500).json(error);
   }
-};
+  async function post() {
+    const data = req.body;
+    data.cicilan = parseInt(data.cicilan.replace(/\D/g, ""), 10);
+    data.margin = parseInt(data.margin.replace(/\D/g, ""), 10);
+    data.total = parseInt(data.total.replace(/\D/g, ""), 10);
+    data.tglBayar = moment(data.tglBayar)
+      .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
+      .toISOString();
+    data.tenorTerbayar = parseInt(data.tenorTerbayar);
+    data.bulanTidakSesuai = parseInt(data.bulanTidakSesuai);
+    data.murobahah = parseInt(data.murobahah);
+
+    await directus.items("mutasiMurobahah").createOne(data);
+
+    return res.status(200).json({});
+  }
+}

@@ -2,20 +2,26 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export const config = {
-  matcher: '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  matcher: "/((?!api|_next/static|_next/image|favicon.ico).*)",
 };
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
-  if (!req.cookies.get('anggota') && !req.nextUrl.pathname.startsWith('/auth')) {
-    url.pathname = '/auth/login'
+  if (
+    !req.cookies.get("anggota") &&
+    !req.nextUrl.pathname.startsWith("/auth")
+  ) {
+    url.pathname = "/auth/login";
 
     return NextResponse.redirect(url);
   }
 
-  if (req.cookies.get('anggota') && req.nextUrl.pathname.startsWith('/auth')) {
-    url.pathname = '/';
+  if (
+    (req.cookies.get("anggota") && req.nextUrl.pathname.startsWith("/auth")) ||
+    req.nextUrl.pathname.includes("components")
+  ) {
+    url.pathname = "/";
 
     return NextResponse.redirect(url);
   }

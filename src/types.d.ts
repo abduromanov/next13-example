@@ -6,18 +6,19 @@ export type Disclosure = {
   isControlled: boolean;
   getButtonProps: (props?: any) => any;
   getDisclosureProps: (props?: any) => any;
-}
+};
 
 export interface DirectusResponse<T> {
-  data: T,
+  data: T;
   meta?: {
-    total_count: number,
-    filter_count: number,
-  }
+    total_count: number;
+    filter_count: number;
+  };
+  totalSimpanan?: TTotalSimpanan;
 }
-
 export interface TResponse<T = unknown> {
   data?: T | [];
+  message?: string;
 }
 
 export interface AuthPropsType {
@@ -38,23 +39,31 @@ export interface TAnggota {
   simpananPokok: number;
   isPasswordBaru: boolean;
   tglDihapus: string;
-};
+  totalSimpanan: number;
+}
 
-export interface TMemberRelations {
+export interface TAnggotaRelations {
   mutasiTabungan?: TSimpanan[];
   // murobahah?: TMurobahah[];
-};
+}
 
 export interface TSimpanan {
   id: number;
   idAnggota: number;
   catatan: string;
-  jenisTabungan: 'wajib' | 'khusus' | 'sukarela';
+  jenisTabungan: "wajib" | "khusus" | "sukarela";
   saldo: number;
   nominal: number;
   saldo: number;
   tglDibuat: string;
   tglDiubah: string;
+}
+
+export interface TTotalSimpanan {
+  wajib: number;
+  khusus: number;
+  sukarela: number;
+  pokok: number;
 }
 
 export interface TMurobahah {
@@ -76,7 +85,7 @@ export interface TMurobahah {
 export interface TMurobahahRelations {
   anggota: Partial<TAnggota>;
   mutasiMurobahah: Partial<TMutasiMurobahah>[];
-};
+}
 
 export interface TMutasiMurobahah {
   tglBayar: string;
@@ -86,11 +95,11 @@ export interface TMutasiMurobahah {
   isBulat: boolean;
   tenorTerbayar: number;
   bulanTidakSesuai: number;
-};
+}
 
 export interface TMutasiMurobahahRelations {
   murobahah: TMurobahah;
-};
+}
 
 export interface TSyirkah {
   id: number;
@@ -100,7 +109,7 @@ export interface TSyirkah {
   modalHamasah: number;
   tglMulai: string;
   tglSelesai: string;
-};
+}
 
 export interface TMutasiSyirkah {
   id: number;
@@ -115,9 +124,16 @@ export interface TMutasiSyirkah {
   tglBayar: string;
   presentaseBonus: number;
   catatan: string;
-};
+}
 
 export interface TSyirkahRelations {
   anggota: Partial<TAnggota>;
   mutasiSyirkah: Partial<TMutasiSyirkah>[];
-};
+}
+
+export interface TPengumuman {
+  id: string;
+  image: string;
+  date_created: string;
+  active: boolean;
+}
