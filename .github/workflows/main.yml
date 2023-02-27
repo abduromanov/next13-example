@@ -1,18 +1,38 @@
-name: Check code
+name: Test
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        
-      - name: Run linter
-        uses: actionsx/prettier@v2
-          
-      - uses: stefanzweifel/git-auto-commit-action@v4
+    strategy:
+      matrix:
+        node-version: [13.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          commit_message: Apply Prettier
-          skip_fetch: true
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Typecheck
+        uses: andoshin11/typescript-error-reporter-action@v1.0.2
+# name: Check code
+
+# on: [push]
+
+# jobs:
+#   lint:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Run linter
+#         uses: actionsx/prettier@v2
+
+#       - uses: stefanzweifel/git-auto-commit-action@v4
+#         with:
+#           commit_message: Apply Prettier
+#           skip_fetch: true
