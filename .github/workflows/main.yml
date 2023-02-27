@@ -26,14 +26,18 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run Linter
-        run: yarn lint
+      - name: Save Code Linting Report JSON
+        run: yarn lint --output-file eslint_report.json --format json src
+        continue-on-error: true
 
-      # - name: Typecheck
-      #   uses: andoshin11/typescript-error-reporter-action@v1.0.2
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          report-json: "eslint_report.json"
 
-      - name: tsc
-        uses: icrawl/action-tsc@v1
+      - name: Typecheck
+        uses: andoshin11/typescript-error-reporter-action@v1.0.2
 # name: Check code
 
 # on: [push]
