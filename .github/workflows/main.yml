@@ -26,18 +26,28 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Save Code Linting Report JSON
-        run: yarn lint --output-file eslint_report.json --format json src
-        continue-on-error: true
+      # - name: Save code linting report JSON
+      #   run: yarn lint --output-file eslint_report.json --format json src
+      #   continue-on-error: true
 
-      - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@v2
+      # - name: Annotate code linting results
+      #   uses: ataylorme/eslint-annotate-action@v2
+      #   with:
+      #     repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      #     report-json: "eslint_report.json"
+
+      - name: Run eslint on changed files
+        uses: tj-actions/eslint-changed-files@v18
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          report-json: "eslint_report.json"
+          config_path: ".eslintrc.json"
+          ignore_path: ".eslintignore"
+          extra_args: "--max-warnings=0"
+          file_extensions: |
+            **/*.ts
+            **/*.tsx
 
       - name: Typecheck
-        uses: andoshin11/typescript-error-reporter-action@v1.0.2
+        uses: icrawl/action-tsc@v1
 # name: Check code
 
 # on: [push]
