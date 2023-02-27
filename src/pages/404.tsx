@@ -19,8 +19,8 @@ export default function Custom404() {
       <Heading size={"4xl"}>404</Heading>
       <p>Halaman tidak ditemukan</p>
 
-      <Link href={'/'}>
-        <Button colorScheme='brand'>Kembali ke Home</Button>
+      <Link href={"/"}>
+        <Button colorScheme="brand">Kembali ke Home</Button>
       </Link>
     </Stack>
   );
