@@ -4,7 +4,7 @@ on: [pull_request]
 
 jobs:
   test:
-    name: Typescript Checking
+    name: Typescript Checking and Lint
     runs-on: ubuntu-latest
     strategy:
       matrix:

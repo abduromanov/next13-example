@@ -1,4 +1,4 @@
-name: Lint Code
+name: Format Code
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Typescript Checking
+    name: Run Prettier
     runs-on: ubuntu-latest
     strategy:
       matrix:
