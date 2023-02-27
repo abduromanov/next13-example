@@ -52,9 +52,10 @@ export default function Page(pageProps: TPageProps) {
 
   const pengumumanQuery = usePengumuman(["home"]).query({
     params: {
-      limit: 5, filter: {
-        active: true
-      }
+      limit: 5,
+      filter: {
+        active: true,
+      },
     },
   });
 
