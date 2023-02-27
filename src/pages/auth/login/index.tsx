@@ -80,7 +80,12 @@ export default function Page() {
           >
             <Stack spacing="6">
               <Stack spacing={"6"} textAlign="center" alignItems={"center"}>
-                <Image src={require('@/assets/circle.png')} alt="" className="max-w-[70%]" priority />
+                <Image
+                  src={require("@/assets/circle.png")}
+                  alt=""
+                  className="max-w-[70%]"
+                  priority
+                />
                 <Heading size={useBreakpointValue({ base: "xs", md: "sm" })}>
                   {process.env.APP_NAME}
                 </Heading>
