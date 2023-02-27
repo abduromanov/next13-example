@@ -24,7 +24,7 @@ type Props = {
 const MenuItem = () => (
   <VStack textColor={"white"} spacing={8}>
     <Image
-      src={require("@/../public/circle.png")}
+      src={require("@/assets/circle.png")}
       alt=""
       className="max-w-[70%]"
       priority
