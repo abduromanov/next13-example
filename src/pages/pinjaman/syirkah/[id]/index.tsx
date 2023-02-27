@@ -47,6 +47,7 @@ import {
 import toIDR from "@/services/utils/toIDR";
 
 import ModalCreateMutasiSyirkah from "./components/ModalCreateMutasiSyirkah";
+import ModalDeleteMutasiSyirkah from "./components/ModalDeleteMutasiSyirkah";
 import ModalEditMutasiSyirkah from "./components/ModalEditMutasiSyirkah";
 import TableDetilSyirkah from "../components/TableDetilSyirkah";
 
@@ -81,6 +82,7 @@ export default function PageDetailSyirkah() {
 
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalEditRef = useRef<ReturnType<typeof useDisclosure>>();
+  const modalDeleteRef = useRef<ReturnType<typeof useDisclosure>>();
 
   const pagination = usePagination({
     total: total,
@@ -141,48 +143,48 @@ export default function PageDetailSyirkah() {
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
         <CardBody>
-          <Flex mb={8} alignItems="start" display={["grid", "flex"]} gap={3}>
+          <Flex mb={8} alignItems="start" display={["grid", "flex"]} gap={5}>
             <VStack flex={1} alignItems="start">
-              <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
-                <Flex flexWrap="wrap">
-                  <Text fontWeight="bold" mr={[10, 74]}>
-                    Nama BC
-                  </Text>
-                  <Text>{detailSyirkah?.namaBc}</Text>
-                </Flex>
-              </Skeleton>
-              <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
-                <Flex flexWrap="wrap">
-                  <Text fontWeight="bold" mr={88}>
-                    Pemilik
-                  </Text>
-                  <Text>
+              <Stack direction={['column', 'row']} justifyContent='space-between' w='full'>
+                <Text fontWeight="bold">
+                  Nama BC
+                </Text>
+                <Skeleton isLoaded={!detailSyirkahQuery.isLoading} minW='40%'>
+                  <Text textAlign='right'>{detailSyirkah?.namaBc}</Text>
+                </Skeleton>
+              </Stack>
+              <Stack direction={['column', 'row']} justifyContent='space-between' w='full'>
+                <Text fontWeight="bold">
+                  Pemilik
+                </Text>
+                <Skeleton isLoaded={!detailSyirkahQuery.isLoading} minW='40%'>
+                  <Text textAlign='right'>
                     {detailSyirkah?.anggota.nama} (
                     {detailSyirkah?.anggota.idAnggota})
                   </Text>
-                </Flex>
-              </Skeleton>
+                </Skeleton>
+              </Stack>
             </VStack>
             <VStack flex={1} alignItems="start">
-              <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
-                <Flex flexWrap="wrap">
-                  <Text fontWeight="bold" mr="43px">
-                    Tanggal Mulai
-                  </Text>
+              <Stack direction={['column', 'row']} justifyContent='space-between' w='full'>
+                <Text fontWeight="bold">
+                  Tanggal Mulai
+                </Text>
+                <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
                   <Text>{tglMulai}</Text>
-                </Flex>
-              </Skeleton>
-              <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
-                <Flex flexWrap="wrap">
-                  <Text fontWeight="bold" mr={29}>
-                    Tanggal Selesai
-                  </Text>
+                </Skeleton>
+              </Stack>
+              <Stack direction={['column', 'row']} justifyContent='space-between' w='full'>
+                <Text fontWeight="bold">
+                  Tanggal Selesai
+                </Text>
+                <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
                   <Text>{tglSelesai}</Text>
-                </Flex>
-              </Skeleton>
+                </Skeleton>
+              </Stack>
             </VStack>
           </Flex>
-          <StatGroup>
+          <StatGroup gap={5}>
             <Stat mb={4}>
               <StatLabel>Modal Awal</StatLabel>
               <StatNumber>{toIDR(detailSyirkah?.modalAwal)}</StatNumber>
@@ -254,6 +256,10 @@ export default function PageDetailSyirkah() {
                       modalEditRef.current?.onOpen();
                       setIdMutasi(item.id);
                     }}
+                    deleteHandler={() => {
+                      modalDeleteRef.current?.onOpen();
+                      setIdMutasi(item.id);
+                    }}
                   />
                 ))}
               </Tbody>
@@ -269,6 +275,11 @@ export default function PageDetailSyirkah() {
       <ModalCreateMutasiSyirkah ref={modalCreateRef} refetchFn={refetchQuery} />
       <ModalEditMutasiSyirkah
         ref={modalEditRef}
+        refetchFn={refetchQuery}
+        idMutasi={idMutasi}
+      />
+      <ModalDeleteMutasiSyirkah
+        ref={modalDeleteRef}
         refetchFn={refetchQuery}
         idMutasi={idMutasi}
       />

@@ -19,8 +19,11 @@ export default async function handler(
       case "PATCH":
         return update();
 
+      case "DELETE":
+        return destroy();
+
       default:
-        return;
+        return res.status(405).end();
     }
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
@@ -44,6 +47,12 @@ export default async function handler(
     data.tglBayar = moment(data.tglBayar);
 
     await directus.items("mutasiSyirkah").updateOne(idMutasi, data);
+
+    return res.status(200).json({});
+  }
+
+  async function destroy() {
+    await directus.items("mutasiSyirkah").deleteOne(idMutasi);
 
     return res.status(200).json({});
   }

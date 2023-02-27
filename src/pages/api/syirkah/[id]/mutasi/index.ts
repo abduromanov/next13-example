@@ -18,7 +18,7 @@ export default async function handler(
         return post();
 
       default:
-        return;
+        return res.status(405).end();
     }
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);

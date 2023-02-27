@@ -25,4 +25,4 @@ export const useUpdateAnggota = (id: number) =>
   queryMutation<TAnggotaRequest, TAnggota>(`/api/anggota/${id}`);
 
 export const useDeleteAnggota = (id: number) =>
-  queryMutation<any, TAnggota>(`/api/anggota/${id}`);
+  queryMutation<any, unknown>(`/api/anggota/${id}`);
