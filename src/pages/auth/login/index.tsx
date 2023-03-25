@@ -86,7 +86,7 @@ export default function Page() {
                   className="max-w-[70%]"
                   priority
                 />
-                <Heading size={useBreakpointValue({ base: "xs", md: "sm" })}>
+                <Heading size={useBreakpointValue({ base: "sm", md: "md" })}>
                   {process.env.APP_NAME}
                 </Heading>
               </Stack>

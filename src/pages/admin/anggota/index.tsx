@@ -51,7 +51,7 @@ interface TPageProps {
 export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
   req,
 }) => {
-  const anggota: TAnggota = JSON.parse(req.cookies.anggota || "");
+  const anggota = JSON.parse(req.cookies.anggota || "{}");
 
   return {
     props: {

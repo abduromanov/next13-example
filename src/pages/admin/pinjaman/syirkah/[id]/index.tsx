@@ -51,13 +51,22 @@ import ModalDeleteMutasiSyirkah from "./components/ModalDeleteMutasiSyirkah";
 import ModalEditMutasiSyirkah from "./components/ModalEditMutasiSyirkah";
 import TableDetilSyirkah from "../components/TableDetilSyirkah";
 
+import { TAnggota } from "@/types";
+
 type TPageProps = {
   pageTitle: string;
+  anggota: TAnggota;
 };
-export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+
+export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
+  req,
+}) => {
+  const anggota = JSON.parse(req.cookies.anggota || "{}");
+
   return {
     props: {
       pageTitle: "Detail Syirkah",
+      anggota: anggota,
     },
   };
 };

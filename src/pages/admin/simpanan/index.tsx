@@ -34,12 +34,18 @@ import TableSimpananAnggota from "./components/TableSimpanan";
 import { TAnggota } from "@/types";
 
 interface TPageProps {
+  anggota: TAnggota;
   pageTitle: string;
 }
 
-export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
+  req,
+}) => {
+  const anggota = JSON.parse(req.cookies.anggota || "{}");
+
   return {
     props: {
+      anggota: anggota,
       pageTitle: "Simpanan Anggota",
     },
   };

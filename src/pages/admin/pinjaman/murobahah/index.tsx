@@ -37,16 +37,22 @@ import ModalConfirmDeleteMurobahah from "./components/ModalConfirmDeleteMurobaha
 import ModalTambahPinjaman from "./components/ModalTambahPinjaman";
 import TableMurobahah from "./components/TableMurobahah";
 
-import { TMurobahah } from "@/types";
+import { TAnggota, TMurobahah } from "@/types";
 
 type TPageProps = {
   pageTitle: string;
+  anggota: TAnggota;
 };
 
-export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
+  req,
+}) => {
+  const anggota = JSON.parse(req.cookies.anggota || "{}");
+
   return {
     props: {
       pageTitle: "Murobahah",
+      anggota: anggota,
     },
   };
 };

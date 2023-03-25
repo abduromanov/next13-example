@@ -58,13 +58,17 @@ import { TAnggota, TSimpanan } from "@/types";
 interface TPageProps {
   pageTitle: string;
   anggota?: TAnggota;
-  simpanan?: TSimpanan;
 }
 
-export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
+  req,
+}) => {
+  const anggota = JSON.parse(req.cookies.anggota || "{}");
+
   return {
     props: {
       pageTitle: "Mutasi Simpanan",
+      anggota: anggota,
     },
   };
 };

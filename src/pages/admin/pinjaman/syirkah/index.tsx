@@ -34,14 +34,22 @@ import { useSyirkah } from "@/services/api/commands/syirkah.command";
 import ModalCreateSyirkah from "./components/ModalCreateSyirkah";
 import TableSyirkah from "./components/TableSyirkah";
 
+import { TAnggota } from "@/types";
+
 type TPageProps = {
   pageTitle: string;
+  anggota: TAnggota;
 };
 
-export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
+  req,
+}) => {
+  const anggota = JSON.parse(req.cookies.anggota || "{}");
+
   return {
     props: {
       pageTitle: "Syirkah",
+      anggota: anggota,
     },
   };
 };

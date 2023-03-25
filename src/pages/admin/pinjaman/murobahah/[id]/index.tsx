@@ -56,14 +56,22 @@ import { TableCatatanPembayaran } from "../components/TableCatatanPembayaran";
 import TableRangkumanPembayaran from "../components/TableRangkumanPembayaran";
 import TableRincianPembayaran from "../components/TableRincianPembayaran";
 
+import { TAnggota } from "@/types";
+
 type TPageProps = {
   pageTitle: string;
+  anggota: TAnggota;
 };
 
-export const getServerSideProps: GetServerSideProps<TPageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
+  req,
+}) => {
+  const anggota = JSON.parse(req.cookies.anggota || "{}");
+
   return {
     props: {
       pageTitle: "Detil Murobahah",
+      anggota: anggota,
     },
   };
 };
