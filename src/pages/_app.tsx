@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const [customQueryClient] = useState(queryClient);
   const customTheme = extendTheme(theme);
   const getLayout =
-    Component.getLayout ?? ((page) => <Layouts>{page}</Layouts>);
+    Component.getLayout ?? ((page) => <Layouts {...pageProps}>{page}</Layouts>);
 
   moment.locale("id-ID");
 

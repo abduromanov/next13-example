@@ -8,6 +8,7 @@ import {
   Icon,
   Portal,
   Text,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import * as Heroicon from "@heroicons/react/24/outline";
@@ -18,10 +19,8 @@ import { useRouter } from "next/router";
 
 import menus from "@/services/utils/menus";
 
-import { Disclosure } from "@/types";
-
 type Props = {
-  disclosure: Disclosure;
+  disclosure: ReturnType<typeof useDisclosure>;
 };
 
 const MenuItem = (props: { route: string }) => (

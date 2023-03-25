@@ -1,13 +1,3 @@
-export type Disclosure = {
-  isOpen: boolean;
-  onOpen: () => void;
-  onClose: () => void;
-  onToggle: () => void;
-  isControlled: boolean;
-  getButtonProps: (props?: any) => any;
-  getDisclosureProps: (props?: any) => any;
-};
-
 export interface DirectusResponse<T> {
   data: T;
   meta?: {
@@ -34,7 +24,7 @@ export interface TAnggota {
   alamat: string;
   password: string;
   status: string;
-  role: roleEnums;
+  role: "admin" | "member";
   tglDibuat: string;
   simpananPokok: number;
   isPasswordBaru: boolean;

@@ -22,6 +22,7 @@ export default async function login(
         "alamat",
         "isPasswordBaru",
         "status",
+        "role",
         "password",
       ],
       limit: 1,

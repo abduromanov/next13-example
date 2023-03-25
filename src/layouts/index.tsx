@@ -4,14 +4,18 @@ import { ReactNode } from "react";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
+import { TAnggota } from "@/types";
+
 type Props = {
+  anggota: TAnggota;
   children: ReactNode | JSX.Element;
 };
 
 export default function Layouts(props: Props) {
   const disclosure = useDisclosure();
+  const anggota = props.anggota;
 
-  return (
+  return anggota.role === "admin" ? (
     <section className="flex w-full min-w-full">
       <Sidebar disclosure={disclosure} />
       <VStack
@@ -23,5 +27,7 @@ export default function Layouts(props: Props) {
         {props.children}
       </VStack>
     </section>
+  ) : (
+    <></>
   );
 }
