@@ -1,9 +1,9 @@
-import { Inter } from "@next/font/google";
+import { Source_Sans_Pro } from "@next/font/google";
 
-const font = Inter({
+const font = Source_Sans_Pro({
   subsets: ["latin"],
   variable: "--font-poppins",
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  weight: ["200", "300", "400", "600", "700", "900"],
 });
 
 export default font;

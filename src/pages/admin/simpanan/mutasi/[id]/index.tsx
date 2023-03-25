@@ -135,7 +135,7 @@ export default function PageMutasi() {
     },
     {
       name: "Simpanan Anggota",
-      url: "/simpanan/simpanan-anggota",
+      url: "/admin/simpanan",
     },
     {
       name: "Mutasi",

@@ -1,6 +1,7 @@
 import {
   Alert,
   AlertIcon,
+  Box,
   Button,
   HStack,
   Modal,
@@ -139,18 +140,21 @@ const ModalEditAnggota = forwardRef<
                     opacity: 1,
                   }}
                 />
-                <Button
-                  colorScheme="blackAlpha"
-                  px="8"
-                  onClick={() =>
-                    form.setValue(
-                      "password",
-                      generator.generate({ length: 10 })
-                    )
-                  }
-                >
-                  Ganti Password
-                </Button>
+                <Box>
+                  <Button
+                    colorScheme="blackAlpha"
+                    px="8"
+                    mb="2"
+                    onClick={() =>
+                      form.setValue(
+                        "password",
+                        generator.generate({ length: 10 })
+                      )
+                    }
+                  >
+                    Ganti Password
+                  </Button>
+                </Box>
               </HStack>
             </Stack>
           </ModalBody>

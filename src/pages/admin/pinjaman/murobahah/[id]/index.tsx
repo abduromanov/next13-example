@@ -198,7 +198,7 @@ export default function PageDetailMurobahah() {
     },
     {
       name: "Murobahah",
-      url: "/pinjaman/murobahah",
+      url: "/admin/pinjaman/murobahah",
     },
     {
       name: "Detail",

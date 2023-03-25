@@ -22,7 +22,7 @@ export default function TableSimpananAnggota(props: Props) {
             query: { nama: props.item.nama, idAnggota: props.item.idAnggota },
           }}
         >
-          <Tooltip hasArrow label="lihat mutasi" fontSize="xs">
+          <Tooltip hasArrow label="Lihat Mutasi" fontSize="xs">
             <Icon as={EyeIcon} color="teal" boxSize={5} />
           </Tooltip>
         </Link>

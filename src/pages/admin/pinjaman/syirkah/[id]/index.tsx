@@ -78,7 +78,7 @@ export default function PageDetailSyirkah() {
     },
     {
       name: "Syirkah",
-      url: "/pinjaman/syirkah",
+      url: "/admin/pinjaman/syirkah",
     },
     {
       name: "Detil Syirkah",
