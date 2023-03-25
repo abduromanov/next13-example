@@ -68,7 +68,7 @@ export default function Page(pageProps: TPageProps) {
     <VStack px={8} spacing={8}>
       <VStack>
         <Skeleton isLoaded={!isLoading}>
-          <Heading>Selamat Datang, {anggota?.nama}</Heading>
+          <Heading textAlign="center">Selamat Datang, {anggota?.nama}</Heading>
         </Skeleton>
         <Skeleton isLoaded={!isLoading}>
           <Text>No. Anggota: {anggota?.idAnggota}</Text>
@@ -97,7 +97,7 @@ export default function Page(pageProps: TPageProps) {
                     <SwiperSlide className="items-center" key={item.id}>
                       <Box
                         w={"full"}
-                        h={500}
+                        h={[200, 500]}
                         display={"flex"}
                         alignItems={"center"}
                         justifyContent={"center"}

@@ -116,8 +116,6 @@ const ModalCreateDebit = forwardRef<
       });
     }
 
-    // console.log(listReq)
-
     simpananMutation.mutate(listReq, {
       onSuccess() {
         formCallback.onSuccess("Berhasil menambahkan data simpanan");
@@ -141,7 +139,7 @@ const ModalCreateDebit = forwardRef<
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Tambah Transaksi Tabungan</ModalHeader>
+        <ModalHeader>Tambah Data Debit</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>

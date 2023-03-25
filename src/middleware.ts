@@ -9,8 +9,9 @@ export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
   if (
-    !req.cookies.get("anggota") &&
-    !req.nextUrl.pathname.startsWith("/auth")
+    (!req.cookies.get("anggota") &&
+      !req.nextUrl.pathname.startsWith("/auth")) ||
+    req.nextUrl.pathname === "/"
   ) {
     url.pathname = "/auth/login";
 
@@ -21,7 +22,7 @@ export function middleware(req: NextRequest) {
     (req.cookies.get("anggota") && req.nextUrl.pathname.startsWith("/auth")) ||
     req.nextUrl.pathname.includes("components")
   ) {
-    url.pathname = "/";
+    url.pathname = "/admin/home";
 
     return NextResponse.redirect(url);
   }

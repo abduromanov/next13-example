@@ -45,7 +45,7 @@ export default function Page() {
     postMutation.mutate(values, {
       onSuccess(data) {
         Cookies.set("anggota", JSON.stringify(data.data));
-        router.push("/");
+        router.push("/admin/home");
 
         toast({
           position: "top",

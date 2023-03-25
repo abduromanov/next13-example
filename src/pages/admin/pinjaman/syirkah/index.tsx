@@ -29,10 +29,10 @@ import { useEffect, useRef, useState } from "react";
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import TableSyirkah from "@/pages/pinjaman/syirkah/components/TableSyirkah";
 import { useSyirkah } from "@/services/api/commands/syirkah.command";
 
 import ModalCreateSyirkah from "./components/ModalCreateSyirkah";
+import TableSyirkah from "./components/TableSyirkah";
 
 type TPageProps = {
   pageTitle: string;
@@ -91,7 +91,7 @@ export default function Page() {
       <BreadcrumbSection data={breadcrumbData} />
 
       <Flex alignItems="center" justify="space-between">
-        <Heading size="lg">Data Syirkah Anggota</Heading>
+        <Heading size="lg">Pinjaman Syirkah</Heading>
         <Button
           leftIcon={<Icon as={PlusIcon} />}
           onClick={modalCreateRef.current?.onOpen}

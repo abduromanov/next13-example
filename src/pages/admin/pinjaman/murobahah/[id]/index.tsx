@@ -41,9 +41,6 @@ import { useFormCallback } from "@/hooks/useFormCallback";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
-import ModalCatatan from "@/pages/pinjaman/murobahah/components/ModalCatatan";
-import { TableCatatanPembayaran } from "@/pages/pinjaman/murobahah/components/TableCatatanPembayaran";
-import TableRincianPembayaran from "@/pages/pinjaman/murobahah/components/TableRincianPembayaran";
 import {
   useListTahunMutasiMurobahah,
   useMurobahahDetail,
@@ -52,9 +49,12 @@ import {
 } from "@/services/api/commands/murobahah.command";
 import toIDR from "@/services/utils/toIDR";
 
+import ModalCatatan from "../components/ModalCatatan";
 import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
 import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
+import { TableCatatanPembayaran } from "../components/TableCatatanPembayaran";
 import TableRangkumanPembayaran from "../components/TableRangkumanPembayaran";
+import TableRincianPembayaran from "../components/TableRincianPembayaran";
 
 type TPageProps = {
   pageTitle: string;

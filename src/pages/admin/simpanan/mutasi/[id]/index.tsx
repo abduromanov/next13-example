@@ -7,16 +7,17 @@ import {
   CardBody,
   CardHeader,
   Flex,
+  GridItem,
   HStack,
   Icon,
   Input,
   InputGroup,
   Progress,
   Select,
+  SimpleGrid,
   Skeleton,
   Stack,
   Stat,
-  StatGroup,
   StatLabel,
   StatNumber,
   Table,
@@ -41,7 +42,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import TableMutasi from "@/pages/simpanan/simpanan-anggota/components/TableMutasi";
 import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
 import {
   useSimpananDetail,
@@ -51,6 +51,7 @@ import toIDR from "@/services/utils/toIDR";
 
 import ModalCreateDebit from "../../components/ModalCreateDebit";
 import ModalCreateKredit from "../../components/ModalCreateKredit";
+import TableMutasi from "../../components/TableMutasi";
 
 import { TAnggota, TSimpanan } from "@/types";
 
@@ -136,17 +137,24 @@ export default function PageMutasi() {
       name: "Mutasi",
     },
   ];
-  // console.log(moment(tglDibuatAwal).toISOString())
+
   return (
     <Stack spacing={8} px={8} pb={10}>
       <BreadcrumbSection data={breadcrumbData} />
-      <Flex alignItems="center" justifyContent="space-between" mb={5}>
-        <Skeleton isLoaded={!anggotaQuery.isLoading} w={"25%"}>
+
+      <Flex
+        mx={5}
+        mt={-2}
+        gap="3"
+        flexWrap="wrap"
+        justifyContent="space-between"
+      >
+        <Skeleton isLoaded={!anggotaQuery.isLoading} w={["full", "50%"]}>
           <Text fontSize="2xl" fontWeight="semibold">
             {anggota?.nama} - {anggota?.idAnggota}
           </Text>
         </Skeleton>
-        <Box>
+        <Flex gap="2" flexWrap="wrap">
           <ButtonGroup gap="2">
             <Button
               colorScheme="teal"
@@ -163,36 +171,39 @@ export default function PageMutasi() {
               Kredit
             </Button>
           </ButtonGroup>
-        </Box>
+        </Flex>
       </Flex>
 
       <Card m={5} variant="outline" shadow="sm">
         <CardBody>
-          <StatGroup gap={3}>
-            <Stat>
-              <StatLabel>Simpanan Pokok</StatLabel>
-              <StatNumber>{toIDR(totalSimpanan?.pokok)}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Simpanan Wajib</StatLabel>
-              <StatNumber>{toIDR(totalSimpanan?.wajib)}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Total Simpanan</StatLabel>
-              <StatNumber>{toIDR(totalSimpananAll)}</StatNumber>
-            </Stat>
-          </StatGroup>
-          <StatGroup mt={5}>
-            <Stat>
-              <StatLabel>Simpanan Khusus</StatLabel>
-              <StatNumber>{toIDR(totalSimpanan?.khusus)}</StatNumber>
-            </Stat>
-            <Stat>
-              <StatLabel>Simpanan Sukarela</StatLabel>
-              <StatNumber>{toIDR(totalSimpanan?.sukarela)}</StatNumber>
-            </Stat>
-            <Stat></Stat>
-          </StatGroup>
+          <SimpleGrid columns={[1, 3]} gap={8}>
+            <GridItem colSpan={2}>
+              <SimpleGrid columns={[1, 2]} gap={3}>
+                <Stat>
+                  <StatLabel>Simpanan Pokok</StatLabel>
+                  <StatNumber>{toIDR(totalSimpanan?.pokok)}</StatNumber>
+                </Stat>
+                <Stat>
+                  <StatLabel>Simpanan Wajib</StatLabel>
+                  <StatNumber>{toIDR(totalSimpanan?.wajib)}</StatNumber>
+                </Stat>
+                <Stat>
+                  <StatLabel>Simpanan Khusus</StatLabel>
+                  <StatNumber>{toIDR(totalSimpanan?.khusus)}</StatNumber>
+                </Stat>
+                <Stat>
+                  <StatLabel>Simpanan Sukarela</StatLabel>
+                  <StatNumber>{toIDR(totalSimpanan?.sukarela)}</StatNumber>
+                </Stat>
+              </SimpleGrid>
+            </GridItem>
+            <GridItem>
+              <Stat>
+                <StatLabel>Total Simpanan</StatLabel>
+                <StatNumber>{toIDR(totalSimpananAll)}</StatNumber>
+              </Stat>
+            </GridItem>
+          </SimpleGrid>
         </CardBody>
       </Card>
 

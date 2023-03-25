@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertIcon,
-  Box,
   Button,
   HStack,
   Modal,
@@ -11,9 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   Stack,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -22,6 +19,7 @@ import { FieldError, SubmitHandler, useForm } from "react-hook-form";
 
 import { useFormCallback } from "@/hooks/useFormCallback";
 
+import { InputSelect } from "@/components/Forms/InputSelect";
 import { InputText } from "@/components/Forms/InputText";
 import { InputTextarea } from "@/components/Forms/InputTextarea";
 
@@ -79,7 +77,7 @@ const ModalCreateKredit = forwardRef<
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Tambah Transaksi Tabungan</ModalHeader>
+        <ModalHeader>Tambah Data Kredit</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Stack spacing={3}>
@@ -88,17 +86,21 @@ const ModalCreateKredit = forwardRef<
               Berhati-hatilah dalam mengisi data ini. Setelah disimpan, data
               tidak dapat dirubah ataupun dihapus !
             </Alert>
-            <Box>
-              <Text>Jenis Simpanan</Text>
-              <Select
-                placeholder="pilih jenis simpanan"
-                isRequired
-                onChange={(e) => form.setValue("jenisTabungan", e.target.value)}
-              >
-                <option value="khusus">Simpanan Khusus</option>
-                <option value="sukarela">Simpanan Sukarela</option>
-              </Select>
-            </Box>
+            <InputSelect
+              label="Jenis Tabungan"
+              register={{
+                ...form.register("jenisTabungan", {
+                  ...validators().required(),
+                }),
+              }}
+              errors={form.formState.errors.jenisTabungan}
+            >
+              <option value="" disabled hidden selected>
+                Pilih Jenis Simpanan
+              </option>
+              <option value="khusus">Simpanan Khusus</option>
+              <option value="sukarela">Simpanan Sukarela</option>
+            </InputSelect>
 
             <InputText
               label="Nominal"
@@ -123,7 +125,7 @@ const ModalCreateKredit = forwardRef<
 
             <InputTextarea
               label="Catatan"
-              placeholder="masukkan Catatan"
+              placeholder="Masukkan Catatan"
               register={{ ...form.register("catatan") }}
             />
           </Stack>

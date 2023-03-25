@@ -7,12 +7,12 @@ import {
   HStack,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { forwardRef, useImperativeHandle, useState } from "react";
@@ -96,6 +96,7 @@ const ModalTambahPinjaman = forwardRef<
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Tambah Murobahah</ModalHeader>
+        <ModalCloseButton />
 
         <ModalBody>
           <Stack spacing={3}>
@@ -126,41 +127,37 @@ const ModalTambahPinjaman = forwardRef<
             />
 
             <Flex gap={5}>
-              <Box w="254px">
-                <InputText
-                  label="Jumlah Pinjaman"
-                  value={form.getValues("totalPinjaman")}
-                  register={{
-                    ...form.register("totalPinjaman", {
-                      ...validators().required(),
-                    }),
-                    onChange: (e) => {
-                      form.setValue(
-                        "totalPinjaman",
-                        !isNaN(parseInt(e.target.value))
-                          ? parseInt(
-                              e.target.value.replace(/\D/g, ""),
-                              10
-                            ).toLocaleString("id-ID")
-                          : ""
-                      );
-                      return e.target.value;
-                    },
-                  }}
-                  errors={form.formState.errors.totalPinjaman}
-                />
-              </Box>
-              <Box w="254px">
-                <InputText
-                  type="number"
-                  label="Tenor"
-                  register={{
-                    ...form.register("tenor", { ...validators().required() }),
-                  }}
-                  errors={form.formState.errors.tenor}
-                />
-                <Text fontSize="xs">* Minimal Tenor adalah 12 Bulan</Text>
-              </Box>
+              <InputText
+                label="Jumlah Pinjaman"
+                value={form.getValues("totalPinjaman")}
+                register={{
+                  ...form.register("totalPinjaman", {
+                    ...validators().required(),
+                  }),
+                  onChange: (e) => {
+                    form.setValue(
+                      "totalPinjaman",
+                      !isNaN(parseInt(e.target.value))
+                        ? parseInt(
+                            e.target.value.replace(/\D/g, ""),
+                            10
+                          ).toLocaleString("id-ID")
+                        : ""
+                    );
+                    return e.target.value;
+                  },
+                }}
+                errors={form.formState.errors.totalPinjaman}
+              />
+              <InputText
+                type="number"
+                label="Tenor"
+                register={{
+                  ...form.register("tenor", { ...validators().required() }),
+                }}
+                errors={form.formState.errors.tenor}
+                helper={"* Minimal Tenor adalah 12 Bulan"}
+              />
             </Flex>
             <Flex gap={5}>
               <InputText

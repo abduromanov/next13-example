@@ -26,17 +26,16 @@ import {
 } from "@chakra-ui/react";
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import TableMurobahah from "@/pages/pinjaman/murobahah/components/TableMurobahah";
 import { useMurobahah } from "@/services/api/commands/murobahah.command";
 
 import ModalConfirmDeleteMurobahah from "./components/ModalConfirmDeleteMurobahah";
 import ModalTambahPinjaman from "./components/ModalTambahPinjaman";
+import TableMurobahah from "./components/TableMurobahah";
 
 import { TMurobahah } from "@/types";
 
@@ -106,23 +105,21 @@ export default function PageMurobahah() {
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
       <Flex alignItems="center" justify="space-between" mx={5}>
-        <Heading size="lg">Data Pinjaman Murobahah</Heading>
-        <Link href="">
-          <Button
-            as="span"
-            leftIcon={<Icon as={PlusIcon} />}
-            onClick={() => {
-              modalTambahPinjamanRef.current?.onOpen();
-            }}
-          >
-            Tambah Pinjaman
-          </Button>
-        </Link>
+        <Heading size="lg">Pinjaman Murobahah</Heading>
+        <Button
+          as="span"
+          leftIcon={<Icon as={PlusIcon} />}
+          onClick={() => {
+            modalTambahPinjamanRef.current?.onOpen();
+          }}
+        >
+          Tambah Pinjaman
+        </Button>
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
-          <Flex gap="4" alignItems="center" flexWrap="wrap" mt={5}>
-            <Box>
+          <Flex gap="4" alignItems="center" flexWrap="wrap">
+            <Box w={["full", "200px"]}>
               <Text fontSize="sm">Nama Anggota</Text>
               <InputGroup mt={2}>
                 <InputLeftElement pointerEvents="none">
@@ -130,12 +127,12 @@ export default function PageMurobahah() {
                 </InputLeftElement>
                 <Input
                   placeholder="cari berdasarkan nama"
-                  focusBorderColor="teal.200"
+                  focusBorderColor="brand.500"
                   onChange={(e) => setSearchNama(e.target.value)}
                 />
               </InputGroup>
             </Box>
-            <Box>
+            <Box w={["full", "200px"]}>
               <Text fontSize="sm">ID Anggota</Text>
               <InputGroup mt={2}>
                 <InputLeftElement pointerEvents="none">
@@ -143,16 +140,16 @@ export default function PageMurobahah() {
                 </InputLeftElement>
                 <Input
                   placeholder="cari berdasarkan ID"
-                  focusBorderColor="teal.200"
+                  focusBorderColor="brand.500"
                   onChange={(e) => setIdAnggota(e.target.value)}
                 />
               </InputGroup>
             </Box>
-            <Box>
+            <Box w={["full", "200px"]}>
               <Text fontSize="sm">Tanggal mulai Cicilan</Text>
               <Input
                 type="date"
-                focusBorderColor="teal.200"
+                focusBorderColor="brand.500"
                 mt={2}
                 onChange={(e) => setSearchTglMulai(e.target.value)}
               />

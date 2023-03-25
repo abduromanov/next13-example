@@ -39,12 +39,12 @@ export default function TableSyirkah(props: Props) {
       <Td>{tglSelesai}</Td>
       <Td>
         <Flex gap={3}>
-          <Link href={`/pinjaman/syirkah/${props.item.id}`}>
+          <Link href={`/admin/pinjaman/syirkah/${props.item.id}`}>
             <Tooltip hasArrow label="Lihat Detail" fontSize="xs">
               <Icon as={EyeIcon} color="teal" boxSize={5} />
             </Tooltip>
           </Link>
-          <Link href={`/pinjaman/syirkah/${props.item.id}`}>
+          <Link href={`/admin/pinjaman/syirkah/${props.item.id}`}>
             <Tooltip hasArrow label="Hapus" fontSize="xs">
               <Icon as={TrashIcon} color="red" boxSize={5} />
             </Tooltip>

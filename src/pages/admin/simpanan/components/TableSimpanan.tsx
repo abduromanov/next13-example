@@ -18,7 +18,7 @@ export default function TableSimpananAnggota(props: Props) {
       <Td textAlign="center">
         <Link
           href={{
-            pathname: `/simpanan/simpanan-anggota/mutasi/${props.item.id}`,
+            pathname: `/admin/simpanan/mutasi/${props.item.id}`,
             query: { nama: props.item.nama, idAnggota: props.item.idAnggota },
           }}
         >

@@ -43,7 +43,7 @@ export default function TableMurobahah(props: Props) {
       </Td>
       <Td>
         <Flex gap={5}>
-          <Link href={`/pinjaman/murobahah/${props.item.id}`}>
+          <Link href={`/admin/pinjaman/murobahah/${props.item.id}`}>
             <Tooltip hasArrow label="lihat detail" fontSize="xs">
               <Icon as={EyeIcon} color="teal" boxSize={6} />
             </Tooltip>

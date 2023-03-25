@@ -27,8 +27,9 @@ import { useEffect, useState } from "react";
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import TableSimpananAnggota from "@/pages/simpanan/simpanan-anggota/components/TableSimpanan";
 import { useSimpanan } from "@/services/api/commands/simpanan.command";
+
+import TableSimpananAnggota from "./components/TableSimpanan";
 
 import { TAnggota } from "@/types";
 
@@ -87,7 +88,7 @@ export default function PageSimpanan() {
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
           <Flex alignItems="center" justifyContent="space-between">
-            <Heading size="md">Data simpanan Anggota</Heading>
+            <Heading size="lg">Simpanan Anggota</Heading>
             <InputGroup w={"25%"}>
               <InputLeftElement pointerEvents="none">
                 <Icon as={MagnifyingGlassIcon} color="gray" />

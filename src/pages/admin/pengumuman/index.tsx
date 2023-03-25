@@ -26,7 +26,6 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useFormCallback } from "@/hooks/useFormCallback";
@@ -144,15 +143,13 @@ export default function Page() {
     <Stack spacing="8" px="8" pb="10">
       <Flex alignItems="center" justify="space-between">
         <Heading size="lg">Pengumuman</Heading>
-        <Link href="">
-          <Button
-            as="span"
-            leftIcon={<Icon as={PlusIcon} />}
-            onClick={modalCreateRef.current?.onOpen}
-          >
-            Tambah Pengumuman
-          </Button>
-        </Link>
+        <Button
+          as="span"
+          leftIcon={<Icon as={PlusIcon} />}
+          onClick={modalCreateRef.current?.onOpen}
+        >
+          Tambah Pengumuman
+        </Button>
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>

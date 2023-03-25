@@ -1,6 +1,6 @@
 {
-  "extends": ["eslint:recommended", "next", "next/core-web-vitals", "plugin:@typescript-eslint/recommended", "plugin:@tanstack/eslint-plugin-query/recommended", "prettier"],
-  "plugins": ["@typescript-eslint", "simple-import-sort", "@tanstack/query"],
+  "extends": ["eslint:recommended", "next", "next/core-web-vitals", "plugin:@typescript-eslint/recommended", "plugin:@tanstack/eslint-plugin-query/recommended", "prettier", "plugin:import/errors", "plugin:import/warnings"],
+  "plugins": ["@typescript-eslint", "simple-import-sort", "@tanstack/query", "import"],
   "rules": {
     "no-unused-vars": "off",
     "no-console": "warn",
@@ -35,7 +35,12 @@
           ["^"]
         ]
       }
-    ]
+    ],
+    "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
+    "import/named": "off",
+    "import/namespace": 2,
+    "import/default": 2,
+    "import/export": 2
   },
   "globals": {
     "React": true,
