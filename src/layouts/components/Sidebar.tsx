@@ -12,7 +12,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import * as Heroicon from "@heroicons/react/24/outline";
-import _ from "lodash";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -42,7 +41,7 @@ const MenuItem = (props: { route: string }) => (
               verticalAlign={"center"}
               w={"full"}
               bg={
-                item.route.includes(_.last(props.route.split("/")) || "")
+                item.route === props.route
                   ? "brand.400"
                   : "transparent"
               }

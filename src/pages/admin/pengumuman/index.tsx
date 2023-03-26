@@ -52,7 +52,7 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
   return {
     props: {
-      pageTitle: "Daftar Anggota",
+      pageTitle: "Pengumuman",
       anggota: anggota,
     },
   };

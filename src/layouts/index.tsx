@@ -1,4 +1,4 @@
-import { useDisclosure, VStack } from "@chakra-ui/react";
+import { Container, useDisclosure, VStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 import Header from "./components/Header";
@@ -28,6 +28,8 @@ export default function Layouts(props: Props) {
       </VStack>
     </section>
   ) : (
-    <></>
+    <Container>
+      {props.children}
+    </Container>
   );
 }
