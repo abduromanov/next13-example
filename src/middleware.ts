@@ -9,7 +9,9 @@ export const config = {
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
-  const anggota: TAnggota = JSON.parse(req.cookies.get('anggota')?.value || "{}");
+  const anggota: TAnggota = JSON.parse(
+    req.cookies.get("anggota")?.value || "{}"
+  );
 
   if (
     (!req.cookies.get("anggota") &&
@@ -30,7 +32,6 @@ export function middleware(req: NextRequest) {
     } else {
       url.pathname = "/anggota";
     }
-
 
     return NextResponse.redirect(url);
   }

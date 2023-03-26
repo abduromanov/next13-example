@@ -40,11 +40,7 @@ const MenuItem = (props: { route: string }) => (
               color="white"
               verticalAlign={"center"}
               w={"full"}
-              bg={
-                item.route === props.route
-                  ? "brand.400"
-                  : "transparent"
-              }
+              bg={item.route === props.route ? "brand.400" : "transparent"}
               justifyContent={"start"}
               _hover={{ bg: "brand.400" }}
               m={0}

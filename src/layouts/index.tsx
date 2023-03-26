@@ -28,8 +28,6 @@ export default function Layouts(props: Props) {
       </VStack>
     </section>
   ) : (
-    <Container>
-      {props.children}
-    </Container>
+    <Container>{props.children}</Container>
   );
 }
