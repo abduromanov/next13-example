@@ -6,6 +6,12 @@ const theme: ThemeOverride = {
   fonts: {
     heading: `${font.style.fontFamily}`,
     body: `${font.style.fontFamily}`,
+    mono: `${font.style.fontFamily}`,
+  },
+  fontWeights: {
+    hairline: 200,
+    medium: 600,
+    extrabold: 900
   },
   colors: {
     brand: {

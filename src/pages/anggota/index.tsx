@@ -1,3 +1,4 @@
+import { Stack } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 
 import { TAnggota } from "@/types";
@@ -21,5 +22,9 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 };
 
 export default function Page() {
-  return <></>;
+  return (
+    <Stack>
+
+    </Stack>
+  );
 }

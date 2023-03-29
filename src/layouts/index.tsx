@@ -1,5 +1,6 @@
-import { Container, useDisclosure, VStack } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { Avatar, Box, Container, GridItem, Heading, SimpleGrid, Stack, Text, useDisclosure, VStack } from "@chakra-ui/react";
+import moment from "moment";
+import { ReactNode, useMemo } from "react";
 
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -14,6 +15,8 @@ type Props = {
 export default function Layouts(props: Props) {
   const disclosure = useDisclosure();
   const anggota = props.anggota;
+  const tglBergabung = useMemo(() => moment(anggota.tglDibuat).format('DD MMM YYYY'), [anggota.tglDibuat]);
+  const status = useMemo(() => anggota.status === "published" ? "Aktif" : "Tidak Aktif", [anggota.status])
 
   return anggota.role === "admin" ? (
     <section className="flex w-full min-w-full">
@@ -28,6 +31,32 @@ export default function Layouts(props: Props) {
       </VStack>
     </section>
   ) : (
-    <Container>{props.children}</Container>
+    <Box as="section" position="relative" pt="20">
+      <Box h="32" bg="brand.500" w="full" pos="absolute" inset="0" />
+      <Stack pos="relative" px="6" pb="6" bg="gray.100" mx="auto" maxW="xl" alignItems={["start", "center"]} borderRadius={["none", "lg"]}>
+        <Avatar size="xl" display="inline-flex" justifyContent="center" mt="-10" borderWidth="6px" borderColor="gray.100" />
+        <Box textAlign={['left', 'center']} w={['full', 'auto']}>
+          <Heading>{anggota.nama}</Heading>
+          <Text size="sm">Anggota Koperasi Hamasah</Text>
+          <SimpleGrid columns={[1, 3]} mt="4" gap={[3, 8]}>
+            <GridItem>
+              <Text>Sejak</Text>
+              <Text fontWeight="bold">{tglBergabung}</Text>
+            </GridItem>
+            <GridItem>
+              <Text>ID Anggota</Text>
+              <Text fontWeight="bold">{anggota.idAnggota}</Text>
+            </GridItem>
+            <GridItem>
+              <Text>Status</Text>
+              <Text fontWeight="bold">{status}</Text>
+            </GridItem>
+          </SimpleGrid>
+        </Box>
+      </Stack>
+      <Container>
+        {props.children}
+      </Container>
+    </Box>
   );
 }
