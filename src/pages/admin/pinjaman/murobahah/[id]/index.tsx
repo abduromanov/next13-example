@@ -71,13 +71,16 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
   return {
     props: {
-      pageTitle: "Detil Murobahah",
+      pageTitle: "Detail Murobahah",
       anggota: anggota,
     },
   };
 };
 
-export default function PageDetailMurobahah() {
+export default function Page() {
+  // TODO: Fix issues below
+  //  - Make sure this page using this word: "Detail Murobahah"
+
   const [catatanDate, setCatatanDate] = useState<string>();
   const [idMutasi, setIdMutasi] = useState<number>();
   const [selectedTahun, setSelectedTahun] = useState<string>();
