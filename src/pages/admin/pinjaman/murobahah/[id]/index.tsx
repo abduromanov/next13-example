@@ -80,6 +80,7 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 export default function Page() {
   // TODO: Fix issues below
   //  - Make sure this page using this word: "Detail Murobahah"
+  //  - Is total and tenor compatible with bold font?
 
   const [catatanDate, setCatatanDate] = useState<string>();
   const [idMutasi, setIdMutasi] = useState<number>();
