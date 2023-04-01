@@ -6,25 +6,26 @@ import {
   DrawerOverlay,
   Flex,
   Icon,
+  Portal,
   Text,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import * as Heroicon from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import menus from "@/services/utils/menus";
 
-import { Disclosure } from "@/types";
-
 type Props = {
-  disclosure: Disclosure;
+  disclosure: ReturnType<typeof useDisclosure>;
 };
 
-const MenuItem = () => (
+const MenuItem = (props: { route: string }) => (
   <VStack textColor={"white"} spacing={8}>
     <Image
-      src={require("@/../public/circle.png")}
+      src={require("@/assets/circle.png")}
       alt=""
       className="max-w-[70%]"
       priority
@@ -39,6 +40,7 @@ const MenuItem = () => (
               color="white"
               verticalAlign={"center"}
               w={"full"}
+              bg={item.route === props.route ? "brand.400" : "transparent"}
               justifyContent={"start"}
               _hover={{ bg: "brand.400" }}
               m={0}
@@ -54,6 +56,8 @@ const MenuItem = () => (
 );
 
 export default function Sidebar(props: Props) {
+  const router = useRouter();
+
   return (
     <>
       <Flex
@@ -61,8 +65,7 @@ export default function Sidebar(props: Props) {
         py={8}
         bg={"brand.500"}
         minH={"full"}
-        minW={"2xs"}
-        maxW={"2xs"}
+        w={"2xs"}
         pos={"fixed"}
         sx={{
           display: "none",
@@ -71,20 +74,23 @@ export default function Sidebar(props: Props) {
           },
         }}
       >
-        <MenuItem />
+        <MenuItem route={router.pathname} />
       </Flex>
-      <Drawer
-        placement="left"
-        onClose={props.disclosure.onClose}
-        isOpen={props.disclosure.isOpen}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerBody px={6} py={8} bg={"brand.500"}>
-            <MenuItem />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+
+      <Portal>
+        <Drawer
+          placement="left"
+          onClose={props.disclosure.onClose}
+          isOpen={props.disclosure.isOpen}
+        >
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerBody px={6} py={8} bg={"brand.500"}>
+              <MenuItem route={router.pathname} />
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      </Portal>
     </>
   );
 }

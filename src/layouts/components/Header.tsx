@@ -7,6 +7,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useDisclosure,
 } from "@chakra-ui/react";
 import {
   ArrowLeftOnRectangleIcon,
@@ -15,10 +16,8 @@ import {
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
-import { Disclosure } from "@/types";
-
 type Props = {
-  disclosure: Disclosure;
+  disclosure: ReturnType<typeof useDisclosure>;
 };
 
 export default function Header(props: Props) {

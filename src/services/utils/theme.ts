@@ -1,6 +1,12 @@
 import { ThemeOverride } from "@chakra-ui/react";
 
+import font from "./font";
+
 const theme: ThemeOverride = {
+  fonts: {
+    heading: `${font.style.fontFamily}`,
+    body: `${font.style.fontFamily}`,
+  },
   colors: {
     brand: {
       400: "#5fd3b2",

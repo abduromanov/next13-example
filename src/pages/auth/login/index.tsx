@@ -22,8 +22,6 @@ import { NextPageWithLayout } from "@/pages/_app";
 import { TLoginRequest, useLogin } from "@/services/api/commands/auth.command";
 import validators from "@/services/utils/validators";
 
-import logo from "../../../../public/circle.png";
-
 type TStaticProps = {
   pageTitle: string;
 };
@@ -47,7 +45,7 @@ export default function Page() {
     postMutation.mutate(values, {
       onSuccess(data) {
         Cookies.set("anggota", JSON.stringify(data.data));
-        router.push("/");
+        router.push("/admin/home");
 
         toast({
           position: "top",
@@ -82,8 +80,13 @@ export default function Page() {
           >
             <Stack spacing="6">
               <Stack spacing={"6"} textAlign="center" alignItems={"center"}>
-                <Image src={logo} alt="" className="max-w-[70%]" priority />
-                <Heading size={useBreakpointValue({ base: "xs", md: "sm" })}>
+                <Image
+                  src={require("@/assets/circle.png")}
+                  alt=""
+                  className="max-w-[70%]"
+                  priority
+                />
+                <Heading size={useBreakpointValue({ base: "sm", md: "md" })}>
                   {process.env.APP_NAME}
                 </Heading>
               </Stack>

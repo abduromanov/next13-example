@@ -1,0 +1,47 @@
+name: Lint Code
+
+on: [pull_request]
+
+jobs:
+  test:
+    name: Typescript Checking and Lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: yarn
+
+      - name: Find yarn cache
+        id: yarn-cache-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Run eslint on changed files
+        uses: tj-actions/eslint-changed-files@v18
+        with:
+          config_path: ".eslintrc.json"
+          # ignore_path: ".eslintignore"
+          extra_args: "--max-warnings=0"
+          file_extensions: |
+            **/*.ts
+            **/*.tsx
+
+      # - name: Typecheck
+      #   uses: icrawl/action-tsc@v1
+
+      - uses: EPMatt/reviewdog-action-tsc@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          level: warning
+          workdir: src

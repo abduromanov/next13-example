@@ -11,37 +11,37 @@ const list: TSidebarMenu[] = [
   {
     label: "Home",
     icon: "HomeIcon",
-    route: "/",
+    route: "/admin/home",
     group: "",
   },
   {
     label: "Simpanan",
     icon: "WalletIcon",
-    route: "/simpanan/simpanan-anggota",
+    route: "/admin/simpanan",
     group: "Simpanan",
   },
   {
     label: "Murobahah",
     icon: "BanknotesIcon",
-    route: "/pinjaman/murobahah",
+    route: "/admin/pinjaman/murobahah",
     group: "Pinjaman",
   },
   {
     label: "Syirkah",
     icon: "BuildingStorefrontIcon",
-    route: "/pinjaman/syirkah",
+    route: "/admin/pinjaman/syirkah",
     group: "Pinjaman",
   },
   {
     label: "Daftar Anggota",
     icon: "UsersIcon",
-    route: "/anggota",
+    route: "/admin/anggota",
     group: "Anggota",
   },
   {
     label: "Pengumuman",
     icon: "Square2StackIcon",
-    route: "/pengumuman",
+    route: "/admin/pengumuman",
     group: "Pengaturan",
   },
 ];

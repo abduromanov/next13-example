@@ -64,3 +64,8 @@ export const useUpdateMutasiSyirkah = (
   queryMutation<TMutasiSyirkahRequest, unknown>(
     `/api/syirkah/${id}/mutasi/${idMutasi}`
   );
+
+export const useDeleteMutasiSyirkah = (
+  id: number | string,
+  idMutasi: number | string
+) => queryMutation<any, unknown>(`/api/syirkah/${id}/mutasi/${idMutasi}`);

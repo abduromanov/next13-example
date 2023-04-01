@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { NextPageWithLayout } from "./_app";
 
-export default function Custom404() {
+export default function Custom500() {
   return (
     <Stack
       h={"100vh"}
@@ -13,10 +13,10 @@ export default function Custom404() {
       spacing={"6"}
     >
       <Head>
-        <title>404 - {process.env.APP_NAME}</title>
+        <title>500 - {process.env.APP_NAME}</title>
       </Head>
 
-      <Heading size={"4xl"}>404</Heading>
+      <Heading size={"4xl"}>500</Heading>
       <p>Halaman tidak ditemukan</p>
 
       <Link href={"/"}>
@@ -26,6 +26,6 @@ export default function Custom404() {
   );
 }
 
-Custom404.getLayout = function getLayout(page: NextPageWithLayout) {
+Custom500.getLayout = function getLayout(page: NextPageWithLayout) {
   return page;
 };
