@@ -51,7 +51,12 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
   };
 };
 
-export default function PageSimpanan() {
+export default function Page() {
+  // TODO: Fix issues below
+  //  - Searchbar unresponsive
+  //  - Make searchbar full width in mobile screen
+  //  - Pagination cropped in mobile screen
+
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
 

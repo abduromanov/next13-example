@@ -94,6 +94,9 @@ const TableRow = (props: {
 };
 
 export default function Page() {
+  // TODO: Fix issues below
+  //  - Make search bar full width in mobile screen
+
   const [total, setTotal] = useState<number>();
   const [idAnggota, setIdAnggota] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
