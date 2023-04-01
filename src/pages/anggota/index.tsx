@@ -1,8 +1,4 @@
-import {
-  Box,
-  Skeleton,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Skeleton, Stack } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { A11y, Navigation, Pagination } from "swiper";
