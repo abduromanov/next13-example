@@ -11,7 +11,7 @@ const theme: ThemeOverride = {
   fontWeights: {
     hairline: 200,
     medium: 600,
-    extrabold: 900
+    extrabold: 900,
   },
   colors: {
     brand: {
