@@ -29,9 +29,9 @@ export default function AnggotaCardProfile({ anggota }: { anggota: TAnggota }) {
       pb="6"
       bg="gray.100"
       mx="auto"
-      maxW="xl"
+      maxW="5xl"
       alignItems={["start", "center"]}
-      borderRadius={["none", "lg"]}
+      borderTopRadius={["none", "lg"]}
     >
       <Avatar
         size="xl"

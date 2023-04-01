@@ -7,7 +7,6 @@ export default function AnggotaTabs() {
 
   return (
     <Box
-      mt={["0", "3"]}
       overflowX="auto"
       scrollPaddingBottom="5"
       whiteSpace="nowrap"
