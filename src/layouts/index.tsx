@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/display-name */
 import { Box, Container, useDisclosure, VStack } from "@chakra-ui/react";
-import { ReactNode, useMemo } from "react";
+import { ReactNode } from "react";
 
 import AnggotaCardProfile from "./components/AnggotaCardProfile";
+import AnggotaTabs from "./components/AnggotaTabs";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
@@ -18,7 +19,7 @@ export default function Layouts(props: Props) {
   const disclosure = useDisclosure();
   const anggota = props.anggota;
 
-  const layout = useMemo(() => anggota.role === "admin" ? (
+  return anggota.role === "admin" ? (
     <section className="flex w-full min-w-full">
       <Sidebar disclosure={disclosure} />
       <VStack
@@ -34,11 +35,10 @@ export default function Layouts(props: Props) {
     <Box as="section" position="relative" pt="16">
       <Box h="32" bg="brand.500" w="full" pos="absolute" inset="0" />
       <AnggotaCardProfile anggota={anggota} />
-      <Container pt="10" maxW="container.lg">
+      <Container maxW="container.lg" px={["0", "4"]}>
+        <AnggotaTabs />
         {props.children}
       </Container>
     </Box>
-  ), [anggota.role])
-
-  return layout;
+  );
 }
