@@ -56,6 +56,10 @@ export default function Page() {
   //  - Searchbar unresponsive
   //  - Make searchbar full width in mobile screen
   //  - Pagination cropped in mobile screen
+  //  - change tanggal dibuat to tanggal tranaksi
+  //  - ubah filter tanggaldibuat ke tanggal transaksi
+  //  - sorting tanngal
+  //  - benerin create debit -> harusnya create 3 record  data (wajib, sukarela, khusus) tapi khusus nya belom
 
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
