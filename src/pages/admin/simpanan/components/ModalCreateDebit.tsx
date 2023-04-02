@@ -83,20 +83,12 @@ const ModalCreateDebit = forwardRef<
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
   const submitHandler: SubmitHandler<TSimpananDebitRequest> = (value) => {
-    const nominalWajib: any = value.nominalWajib;
-    const nominalKhusus: any = value.nominalKhusus;
-    const nominalSukarela: any = value.nominalSukarela;
+    const nominalWajib: any = parseInt(value.nominalWajib.replace(/\D/g, ""), 10);
+    const nominalKhusus: any = parseInt(value.nominalKhusus.replace(/\D/g, ""), 10);
+    const nominalSukarela: any = parseInt(value.nominalSukarela.replace(/\D/g, ""), 10);
 
     const listReq = [];
-    if (nominalKhusus > 0) {
-      listReq.push({
-        idAnggota: String(id),
-        nominal: value.nominalKhusus,
-        saldo: value.nominalKhusus,
-        catatan: value.catatan,
-        jenisTabungan: "khusus",
-      });
-    }
+
     if (nominalSukarela > 0) {
       listReq.push({
         idAnggota: String(id),
@@ -113,6 +105,15 @@ const ModalCreateDebit = forwardRef<
         saldo: value.nominalWajib,
         catatan: value.catatan,
         jenisTabungan: "wajib",
+      });
+    }
+    if (nominalKhusus > 0) {
+      listReq.push({
+        idAnggota: String(id),
+        nominal: value.nominalKhusus,
+        saldo: value.nominalKhusus,
+        catatan: value.catatan,
+        jenisTabungan: "khusus",
       });
     }
 
@@ -177,9 +178,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -197,9 +198,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -216,9 +217,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },

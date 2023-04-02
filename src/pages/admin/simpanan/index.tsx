@@ -59,7 +59,7 @@ export default function Page() {
   //  - change tanggal dibuat to tanggal tranaksi
   //  - ubah filter tanggaldibuat ke tanggal transaksi
   //  - sorting tanngal
-  //  - benerin create debit -> harusnya create 3 record  data (wajib, sukarela, khusus) tapi khusus nya belom
+
 
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");

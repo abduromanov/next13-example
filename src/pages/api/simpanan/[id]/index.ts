@@ -78,29 +78,11 @@ export default async function handler(
 
   async function post() {
     const data = req.body;
-    if (isArray(data)) {
-      data.map((v: any) => {
-        if (v.jenisTabungan == "khusus") {
-          v.idAnggota = parseInt(v.idAnggota);
-          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
-          v.saldo = 0;
-        }
-        if (v.jenisTabungan == "sukarela") {
-          v.idAnggota = parseInt(v.idAnggota);
-          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
-          v.saldo = 0;
-        }
-        if (v.jenisTabungan == "wajib") {
-          v.idAnggota = parseInt(v.idAnggota);
-          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
-          v.saldo = 0;
-        }
-      });
-    } else {
-      data.nominal = parseInt(data.nominal.replace(/\D/g, ""), 10) * -1;
-      data.idAnggota = parseInt(req.query.id as string);
-      data.saldo = 0;
-    }
+    data.map((v: any) => {
+      v.idAnggota = parseInt(v.idAnggota);
+      v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
+      v.saldo = 0;
+    });
 
     await directus.items("mutasiTabungan").createMany(data);
     return res.status(200).json({});
