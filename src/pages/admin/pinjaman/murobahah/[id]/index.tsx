@@ -184,14 +184,16 @@ export default function Page() {
 
   const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");
   const handleLunasChange = (lunas: boolean) => {
+    // console.log({ lunas })
     murobahahMutation.mutate(
       { lunas },
       {
         onSuccess() {
+          detailMurobahahQuery.refetch();
           if (lunas) {
             formCallback.onSuccess("Murobahah Telah Lunas");
           } else {
-            formCallback.onSuccess("Murobahah Belum Lunas");
+            formCallback.onError("Murobahah Belum Lunas");
           }
         },
         onError() {
@@ -200,6 +202,7 @@ export default function Page() {
       }
     );
   };
+
 
   const breadcrumbData = [
     {
@@ -241,7 +244,7 @@ export default function Page() {
               <HStack mr={3}>
                 <Switch
                   size="md"
-                  defaultChecked={detailMurobahah?.lunas}
+                  isChecked={detailMurobahah?.lunas}
                   onChange={(e) => handleLunasChange(e.target.checked)}
                 />
                 <Text>Pembayaran Lunas</Text>
