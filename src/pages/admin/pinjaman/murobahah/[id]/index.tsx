@@ -42,6 +42,7 @@ import { useFormCallback } from "@/hooks/useFormCallback";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
+import Custom404 from "@/pages/404";
 import {
   useListTahunMutasiMurobahah,
   useMurobahahDetail,
@@ -156,7 +157,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalPinjaman || 0) -
-              rincianPembayaranTotal.cicilan,
+            rincianPembayaranTotal.cicilan,
         [detailMurobahah, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
@@ -164,7 +165,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalMargin || 0) -
-              rincianPembayaranTotal.margin,
+            rincianPembayaranTotal.margin,
         [detailMurobahah, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
@@ -224,7 +225,7 @@ export default function Page() {
     },
     {
       name: "Murobahah",
-      url: "/pinjaman/murobahah",
+      url: "/admin/pinjaman/murobahah",
     },
     {
       name: "Detail Murobahah",
@@ -232,7 +233,7 @@ export default function Page() {
   ];
 
   if (detailMurobahahQuery?.isError) {
-    return <Text>Forbidden</Text>;
+    return <Custom404 />;
   }
 
   return (
