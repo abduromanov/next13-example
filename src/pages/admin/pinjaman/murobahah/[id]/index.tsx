@@ -492,37 +492,38 @@ export default function Page() {
                     }}
                   />
                 ))}
-                <ModalCatatan
-                  ref={modalCatatanRef}
-                  item={catatanPembayaran
-                    ?.filter(
-                      (v: any) =>
-                        moment(v.tglBayar).format("M-YYYY") == catatanDate
-                    )
-                    .map((item_2: any) => (
-                      <>
-                        <TableCatatanPembayaran
-                          key={item_2.id}
-                          item={item_2}
-                          modalHandler={() => {
-                            modalDeleteRef.current?.onOpen();
-                            setIdMutasi(item_2.id);
-                          }}
-                        />
-                      </>
-                    ))}
-                />
-                <ModalConfirmDeleteMutasi
-                  ref={modalDeleteRef}
-                  refetchFn={refetchQuery}
-                  id={Number(id) || 0}
-                  idMutasi={idMutasi || 0}
-                />
-                <ModalTambahPembayaran
-                  ref={modalTambahPembayaranRef}
-                  refetchFn={refetchQuery}
-                />
               </Tbody>
+              <ModalCatatan
+                ref={modalCatatanRef}
+                item={catatanPembayaran
+                  ?.filter(
+                    (v: any) =>
+                      moment(v.tglBayar).format("M-YYYY") == catatanDate
+                  )
+                  .map((item: any) => (
+                    <>
+                      <TableCatatanPembayaran
+                        key={item.id}
+                        item={item}
+                        modalHandler={() => {
+                          modalDeleteRef.current?.onOpen();
+                          setIdMutasi(item.id);
+                        }}
+                      />
+                    </>
+                  ))}
+              />
+              <ModalConfirmDeleteMutasi
+                ref={modalDeleteRef}
+                refetchFn={refetchQuery}
+                id={Number(id) || 0}
+                idMutasi={idMutasi || 0}
+              />
+              <ModalTambahPembayaran
+                ref={modalTambahPembayaranRef}
+                refetchFn={refetchQuery}
+              />
+
               <Tfoot>
                 <Tr fontWeight="semibold">
                   <Td textTransform="uppercase">Total</Td>
@@ -558,8 +559,8 @@ export default function Page() {
               </Thead>
               <Tbody>
                 <TableRangkumanPembayaran
-                  item={rangkumanPembayaranTotal}
-                  item2={rincianPembayaranTotal}
+                  itemSelisih={rangkumanPembayaranTotal}
+                  itemTerbayar={rincianPembayaranTotal}
                 />
               </Tbody>
             </Table>
