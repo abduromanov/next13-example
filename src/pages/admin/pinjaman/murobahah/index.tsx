@@ -59,7 +59,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
 export default function Page() {
   // TODO: Fix issues below
-  //  - Create button text not wrapped
   //  - Pagination cropped in mobile screen
 
   const [total, setTotal] = useState<number>();
@@ -114,7 +113,7 @@ export default function Page() {
       <Box>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
-      <Flex alignItems="center" justify="space-between" mx={5}>
+      <Flex alignItems="center" justify="space-between" mx={5} flexWrap="wrap" gap={3}>
         <Heading size="lg">Pinjaman Murobahah</Heading>
         <Button
           as="span"
