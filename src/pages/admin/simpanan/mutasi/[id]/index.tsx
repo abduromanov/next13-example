@@ -75,9 +75,11 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
 export default function Page() {
   // TODO: Fix issues below
-  //  - Searchbar unresponsive
-  //  - Filter not inline in mobile screen
   //  - Pagination cropped in mobile screen
+  //  - add field tanggal transaksi on create Debit
+  //  - change tanggal dibuat to tanggal transaksi
+  //  - ubah filter tanggaldibuat ke tanggal transaksi
+  //  - sorting tanngal
 
   const [total, setTotal] = useState<number>();
   const [jenisTabungan, setJenisTabungan] = useState<string>();
@@ -219,7 +221,7 @@ export default function Page() {
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
           <Box mb={5}>
-            <Flex gap="4" alignItems="center">
+            <Flex gap="4" alignItems="center" display={["grid", "flex"]} flexWrap="wrap" >
               <Box>
                 <Text fontWeight="bold" mb="10px">
                   Filter Tanggal
@@ -260,7 +262,7 @@ export default function Page() {
                   </InputGroup>
                 </HStack>
               </Box>
-              <Box mr="20px">
+              <Box w={["full", "200px"]}>
                 <Text fontWeight="bold" mb="10px">
                   Filter jenis simpanan
                 </Text>

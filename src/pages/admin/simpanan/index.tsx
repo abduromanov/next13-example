@@ -53,13 +53,7 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
 export default function Page() {
   // TODO: Fix issues below
-  //  - Searchbar unresponsive
-  //  - Make searchbar full width in mobile screen
   //  - Pagination cropped in mobile screen
-  //  - change tanggal dibuat to tanggal tranaksi
-  //  - ubah filter tanggaldibuat ke tanggal transaksi
-  //  - sorting tanngal
-
 
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -102,9 +96,9 @@ export default function Page() {
 
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
-          <Flex alignItems="center" justifyContent="space-between">
+          <Flex alignItems="center" justifyContent="space-between" gap="4" flexWrap="wrap">
             <Heading size="lg">Simpanan Anggota</Heading>
-            <InputGroup w={"25%"}>
+            <InputGroup w={["full", "270px"]}>
               <InputLeftElement pointerEvents="none">
                 <Icon as={MagnifyingGlassIcon} color="gray" />
               </InputLeftElement>
