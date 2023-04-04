@@ -54,7 +54,7 @@ import toIDR from "@/services/utils/toIDR";
 import ModalCatatan from "../components/ModalCatatan";
 import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
 import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
-import { TableCatatanPembayaran } from "../components/TableCatatanPembayaran";
+import TableCatatanPembayaran from "../components/TableCatatanPembayaran";
 import TableRangkumanPembayaran from "../components/TableRangkumanPembayaran";
 import TableRincianPembayaran from "../components/TableRincianPembayaran";
 

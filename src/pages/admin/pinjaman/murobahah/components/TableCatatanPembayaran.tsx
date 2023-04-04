@@ -5,10 +5,10 @@ import { useMemo } from "react";
 
 import toIDR from "@/services/utils/toIDR";
 
-export const TableCatatanPembayaran = (props: {
+export default function TableCatatanPembayaran(props: {
   modalHandler?: () => void;
   item: any;
-}) => {
+}) {
   const tglBayar = useMemo(
     () => moment(props.item?.tglBayar).format("DD MMMM YYYY"),
     [props.item?.tglBayar]
