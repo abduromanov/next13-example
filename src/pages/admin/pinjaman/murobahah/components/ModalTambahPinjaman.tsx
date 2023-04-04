@@ -71,19 +71,24 @@ const ModalTambahPinjaman = forwardRef<
 
   const mutasiMurobahahMutation = useCreateMurobahah().mutate("POST");
   const submitHandler: SubmitHandler<TMurobahahRequest> = (values) => {
-    mutasiMurobahahMutation.mutate(values, {
-      onSuccess() {
-        formCallback.onSuccess("Berhasil menambahkan data simpanan");
-        form.reset();
-        disclosure.onClose();
-        props.refetchFn?.();
-      },
-      onError() {
-        formCallback.onError(
-          "Gagal menambahkan data! Pastikan semua data terisi dengan benar"
-        );
-      },
-    });
+    if (parseInt(values.tenor) >= 12) {
+      mutasiMurobahahMutation.mutate(values, {
+        onSuccess() {
+          formCallback.onSuccess("Berhasil menambahkan data simpanan");
+          form.reset();
+          disclosure.onClose();
+          props.refetchFn?.();
+        },
+        onError() {
+          formCallback.onError(
+            "Gagal menambahkan data! Pastikan semua data terisi dengan benar"
+          );
+        },
+      });
+    } else {
+      formCallback.onError("Minimal tenor adalah 12 bulan");
+    }
+
   };
 
   form.watch(["totalPinjaman", "totalMargin", "dp"]);
@@ -139,9 +144,9 @@ const ModalTambahPinjaman = forwardRef<
                       "totalPinjaman",
                       !isNaN(parseInt(e.target.value))
                         ? parseInt(
-                            e.target.value.replace(/\D/g, ""),
-                            10
-                          ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                         : ""
                     );
                     return e.target.value;
@@ -173,9 +178,9 @@ const ModalTambahPinjaman = forwardRef<
                       "totalMargin",
                       !isNaN(parseInt(e.target.value))
                         ? parseInt(
-                            e.target.value.replace(/\D/g, ""),
-                            10
-                          ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                         : ""
                     );
                     return e.target.value;
@@ -192,9 +197,9 @@ const ModalTambahPinjaman = forwardRef<
                       "dp",
                       !isNaN(parseInt(e.target.value))
                         ? parseInt(
-                            e.target.value.replace(/\D/g, ""),
-                            10
-                          ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                         : ""
                     );
                     return e.target.value;

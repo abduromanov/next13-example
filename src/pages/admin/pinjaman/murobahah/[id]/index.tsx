@@ -42,6 +42,7 @@ import { useFormCallback } from "@/hooks/useFormCallback";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 
+import Custom404 from "@/pages/404";
 import {
   useListTahunMutasiMurobahah,
   useMurobahahDetail,
@@ -53,7 +54,7 @@ import toIDR from "@/services/utils/toIDR";
 import ModalCatatan from "../components/ModalCatatan";
 import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
 import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
-import { TableCatatanPembayaran } from "../components/TableCatatanPembayaran";
+import TableCatatanPembayaran from "../components/TableCatatanPembayaran";
 import TableRangkumanPembayaran from "../components/TableRangkumanPembayaran";
 import TableRincianPembayaran from "../components/TableRincianPembayaran";
 
@@ -71,13 +72,17 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
   return {
     props: {
-      pageTitle: "Detil Murobahah",
+      pageTitle: "Detail Murobahah",
       anggota: anggota,
     },
   };
 };
 
-export default function PageDetailMurobahah() {
+export default function Page() {
+  // TODO: Fix issues below
+  //  - Make sure this page using this word: "Detail Murobahah"
+  //  - Is total and tenor compatible with bold font?
+
   const [catatanDate, setCatatanDate] = useState<string>();
   const [idMutasi, setIdMutasi] = useState<number>();
   const [selectedTahun, setSelectedTahun] = useState<string>();
@@ -152,7 +157,7 @@ export default function PageDetailMurobahah() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalPinjaman || 0) -
-              rincianPembayaranTotal.cicilan,
+            rincianPembayaranTotal.cicilan,
         [detailMurobahah, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
@@ -160,7 +165,7 @@ export default function PageDetailMurobahah() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalMargin || 0) -
-              rincianPembayaranTotal.margin,
+            rincianPembayaranTotal.margin,
         [detailMurobahah, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
@@ -194,14 +199,16 @@ export default function PageDetailMurobahah() {
 
   const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");
   const handleLunasChange = (lunas: boolean) => {
+    // console.log({ lunas })
     murobahahMutation.mutate(
       { lunas },
       {
         onSuccess() {
+          detailMurobahahQuery.refetch();
           if (lunas) {
             formCallback.onSuccess("Murobahah Telah Lunas");
           } else {
-            formCallback.onSuccess("Murobahah Belum Lunas");
+            formCallback.onError("Murobahah Belum Lunas");
           }
         },
         onError() {
@@ -211,13 +218,14 @@ export default function PageDetailMurobahah() {
     );
   };
 
+
   const breadcrumbData = [
     {
       name: "Pinjaman",
     },
     {
       name: "Murobahah",
-      url: "/pinjaman/murobahah",
+      url: "/admin/pinjaman/murobahah",
     },
     {
       name: "Detail Murobahah",
@@ -225,7 +233,7 @@ export default function PageDetailMurobahah() {
   ];
 
   if (detailMurobahahQuery?.isError) {
-    return <Text>Forbidden</Text>;
+    return <Custom404 />;
   }
 
   return (
@@ -251,7 +259,7 @@ export default function PageDetailMurobahah() {
               <HStack mr={3}>
                 <Switch
                   size="md"
-                  defaultChecked={detailMurobahah?.lunas}
+                  isChecked={detailMurobahah?.lunas}
                   onChange={(e) => handleLunasChange(e.target.checked)}
                 />
                 <Text>Pembayaran Lunas</Text>
@@ -484,37 +492,38 @@ export default function PageDetailMurobahah() {
                     }}
                   />
                 ))}
-                <ModalCatatan
-                  ref={modalCatatanRef}
-                  item={catatanPembayaran
-                    ?.filter(
-                      (v: any) =>
-                        moment(v.tglBayar).format("M-YYYY") == catatanDate
-                    )
-                    .map((item_2: any) => (
-                      <>
-                        <TableCatatanPembayaran
-                          key={item_2.id}
-                          item={item_2}
-                          modalHandler={() => {
-                            modalDeleteRef.current?.onOpen();
-                            setIdMutasi(item_2.id);
-                          }}
-                        />
-                      </>
-                    ))}
-                />
-                <ModalConfirmDeleteMutasi
-                  ref={modalDeleteRef}
-                  refetchFn={refetchQuery}
-                  id={Number(id) || 0}
-                  idMutasi={idMutasi || 0}
-                />
-                <ModalTambahPembayaran
-                  ref={modalTambahPembayaranRef}
-                  refetchFn={refetchQuery}
-                />
               </Tbody>
+              <ModalCatatan
+                ref={modalCatatanRef}
+                item={catatanPembayaran
+                  ?.filter(
+                    (v: any) =>
+                      moment(v.tglBayar).format("M-YYYY") == catatanDate
+                  )
+                  .map((item: any) => (
+                    <>
+                      <TableCatatanPembayaran
+                        key={item.id}
+                        item={item}
+                        modalHandler={() => {
+                          modalDeleteRef.current?.onOpen();
+                          setIdMutasi(item.id);
+                        }}
+                      />
+                    </>
+                  ))}
+              />
+              <ModalConfirmDeleteMutasi
+                ref={modalDeleteRef}
+                refetchFn={refetchQuery}
+                id={Number(id) || 0}
+                idMutasi={idMutasi || 0}
+              />
+              <ModalTambahPembayaran
+                ref={modalTambahPembayaranRef}
+                refetchFn={refetchQuery}
+              />
+
               <Tfoot>
                 <Tr fontWeight="semibold">
                   <Td textTransform="uppercase">Total</Td>
@@ -550,8 +559,8 @@ export default function PageDetailMurobahah() {
               </Thead>
               <Tbody>
                 <TableRangkumanPembayaran
-                  item={rangkumanPembayaranTotal}
-                  item2={rincianPembayaranTotal}
+                  itemSelisih={rangkumanPembayaranTotal}
+                  itemTerbayar={rincianPembayaranTotal}
                 />
               </Tbody>
             </Table>
