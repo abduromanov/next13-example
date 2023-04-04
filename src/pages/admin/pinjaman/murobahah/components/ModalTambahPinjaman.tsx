@@ -86,7 +86,7 @@ const ModalTambahPinjaman = forwardRef<
         },
       });
     } else {
-      formCallback.onError("tenor tidak boleh < 12");
+      formCallback.onError("Minimal tenor adalah 12 bulan");
     }
 
   };
