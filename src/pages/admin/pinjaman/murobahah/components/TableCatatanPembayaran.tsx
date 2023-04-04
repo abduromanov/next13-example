@@ -31,4 +31,4 @@ export default function TableCatatanPembayaran(props: {
       </Td>
     </Tr>
   );
-};
+}

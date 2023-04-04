@@ -113,7 +113,13 @@ export default function Page() {
       <Box>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
-      <Flex alignItems="center" justify="space-between" mx={5} flexWrap="wrap" gap={3}>
+      <Flex
+        alignItems="center"
+        justify="space-between"
+        mx={5}
+        flexWrap="wrap"
+        gap={3}
+      >
         <Heading size="lg">Pinjaman Murobahah</Heading>
         <Button
           as="span"

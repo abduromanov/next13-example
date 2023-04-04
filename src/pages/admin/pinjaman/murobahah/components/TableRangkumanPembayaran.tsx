@@ -4,7 +4,7 @@ import toIDR from "@/services/utils/toIDR";
 
 type Props = {
   itemSelisih: any;
-  itemTerbayar: any
+  itemTerbayar: any;
 };
 export default function TableRangkumanPembayaran(props: Props) {
   return (
@@ -18,13 +18,19 @@ export default function TableRangkumanPembayaran(props: Props) {
       <Tr>
         <Td>Sisa Cicilan</Td>
         <Td>
-          <Text color="red">{toIDR(props?.itemSelisih?.sisaCicilan?.cicilan)}</Text>
+          <Text color="red">
+            {toIDR(props?.itemSelisih?.sisaCicilan?.cicilan)}
+          </Text>
         </Td>
         <Td>
-          <Text color="red">{toIDR(props?.itemSelisih?.sisaCicilan?.margin)}</Text>
+          <Text color="red">
+            {toIDR(props?.itemSelisih?.sisaCicilan?.margin)}
+          </Text>
         </Td>
         <Td>
-          <Text color="red">{toIDR(props?.itemSelisih?.sisaCicilan?.total)}</Text>
+          <Text color="red">
+            {toIDR(props?.itemSelisih?.sisaCicilan?.total)}
+          </Text>
         </Td>
       </Tr>
       <Tr>
