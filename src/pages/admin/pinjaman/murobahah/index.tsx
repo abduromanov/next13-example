@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
 export default function Page() {
   // TODO: Fix issues below
-  //  - Pagination cropped in mobile screen
+
 
   const [total, setTotal] = useState<number>();
   const [idMurobahah, setIdMurobahah] = useState<number>();

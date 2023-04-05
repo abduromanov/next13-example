@@ -114,7 +114,7 @@ const TableRow = (props: { item: TPengumuman; refetchFn?: () => void }) => {
 export default function Page() {
   // TODO: Fix issues below
   //  - Create button text not wrapped
-  //  - Pagination cropped in mobile screen
+
 
   const [total, setTotal] = useState<number>();
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();

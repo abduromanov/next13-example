@@ -54,7 +54,7 @@ export default function Page() {
   // TODO: Fix issues below
   //  - Searchbar unresponsive
   //  - Make searchbar full width in mobile screen
-  //  - Pagination cropped in mobile screen
+
   //  - change tanggal dibuat to tanggal tranaksi
   //  - ubah filter tanggaldibuat ke tanggal transaksi
   //  - sorting tanngal

@@ -76,7 +76,7 @@ export default function Page() {
   // TODO: Fix issues below
   //  - Searchbar unresponsive
   //  - Filter not inline in mobile screen
-  //  - Pagination cropped in mobile screen
+
 
   const [total, setTotal] = useState<number>();
   const [jenisTabungan, setJenisTabungan] = useState<string>();
