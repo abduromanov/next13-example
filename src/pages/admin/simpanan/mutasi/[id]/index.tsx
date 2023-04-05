@@ -78,7 +78,6 @@ export default function Page() {
   //  - Searchbar unresponsive
   //  - Filter not inline in mobile screen
 
-
   const [total, setTotal] = useState<number>();
   const [jenisTabungan, setJenisTabungan] = useState<string>();
   const [tglDibuatAwal, settglDibuatAwal] = useState<string>();
