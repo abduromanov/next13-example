@@ -72,8 +72,8 @@ export default function Sidebar(props: Props) {
         w={"2xs"}
         pos={"fixed"}
         display={{
-          base: 'none',
-          lg: 'flex'
+          base: "none",
+          lg: "flex",
         }}
       >
         <MenuItem route={router.pathname} />
@@ -88,7 +88,10 @@ export default function Sidebar(props: Props) {
           <DrawerOverlay />
           <DrawerContent>
             <DrawerBody px={6} py={8} bg={"brand.500"}>
-              <MenuItem route={router.pathname} onClose={props.disclosure.onClose} />
+              <MenuItem
+                route={router.pathname}
+                onClose={props.disclosure.onClose}
+              />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -36,6 +35,8 @@ import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
+
+import useCustomPagination from "@/hooks/useCustomPagination";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 import ModalCreateMutasiSyirkah from "@/components/pages/pinjaman/syirkah/detail/ModalCreateMutasiSyirkah";
@@ -92,13 +93,7 @@ export default function PageDetailSyirkah() {
   const modalEditRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalDeleteRef = useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const detailSyirkahQuery = useDetailSyirkah(
     router.query.id as string
