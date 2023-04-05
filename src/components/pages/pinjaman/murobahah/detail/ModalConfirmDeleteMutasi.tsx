@@ -69,7 +69,11 @@ const ModalConfirmDeleteMutasi = forwardRef<
         </ModalBody>
         <ModalFooter>
           <HStack spacing={3}>
-            <Button onClick={disclosure.onClose} variant='outline' colorScheme="blackAlpha">
+            <Button
+              onClick={disclosure.onClose}
+              variant="outline"
+              colorScheme="blackAlpha"
+            >
               Batal
             </Button>
             <Button
