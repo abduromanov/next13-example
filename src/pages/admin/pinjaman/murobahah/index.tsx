@@ -59,8 +59,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 };
 
 export default function Page() {
-  // TODO: Fix issues below
-
   const [total, setTotal] = useState<number>();
   const [idMurobahah, setIdMurobahah] = useState<number>();
   const [searchNama, setSearchNama] = useState<string>("");
