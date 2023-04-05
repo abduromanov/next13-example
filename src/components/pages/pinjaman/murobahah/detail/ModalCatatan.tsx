@@ -32,7 +32,11 @@ const ModalCatatan = forwardRef<
     [disclosure.onOpen]
   );
   return (
-    <Modal isOpen={disclosure.isOpen} onClose={disclosure.onClose} size={["full", "6xl"]}>
+    <Modal
+      isOpen={disclosure.isOpen}
+      onClose={disclosure.onClose}
+      size={["full", "6xl"]}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Catatan Pembayaran</ModalHeader>

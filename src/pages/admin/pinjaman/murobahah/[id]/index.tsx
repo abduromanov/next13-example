@@ -540,8 +540,7 @@ export default function Page() {
         <ModalCatatan ref={modalCatatanRef}>
           {catatanPembayaran
             ?.filter(
-              (v: any) =>
-                moment(v.tglBayar).format("M-YYYY") == catatanDate
+              (v: any) => moment(v.tglBayar).format("M-YYYY") == catatanDate
             )
             .map((item: any) => (
               <TableCatatanPembayaran
@@ -552,8 +551,7 @@ export default function Page() {
                   setIdMutasi(item.id);
                 }}
               />
-            ))
-          }
+            ))}
         </ModalCatatan>
 
         <ModalConfirmDeleteMutasi
