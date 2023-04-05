@@ -55,10 +55,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 };
 
 export default function Page() {
-  // TODO: Fix issues below
-  //  - Create button text not wrapped
-  //  - Make search bar full width in mobile screen
-
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -96,7 +92,7 @@ export default function Page() {
     <Stack spacing="8" px="8" pb="10">
       <BreadcrumbSection data={breadcrumbData} />
 
-      <Flex alignItems="center" justify="space-between">
+      <Flex alignItems="center" justify="space-between" flexWrap="wrap" gap={3}>
         <Heading size="lg">Pinjaman Syirkah</Heading>
         <Button
           leftIcon={<Icon as={PlusIcon} />}
@@ -108,7 +104,7 @@ export default function Page() {
 
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader display="flex" justifyContent="flex-end">
-          <InputGroup w="25%">
+          <InputGroup w={["full", "270px"]}>
             <InputLeftElement pointerEvents="none">
               <Icon as={MagnifyingGlassIcon} color="gray" />
             </InputLeftElement>
