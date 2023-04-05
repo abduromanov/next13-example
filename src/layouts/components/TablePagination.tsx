@@ -8,7 +8,15 @@ import {
   PaginationSeparator,
   usePagination,
 } from "@ajna/pagination";
-import { Box, GridItem, HStack, Icon, Select, SimpleGrid, Text } from "@chakra-ui/react";
+import {
+  Box,
+  GridItem,
+  HStack,
+  Icon,
+  Select,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 type Props = {
@@ -19,7 +27,11 @@ export default function TablePagination({ pagination }: Props) {
   return (
     <SimpleGrid columns={[1, 2]} gap="3">
       <GridItem>
-        <HStack alignItems="center" justifyContent={["center", "start"]} spacing="3">
+        <HStack
+          alignItems="center"
+          justifyContent={["center", "start"]}
+          spacing="3"
+        >
           <Select
             w="20"
             size="sm"
@@ -34,10 +46,7 @@ export default function TablePagination({ pagination }: Props) {
         </HStack>
       </GridItem>
       <GridItem>
-        <Box
-          overflowX="auto"
-          whiteSpace="nowrap"
-        >
+        <Box overflowX="auto" whiteSpace="nowrap">
           <Pagination
             currentPage={pagination.currentPage}
             onPageChange={(page) => {
@@ -46,7 +55,12 @@ export default function TablePagination({ pagination }: Props) {
             }}
             pagesCount={pagination.pagesCount}
           >
-            <PaginationContainer align="center" justify={["center", "end"]} w="full" display="inline-flex">
+            <PaginationContainer
+              align="center"
+              justify={["center", "end"]}
+              w="full"
+              display="inline-flex"
+            >
               <PaginationPrevious
                 w={8}
                 h={8}
@@ -62,7 +76,12 @@ export default function TablePagination({ pagination }: Props) {
                 isInline
                 align="center"
                 separator={
-                  <PaginationSeparator fontSize="xs" w={8} h={8} variant="ghost" />
+                  <PaginationSeparator
+                    fontSize="xs"
+                    w={8}
+                    h={8}
+                    variant="ghost"
+                  />
                 }
               >
                 {pagination.pages.map((page) => (
