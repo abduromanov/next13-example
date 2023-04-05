@@ -157,7 +157,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalPinjaman || 0) -
-            rincianPembayaranTotal.cicilan,
+              rincianPembayaranTotal.cicilan,
         [detailMurobahah, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
@@ -165,7 +165,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalMargin || 0) -
-            rincianPembayaranTotal.margin,
+              rincianPembayaranTotal.margin,
         [detailMurobahah, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
