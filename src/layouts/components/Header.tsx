@@ -48,6 +48,7 @@ export default function Header(props: Props) {
         <MenuButton
           as={IconButton}
           aria-label="Options"
+          // TODO: Change avatar
           icon={<Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />}
           variant="outline"
           borderRadius={"full"}
