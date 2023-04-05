@@ -281,7 +281,7 @@ export default function Page() {
           <Progress size="xs" isIndeterminate />
         )}
         <CardBody>
-          <TableContainer p={0} pb={5}>
+          <TableContainer p={0} mb="5">
             <Table mb={3}>
               <Thead>
                 <Tr>
@@ -304,10 +304,10 @@ export default function Page() {
                 ))}
               </Tbody>
             </Table>
-            <Skeleton w="full" isLoaded={!simpananDetailQuery.isLoading}>
-              <TablePagination pagination={pagination} />
-            </Skeleton>
           </TableContainer>
+          <Skeleton w="full" isLoaded={!simpananDetailQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton>
         </CardBody>
       </Card>
 

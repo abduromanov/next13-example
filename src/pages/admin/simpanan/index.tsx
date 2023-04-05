@@ -116,7 +116,7 @@ export default function Page() {
         )}
 
         <CardBody>
-          <TableContainer p="3">
+          <TableContainer p={0} mb="5">
             <Table mb={3}>
               <Thead>
                 <Tr>
@@ -132,10 +132,10 @@ export default function Page() {
                 ))}
               </Tbody>
             </Table>
-            <Skeleton w="full" isLoaded={!listSimpananAnggotaQuery.isLoading}>
-              <TablePagination pagination={pagination} />
-            </Skeleton>
           </TableContainer>
+          <Skeleton w="full" isLoaded={!listSimpananAnggotaQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton>
         </CardBody>
       </Card>
     </Stack>
