@@ -15,7 +15,7 @@ export default function Layouts(props: Props) {
   const disclosure = useDisclosure();
   const anggota = props.anggota;
 
-  return anggota.role === "admin" ? (
+  return anggota?.role === "admin" ? (
     <section className="flex w-full min-w-full">
       <Sidebar disclosure={disclosure} />
       <VStack

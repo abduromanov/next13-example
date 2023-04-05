@@ -85,6 +85,7 @@ export interface TMutasiMurobahah {
   isBulat: boolean;
   tenorTerbayar: number;
   bulanTidakSesuai: number;
+  catatan: string;
 }
 
 export interface TMutasiMurobahahRelations {

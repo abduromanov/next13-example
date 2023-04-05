@@ -24,6 +24,9 @@ type Props = {
 
 const MenuItem = (props: { route: string }) => (
   <VStack textColor={"white"} spacing={8}>
+    {/* 
+    TODO: Change logo
+     */}
     <Image
       src={require("@/assets/circle.png")}
       alt=""

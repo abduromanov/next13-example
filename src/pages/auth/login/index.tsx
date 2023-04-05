@@ -80,6 +80,9 @@ export default function Page() {
           >
             <Stack spacing="6">
               <Stack spacing={"6"} textAlign="center" alignItems={"center"}>
+                {/* 
+                TODO: Change logo 
+                */}
                 <Image
                   src={require("@/assets/circle.png")}
                   alt=""

@@ -24,8 +24,8 @@ export default function TableRincianPembayaran(props: Props) {
       <Td>{toIDR(props?.item?.sum?.total)}</Td>
       <Td>
         <Button onClick={props.modalHandler} variant="ghost">
-          <Tooltip hasArrow label="detail" fontSize="xs">
-            <Icon as={EyeIcon} color="teal" boxSize={5} />
+          <Tooltip hasArrow label="Lihat Detail" fontSize="xs">
+            <Icon as={EyeIcon} color="teal" />
           </Tooltip>
         </Button>
       </Td>

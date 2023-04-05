@@ -12,6 +12,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Portal,
   Progress,
   Skeleton,
   Stack,
@@ -29,13 +30,12 @@ import { GetServerSideProps } from "next";
 import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalConfirmDeleteMurobahah from "@/components/pages/pinjaman/murobahah/ModalConfirmDeleteMurobahah";
+import ModalTambahPinjaman from "@/components/pages/pinjaman/murobahah/ModalTambahPinjaman";
+import TableMurobahah from "@/components/pages/pinjaman/murobahah/TableMurobahah";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useMurobahah } from "@/services/api/commands/murobahah.command";
-
-import ModalConfirmDeleteMurobahah from "./components/ModalConfirmDeleteMurobahah";
-import ModalTambahPinjaman from "./components/ModalTambahPinjaman";
-import TableMurobahah from "./components/TableMurobahah";
 
 import { TAnggota, TMurobahah } from "@/types";
 
@@ -59,7 +59,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
 export default function Page() {
   // TODO: Fix issues below
-  //  - Create button text not wrapped
   //  - Pagination cropped in mobile screen
 
   const [total, setTotal] = useState<number>();
@@ -114,7 +113,13 @@ export default function Page() {
       <Box>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
-      <Flex alignItems="center" justify="space-between" mx={5}>
+      <Flex
+        alignItems="center"
+        justify="space-between"
+        mx={5}
+        flexWrap="wrap"
+        gap={3}
+      >
         <Heading size="lg">Pinjaman Murobahah</Heading>
         <Button
           as="span"
@@ -202,15 +207,19 @@ export default function Page() {
           </Skeleton>
         </CardBody>
       </Card>
-      <ModalTambahPinjaman
-        ref={modalTambahPinjamanRef}
-        refetchFn={refetchQuery}
-      />
-      <ModalConfirmDeleteMurobahah
-        ref={modalConfirmDeleteMurobahahRef}
-        refetchFn={refetchQuery}
-        id={idMurobahah || 0}
-      />
+
+      <Portal>
+        <ModalTambahPinjaman
+          ref={modalTambahPinjamanRef}
+          refetchFn={refetchQuery}
+        />
+
+        <ModalConfirmDeleteMurobahah
+          ref={modalConfirmDeleteMurobahahRef}
+          refetchFn={refetchQuery}
+          id={idMurobahah || 0}
+        />
+      </Portal>
     </Stack>
   );
 }

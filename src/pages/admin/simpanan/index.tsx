@@ -25,11 +25,10 @@ import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import TableSimpananAnggota from "@/components/pages/simpanan/TableSimpanan";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useSimpanan } from "@/services/api/commands/simpanan.command";
-
-import TableSimpananAnggota from "./components/TableSimpanan";
 
 import { TAnggota } from "@/types";
 
