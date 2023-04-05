@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -28,6 +27,7 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
 import { useFormCallback } from "@/hooks/useFormCallback";
 
 import ModalCreatePengumuman from "@/components/pages/pengumuman/ModalCreatePengumuman";
@@ -119,13 +119,7 @@ export default function Page() {
   const [total, setTotal] = useState<number>();
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const pengumumanQuery = usePengumuman().paginate({
     params: {

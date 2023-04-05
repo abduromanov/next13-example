@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -28,6 +27,8 @@ import {
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useRef, useState } from "react";
+
+import useCustomPagination from "@/hooks/useCustomPagination";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 import ModalConfirmDeleteMurobahah from "@/components/pages/pinjaman/murobahah/ModalConfirmDeleteMurobahah";
@@ -70,13 +71,8 @@ export default function Page() {
   const modalConfirmDeleteMurobahahRef =
     useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
+
   const listMurobahahQuery = useMurobahah([
     searchNama,
     searchIdAnggota,
