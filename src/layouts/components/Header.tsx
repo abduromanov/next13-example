@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Hide,
   HStack,
   Icon,
   IconButton,
@@ -30,20 +31,23 @@ export default function Header(props: Props) {
 
   return (
     <HStack
+      flexDirection={{ base: "row" }}
       justifyContent={"space-between"}
       p={4}
       mb={8}
       borderBottomWidth={1}
       shadow="sm"
     >
-      <IconButton
-        as={Bars3Icon}
-        aria-label={"menu"}
-        p={2}
-        colorScheme={"brand"}
-        className={"cursor-pointer"}
-        onClick={props.disclosure.onToggle}
-      />
+      <Hide above="lg">
+        <IconButton
+          as={Bars3Icon}
+          aria-label={"menu"}
+          p={2}
+          colorScheme={"brand"}
+          className={"cursor-pointer"}
+          onClick={props.disclosure.onToggle}
+        />
+      </Hide>
       <Menu closeOnSelect strategy="absolute">
         <MenuButton
           as={IconButton}

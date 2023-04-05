@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -39,6 +38,8 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
+
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 import ModalCreateDebit from "@/components/pages/simpanan/ModalCreateDebit";
 import ModalCreateKredit from "@/components/pages/simpanan/ModalCreateKredit";
@@ -76,7 +77,6 @@ export default function Page() {
   // TODO: Fix issues below
   //  - Searchbar unresponsive
   //  - Filter not inline in mobile screen
-  //  - Pagination cropped in mobile screen
 
   const [total, setTotal] = useState<number>();
   const [jenisTabungan, setJenisTabungan] = useState<string>();
@@ -89,13 +89,7 @@ export default function Page() {
   const modalCreateDebitRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalCreateKreditRef = useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const simpananDetailQuery = useSimpananDetail(Number(id)).paginate({
     params: {
