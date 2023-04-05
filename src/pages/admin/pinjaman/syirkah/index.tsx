@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Button,
   Card,
