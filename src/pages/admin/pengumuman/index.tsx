@@ -112,9 +112,6 @@ const TableRow = (props: { item: TPengumuman; refetchFn?: () => void }) => {
 };
 
 export default function Page() {
-  // TODO: Fix issues below
-  //  - Create button text not wrapped
-
   const [total, setTotal] = useState<number>();
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
 
@@ -138,7 +135,7 @@ export default function Page() {
 
   return (
     <Stack spacing="8" px="8" pb="10">
-      <Flex alignItems="center" justify="space-between">
+      <Flex alignItems="center" justify="space-between" flexWrap="wrap" gap={3}>
         <Heading size="lg">Pengumuman</Heading>
         <Button
           as="span"
