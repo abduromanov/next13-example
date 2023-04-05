@@ -143,7 +143,7 @@ export default function Page() {
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
-          <Flex alignItems="center" justifyContent="space-between" flexWrap="wrap" gap="4">
+          <Flex alignItems="center" justifyContent="space-between" flexWrap="wrap" gap="3">
             <Skeleton isLoaded={!listAnggotaQuery.isLoading}>
               <Heading size="sm">
                 Jumlah Anggota: {metadata?.filter_count}
