@@ -10,6 +10,7 @@ import {
   Heading,
   HStack,
   Icon,
+  Portal,
   Progress,
   Select,
   Skeleton,
@@ -269,9 +270,9 @@ export default function Page() {
               onClick={() => {
                 modalTambahPembayaranRef.current?.onOpen();
               }}
+              leftIcon={<Icon as={PlusIcon} />}
             >
-              <Icon as={PlusIcon} />
-              &nbsp;Tambah Pembayaran
+              Tambah Pembayaran
             </Button>
           </Box>
         </Flex>
@@ -491,37 +492,6 @@ export default function Page() {
                   />
                 ))}
               </Tbody>
-              <ModalCatatan
-                ref={modalCatatanRef}
-                item={catatanPembayaran
-                  ?.filter(
-                    (v: any) =>
-                      moment(v.tglBayar).format("M-YYYY") == catatanDate
-                  )
-                  .map((item: any) => (
-                    <>
-                      <TableCatatanPembayaran
-                        key={item.id}
-                        item={item}
-                        modalHandler={() => {
-                          modalDeleteRef.current?.onOpen();
-                          setIdMutasi(item.id);
-                        }}
-                      />
-                    </>
-                  ))}
-              />
-              <ModalConfirmDeleteMutasi
-                ref={modalDeleteRef}
-                refetchFn={refetchQuery}
-                id={Number(id) || 0}
-                idMutasi={idMutasi || 0}
-              />
-              <ModalTambahPembayaran
-                ref={modalTambahPembayaranRef}
-                refetchFn={refetchQuery}
-              />
-
               <Tfoot>
                 <Tr fontWeight="semibold">
                   <Td textTransform="uppercase">Total</Td>
@@ -565,6 +535,39 @@ export default function Page() {
           </TableContainer>
         </CardBody>
       </Card>
+
+      <Portal>
+        <ModalCatatan ref={modalCatatanRef}>
+          {catatanPembayaran
+            ?.filter(
+              (v: any) =>
+                moment(v.tglBayar).format("M-YYYY") == catatanDate
+            )
+            .map((item: any) => (
+              <TableCatatanPembayaran
+                key={item.id}
+                item={item}
+                modalHandler={() => {
+                  modalDeleteRef.current?.onOpen();
+                  setIdMutasi(item.id);
+                }}
+              />
+            ))
+          }
+        </ModalCatatan>
+
+        <ModalConfirmDeleteMutasi
+          ref={modalDeleteRef}
+          refetchFn={refetchQuery}
+          id={Number(id) || 0}
+          idMutasi={idMutasi || 0}
+        />
+
+        <ModalTambahPembayaran
+          ref={modalTambahPembayaranRef}
+          refetchFn={refetchQuery}
+        />
+      </Portal>
     </Stack>
   );
 }

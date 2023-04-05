@@ -1,6 +1,7 @@
 import {
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
@@ -12,13 +13,12 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, ReactNode, useImperativeHandle } from "react";
 
 type Props = {
-  isOpen?: any;
-  onClose?: any;
-  item?: any;
+  children: ReactNode;
 };
+
 const ModalCatatan = forwardRef<
   Partial<ReturnType<typeof useDisclosure>> | undefined,
   Props
@@ -32,10 +32,11 @@ const ModalCatatan = forwardRef<
     [disclosure.onOpen]
   );
   return (
-    <Modal isOpen={disclosure.isOpen} onClose={disclosure.onClose} size="6xl">
+    <Modal isOpen={disclosure.isOpen} onClose={disclosure.onClose} size={["full", "6xl"]}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Catatan Pembayaran</ModalHeader>
+        <ModalCloseButton />
         <ModalBody>
           <TableContainer>
             <Table>
@@ -48,10 +49,10 @@ const ModalCatatan = forwardRef<
                   <Th>Tenor Bayar</Th>
                   <Th>Bulan Tidak Sesuai</Th>
                   <Th>Catatan</Th>
-                  <Th>Aksi</Th>
+                  <Th></Th>
                 </Tr>
               </Thead>
-              <Tbody>{props.item}</Tbody>
+              <Tbody>{props.children}</Tbody>
             </Table>
           </TableContainer>
         </ModalBody>

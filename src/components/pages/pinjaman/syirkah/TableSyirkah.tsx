@@ -41,12 +41,12 @@ export default function TableSyirkah(props: Props) {
         <Flex gap={3}>
           <Link href={`/admin/pinjaman/syirkah/${props.item.id}`}>
             <Tooltip hasArrow label="Lihat Detail" fontSize="xs">
-              <Icon as={EyeIcon} color="teal" boxSize={5} />
+              <Icon as={EyeIcon} color="teal" />
             </Tooltip>
           </Link>
           <Link href={`/admin/pinjaman/syirkah/${props.item.id}`}>
             <Tooltip hasArrow label="Hapus" fontSize="xs">
-              <Icon as={TrashIcon} color="red" boxSize={5} />
+              <Icon as={TrashIcon} color="red" />
             </Tooltip>
           </Link>
         </Flex>

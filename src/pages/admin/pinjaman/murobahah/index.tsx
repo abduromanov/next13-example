@@ -12,6 +12,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Portal,
   Progress,
   Skeleton,
   Stack,
@@ -206,15 +207,19 @@ export default function Page() {
           </Skeleton>
         </CardBody>
       </Card>
-      <ModalTambahPinjaman
-        ref={modalTambahPinjamanRef}
-        refetchFn={refetchQuery}
-      />
-      <ModalConfirmDeleteMurobahah
-        ref={modalConfirmDeleteMurobahahRef}
-        refetchFn={refetchQuery}
-        id={idMurobahah || 0}
-      />
+
+      <Portal>
+        <ModalTambahPinjaman
+          ref={modalTambahPinjamanRef}
+          refetchFn={refetchQuery}
+        />
+
+        <ModalConfirmDeleteMurobahah
+          ref={modalConfirmDeleteMurobahahRef}
+          refetchFn={refetchQuery}
+          id={idMurobahah || 0}
+        />
+      </Portal>
     </Stack>
   );
 }
