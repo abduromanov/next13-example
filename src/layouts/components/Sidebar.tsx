@@ -22,7 +22,7 @@ type Props = {
   disclosure: ReturnType<typeof useDisclosure>;
 };
 
-const MenuItem = (props: { route: string }) => (
+const MenuItem = (props: { route: string; onClose?: () => void }) => (
   <VStack textColor={"white"} spacing={8}>
     {/* 
     TODO: Change logo
@@ -47,6 +47,7 @@ const MenuItem = (props: { route: string }) => (
               justifyContent={"start"}
               _hover={{ bg: "brand.400" }}
               m={0}
+              onClick={props.onClose}
             >
               <Icon as={(Heroicon as any)[item.icon]} fontSize={"2xl"} />
               <Text ms={3}>{item.label}</Text>
@@ -70,11 +71,9 @@ export default function Sidebar(props: Props) {
         minH={"full"}
         w={"2xs"}
         pos={"fixed"}
-        sx={{
-          display: "none",
-          "@media(min-width: 1024px)": {
-            display: "flex",
-          },
+        display={{
+          base: "none",
+          lg: "flex",
         }}
       >
         <MenuItem route={router.pathname} />
@@ -89,7 +88,10 @@ export default function Sidebar(props: Props) {
           <DrawerOverlay />
           <DrawerContent>
             <DrawerBody px={6} py={8} bg={"brand.500"}>
-              <MenuItem route={router.pathname} />
+              <MenuItem
+                route={router.pathname}
+                onClose={props.disclosure.onClose}
+              />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

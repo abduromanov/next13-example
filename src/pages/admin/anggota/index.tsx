@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Button,
   Card,
@@ -33,6 +32,8 @@ import {
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useEffect, useMemo, useRef, useState } from "react";
+
+import useCustomPagination from "@/hooks/useCustomPagination";
 
 import ModalCreateAnggota from "@/components/pages/anggota/ModalCreateAnggota";
 import ModalDeleteAnggota from "@/components/pages/anggota/ModalDeleteAnggota";
@@ -102,13 +103,7 @@ export default function Page() {
   const modalEditRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalDeleteRef = useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const listAnggotaQuery = useAnggota().paginate({
     params: {
