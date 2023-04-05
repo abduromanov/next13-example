@@ -43,7 +43,13 @@ export function InputPassword(props: InputProps & TInputProps) {
           <IconButton
             variant="link"
             aria-label={isOpen ? "Mask password" : "Reveal password"}
-            icon={isOpen ? <Icon as={EyeSlashIcon} color="gray.500" /> : <Icon as={EyeIcon} color="gray.500" />}
+            icon={
+              isOpen ? (
+                <Icon as={EyeSlashIcon} color="gray.500" />
+              ) : (
+                <Icon as={EyeIcon} color="gray.500" />
+              )
+            }
             onClick={onClickReveal}
           />
         </InputRightElement>
