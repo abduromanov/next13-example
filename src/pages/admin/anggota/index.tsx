@@ -34,12 +34,12 @@ import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import ModalCreateAnggota from "@/components/pages/anggota/ModalCreateAnggota";
+import ModalDeleteAnggota from "@/components/pages/anggota/ModalDeleteAnggota";
+import ModalEditAnggota from "@/components/pages/anggota/ModalEditAnggota";
+
 import TablePagination from "@/layouts/components/TablePagination";
 import { useAnggota } from "@/services/api/commands/anggota.command";
-
-import ModalCreateAnggota from "./components/ModalCreateAnggota";
-import ModalDeleteAnggota from "./components/ModalDeleteAnggota";
-import ModalEditAnggota from "./components/ModalEditAnggota";
 
 import { TAnggota } from "@/types";
 

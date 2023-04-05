@@ -38,6 +38,10 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalCreateMutasiSyirkah from "@/components/pages/pinjaman/syirkah/detail/ModalCreateMutasiSyirkah";
+import ModalDeleteMutasiSyirkah from "@/components/pages/pinjaman/syirkah/detail/ModalDeleteMutasiSyirkah";
+import ModalEditMutasiSyirkah from "@/components/pages/pinjaman/syirkah/detail/ModalEditMutasiSyirkah";
+import TableDetilSyirkah from "@/components/pages/pinjaman/syirkah/TableDetilSyirkah";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import {
@@ -45,11 +49,6 @@ import {
   useMutasiSyirkah,
 } from "@/services/api/commands/syirkah.command";
 import toIDR from "@/services/utils/toIDR";
-
-import ModalCreateMutasiSyirkah from "./components/ModalCreateMutasiSyirkah";
-import ModalDeleteMutasiSyirkah from "./components/ModalDeleteMutasiSyirkah";
-import ModalEditMutasiSyirkah from "./components/ModalEditMutasiSyirkah";
-import TableDetilSyirkah from "../components/TableDetilSyirkah";
 
 import { TAnggota } from "@/types";
 

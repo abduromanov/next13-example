@@ -30,13 +30,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useFormCallback } from "@/hooks/useFormCallback";
 
+import ModalCreatePengumuman from "@/components/pages/pengumuman/ModalCreatePengumuman";
+
 import TablePagination from "@/layouts/components/TablePagination";
 import {
   useMutatePengumuman,
   usePengumuman,
 } from "@/services/api/commands/pengumuman.command";
-
-import ModalCreatePengumuman from "./components/ModalCreatePengumuman";
 
 import { TAnggota, TPengumuman } from "@/types";
 

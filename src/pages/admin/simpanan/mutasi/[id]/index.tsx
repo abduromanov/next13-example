@@ -40,6 +40,9 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalCreateDebit from "@/components/pages/simpanan/ModalCreateDebit";
+import ModalCreateKredit from "@/components/pages/simpanan/ModalCreateKredit";
+import TableMutasi from "@/components/pages/simpanan/TableMutasi";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
@@ -48,10 +51,6 @@ import {
   useTotalSimpanan,
 } from "@/services/api/commands/simpanan.command";
 import toIDR from "@/services/utils/toIDR";
-
-import ModalCreateDebit from "../../components/ModalCreateDebit";
-import ModalCreateKredit from "../../components/ModalCreateKredit";
-import TableMutasi from "../../components/TableMutasi";
 
 import { TAnggota, TSimpanan } from "@/types";
 

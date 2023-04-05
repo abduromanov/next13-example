@@ -41,6 +41,12 @@ import { useMemo, useRef, useState } from "react";
 import { useFormCallback } from "@/hooks/useFormCallback";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalCatatan from "@/components/pages/pinjaman/murobahah/detail/ModalCatatan";
+import ModalConfirmDeleteMutasi from "@/components/pages/pinjaman/murobahah/detail/ModalConfirmDeleteMutasi";
+import ModalTambahPembayaran from "@/components/pages/pinjaman/murobahah/detail/ModalTambahPembayaran";
+import TableCatatanPembayaran from "@/components/pages/pinjaman/murobahah/detail/TableCatatanPembayaran";
+import TableRangkumanPembayaran from "@/components/pages/pinjaman/murobahah/detail/TableRangkumanPembayaran";
+import TableRincianPembayaran from "@/components/pages/pinjaman/murobahah/detail/TableRincianPembayaran";
 
 import Custom404 from "@/pages/404";
 import {
@@ -50,13 +56,6 @@ import {
   useUpdateMurobahah,
 } from "@/services/api/commands/murobahah.command";
 import toIDR from "@/services/utils/toIDR";
-
-import ModalCatatan from "../components/ModalCatatan";
-import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
-import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
-import TableCatatanPembayaran from "../components/TableCatatanPembayaran";
-import TableRangkumanPembayaran from "../components/TableRangkumanPembayaran";
-import TableRincianPembayaran from "../components/TableRincianPembayaran";
 
 import { TAnggota } from "@/types";
 
@@ -157,7 +156,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalPinjaman || 0) -
-              rincianPembayaranTotal.cicilan,
+            rincianPembayaranTotal.cicilan,
         [detailMurobahah, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
@@ -165,7 +164,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalMargin || 0) -
-              rincianPembayaranTotal.margin,
+            rincianPembayaranTotal.margin,
         [detailMurobahah, rincianPembayaranTotal.margin]
       ),
       total: useMemo(

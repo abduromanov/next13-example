@@ -29,13 +29,12 @@ import { GetServerSideProps } from "next";
 import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalConfirmDeleteMurobahah from "@/components/pages/pinjaman/murobahah/ModalConfirmDeleteMurobahah";
+import ModalTambahPinjaman from "@/components/pages/pinjaman/murobahah/ModalTambahPinjaman";
+import TableMurobahah from "@/components/pages/pinjaman/murobahah/TableMurobahah";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useMurobahah } from "@/services/api/commands/murobahah.command";
-
-import ModalConfirmDeleteMurobahah from "./components/ModalConfirmDeleteMurobahah";
-import ModalTambahPinjaman from "./components/ModalTambahPinjaman";
-import TableMurobahah from "./components/TableMurobahah";
 
 import { TAnggota, TMurobahah } from "@/types";
 

@@ -27,12 +27,11 @@ import { GetServerSideProps } from "next";
 import { useEffect, useRef, useState } from "react";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalCreateSyirkah from "@/components/pages/pinjaman/syirkah/ModalCreateSyirkah";
+import TableSyirkah from "@/components/pages/pinjaman/syirkah/TableSyirkah";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useSyirkah } from "@/services/api/commands/syirkah.command";
-
-import ModalCreateSyirkah from "./components/ModalCreateSyirkah";
-import TableSyirkah from "./components/TableSyirkah";
 
 import { TAnggota } from "@/types";
 
