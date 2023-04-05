@@ -94,9 +94,6 @@ const TableRow = (props: {
 };
 
 export default function Page() {
-  // TODO: Fix issues below
-  //  - Make search bar full width in mobile screen
-
   const [total, setTotal] = useState<number>();
   const [idAnggota, setIdAnggota] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -132,9 +129,10 @@ export default function Page() {
 
   return (
     <Stack spacing="8" px="8" pb="10">
-      <Flex alignItems="center" justify="space-between">
+      <Flex alignItems="center" justify="space-between" flexWrap="wrap" gap={3} mr={5}>
         <Heading size="lg">Daftar Anggota</Heading>
         <Button
+          as="span"
           leftIcon={<Icon as={PlusIcon} />}
           onClick={() => {
             modalCreateRef.current?.onOpen();
@@ -145,14 +143,14 @@ export default function Page() {
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
-          <Flex alignItems="center" justifyContent="space-between">
+          <Flex alignItems="center" justifyContent="space-between" flexWrap="wrap" gap="4">
             <Skeleton isLoaded={!listAnggotaQuery.isLoading}>
               <Heading size="sm">
                 Jumlah Anggota: {metadata?.filter_count}
               </Heading>
             </Skeleton>
 
-            <InputGroup w="25%">
+            <InputGroup w={["full", "270px"]}>
               <InputLeftElement pointerEvents="none">
                 <Icon as={MagnifyingGlassIcon} color="gray" />
               </InputLeftElement>
