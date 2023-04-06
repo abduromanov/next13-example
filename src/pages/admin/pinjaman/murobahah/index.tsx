@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -29,6 +28,8 @@ import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useRef, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
+
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 import ModalConfirmDeleteMurobahah from "@/components/pages/pinjaman/murobahah/ModalConfirmDeleteMurobahah";
 import ModalTambahPinjaman from "@/components/pages/pinjaman/murobahah/ModalTambahPinjaman";
@@ -58,9 +59,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 };
 
 export default function Page() {
-  // TODO: Fix issues below
-  //  - Pagination cropped in mobile screen
-
   const [total, setTotal] = useState<number>();
   const [idMurobahah, setIdMurobahah] = useState<number>();
   const [searchNama, setSearchNama] = useState<string>("");
@@ -70,18 +68,9 @@ export default function Page() {
   const modalConfirmDeleteMurobahahRef =
     useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
-  const listMurobahahQuery = useMurobahah([
-    searchNama,
-    searchIdAnggota,
-    searchTglMulai,
-  ]).paginate({
+  const pagination = useCustomPagination(total);
+
+  const listMurobahahQuery = useMurobahah().paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Hide,
   HStack,
   Icon,
   IconButton,
@@ -16,8 +17,11 @@ import {
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
+import { TAnggota } from "@/types";
+
 type Props = {
   disclosure: ReturnType<typeof useDisclosure>;
+  anggota?: TAnggota;
 };
 
 export default function Header(props: Props) {
@@ -30,27 +34,31 @@ export default function Header(props: Props) {
 
   return (
     <HStack
+      flexDirection={{ base: "row", lg: "row-reverse" }}
       justifyContent={"space-between"}
       p={4}
       mb={8}
       borderBottomWidth={1}
       shadow="sm"
     >
-      <IconButton
-        as={Bars3Icon}
-        aria-label={"menu"}
-        p={2}
-        colorScheme={"brand"}
-        className={"cursor-pointer"}
-        onClick={props.disclosure.onToggle}
-      />
+      <Hide above="lg">
+        <IconButton
+          as={Bars3Icon}
+          aria-label={"menu"}
+          p={2}
+          colorScheme={"brand"}
+          className={"cursor-pointer"}
+          onClick={props.disclosure.onToggle}
+        />
+      </Hide>
       <Menu closeOnSelect strategy="absolute">
         <MenuButton
           as={IconButton}
           aria-label="Options"
-          // TODO: Change avatar
-          icon={<Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />}
-          variant="outline"
+          icon={
+            <Avatar name={props.anggota?.nama} bg="brand.500" color="white" />
+          }
+          variant="ghost"
           borderRadius={"full"}
         />
         <MenuList>

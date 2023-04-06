@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Card,
   CardBody,
@@ -23,6 +22,8 @@ import {
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
+
+import useCustomPagination from "@/hooks/useCustomPagination";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 import TableSimpananAnggota from "@/components/pages/simpanan/TableSimpanan";
@@ -54,13 +55,7 @@ export default function Page() {
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const listSimpananAnggotaQuery = useSimpanan().paginate({
     params: {

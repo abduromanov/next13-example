@@ -21,9 +21,9 @@ export default function Layouts(props: Props) {
       <VStack
         alignItems={"stretch"}
         w={{ lg: "calc(100% - 16rem)", base: "full" }}
-        className="m-0 lg:ml-64"
+        ml={{ base: 0, lg: "64" }}
       >
-        <Header disclosure={disclosure} />
+        <Header disclosure={disclosure} anggota={anggota} />
         {props.children}
       </VStack>
     </section>
