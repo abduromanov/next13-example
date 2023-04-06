@@ -24,7 +24,7 @@ type Props = {
 };
 
 const MenuItem = (props: { route: string; onClose?: () => void }) => (
-  <VStack textColor={"white"} spacing={6}>
+  <VStack textColor={"white"} spacing={6} w="full">
     <Image
       src={require("@/assets/logo.jpg")}
       alt=""
