@@ -70,11 +70,7 @@ export default function Page() {
 
   const pagination = useCustomPagination(total);
 
-  const listMurobahahQuery = useMurobahah([
-    searchNama,
-    searchIdAnggota,
-    searchTglMulai,
-  ]).paginate({
+  const listMurobahahQuery = useMurobahah().paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
