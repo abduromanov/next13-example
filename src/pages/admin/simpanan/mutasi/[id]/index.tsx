@@ -34,7 +34,6 @@ import {
   ArrowDownIcon,
   ArrowRightIcon,
   ChevronUpDownIcon,
-  ChevronUpIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
@@ -75,12 +74,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 };
 
 export default function Page() {
-  // TODO: Fix issues below
-  //  - add field tanggal transaksi on create Debit
-  //  - change tanggal dibuat to tanggal transaksi
-  //  - ubah filter tanggaldibuat ke tanggal transaksi
-  //  - sorting tanngal
-
   const [total, setTotal] = useState<number>();
   const [jenisTabungan, setJenisTabungan] = useState<string>();
   const [tglDibuatAwal, settglDibuatAwal] = useState<string>();
