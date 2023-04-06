@@ -35,7 +35,7 @@ export default function Layouts(props: Props) {
     <Box as="section" position="relative" pt="16">
       <Box h="32" bg="brand.500" w="full" pos="absolute" inset="0" />
       <AnggotaCardProfile anggota={anggota} />
-      <Container maxW="container.lg" px={0}>
+      <Container maxW="container.lg" px={0} pb="8">
         <AnggotaTabs />
         {props.children}
       </Container>
