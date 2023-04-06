@@ -30,11 +30,10 @@ export type TMurobahahRequest = {
   anggota: number;
 };
 
-export const useMurobahah = (key?: string[]) => {
-  key = key?.filter((item) => item) || [];
+export const useMurobahah = () => {
   return queryMutation<any, Array<TMurobahah & TMurobahahRelations>>(
     "/api/murobahah",
-    ["murobahah", ...key]
+    ["murobahah"]
   );
 };
 

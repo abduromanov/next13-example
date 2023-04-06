@@ -1,5 +1,6 @@
 import {
   Button,
+  HStack,
   Modal,
   ModalBody,
   ModalContent,
@@ -59,17 +60,22 @@ const ModalConfirmDeleteMurobahah = forwardRef<
           <Text>Anda akan menghapus data secara permanen</Text>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={disclosure.onClose} variant="ghost">
-            Batalkan
-          </Button>
-          <Button
-            colorScheme="red"
-            variant="ghost"
-            onClick={submitHandler}
-            isLoading={mutasiMurobahahQuery.isLoading}
-          >
-            Ya, Hapus data
-          </Button>
+          <HStack spacing="3">
+            <Button
+              onClick={disclosure.onClose}
+              variant="outline"
+              colorScheme="blackAlpha"
+            >
+              Batal
+            </Button>
+            <Button
+              colorScheme="red"
+              onClick={submitHandler}
+              isLoading={mutasiMurobahahQuery.isLoading}
+            >
+              Hapus
+            </Button>
+          </HStack>
         </ModalFooter>
       </ModalContent>
     </Modal>

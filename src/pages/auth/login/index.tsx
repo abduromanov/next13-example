@@ -79,9 +79,9 @@ export default function Page() {
             borderRadius={"xl"}
           >
             <Stack spacing="6">
-              <Stack spacing={"6"} textAlign="center" alignItems={"center"}>
+              <Stack spacing={0} textAlign="center" alignItems={"center"}>
                 <Image
-                  src={require("@/assets/circle.png")}
+                  src={require("@/assets/logo.jpg")}
                   alt=""
                   className="max-w-[70%]"
                   priority

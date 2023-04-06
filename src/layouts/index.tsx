@@ -19,15 +19,15 @@ export default function Layouts(props: Props) {
   const disclosure = useDisclosure();
   const anggota = props.anggota;
 
-  return anggota.role === "admin" ? (
+  return anggota?.role === "admin" ? (
     <section className="flex w-full min-w-full">
       <Sidebar disclosure={disclosure} />
       <VStack
         alignItems={"stretch"}
         w={{ lg: "calc(100% - 16rem)", base: "full" }}
-        className="m-0 lg:ml-64"
+        ml={{ base: 0, lg: "64" }}
       >
-        <Header disclosure={disclosure} />
+        <Header disclosure={disclosure} anggota={anggota} />
         {props.children}
       </VStack>
     </section>

@@ -1,4 +1,4 @@
-import { Flex, Icon, IconButton, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { Button, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
 import {
   CheckIcon,
   EyeIcon,
@@ -42,24 +42,18 @@ export default function TableMurobahah(props: Props) {
         {props.item.lunas ? <Icon as={CheckIcon} /> : <Icon as={XMarkIcon} />}
       </Td>
       <Td>
-        <Flex gap={5}>
-          <Link href={`/admin/pinjaman/murobahah/${props.item.id}`}>
-            <Tooltip hasArrow label="lihat detail" fontSize="xs">
-              <Icon as={EyeIcon} color="teal" boxSize={6} />
+        <Link href={`/admin/pinjaman/murobahah/${props.item.id}`}>
+          <Button variant="link">
+            <Tooltip hasArrow label="Lihat Detail">
+              <Icon as={EyeIcon} color="teal" fontSize="lg" />
             </Tooltip>
-          </Link>
-
-          <Tooltip hasArrow label="hapus" fontSize="xs">
-            <IconButton
-              variant="ghost"
-              onClick={props.modalHandler}
-              icon={<TrashIcon />}
-              size="xs"
-              color="red"
-              aria-label="delete murobahah"
-            />
+          </Button>
+        </Link>
+        <Button variant="link" onClick={props.modalHandler}>
+          <Tooltip hasArrow label="Hapus Data">
+            <Icon as={TrashIcon} color="red.600" fontSize="lg" />
           </Tooltip>
-        </Flex>
+        </Button>
       </Td>
     </Tr>
   );
