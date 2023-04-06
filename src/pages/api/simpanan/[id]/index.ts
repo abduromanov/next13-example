@@ -78,11 +78,17 @@ export default async function handler(
 
   async function post() {
     const data = req.body;
-    data.map((v: any) => {
-      v.idAnggota = parseInt(v.idAnggota);
-      v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
-      v.saldo = 0;
-    });
+    if (isArray(data)) {
+      data.map((v: any) => {
+        v.idAnggota = parseInt(v.idAnggota);
+        v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
+        v.saldo = 0;
+      });
+    } else {
+      data.idAnggota = parseInt(data.idAnggota);
+      data.nominal = parseInt(data.nominal.replace(/\D/g, ""), 10) * -1;
+      data.saldo = 0;
+    }
 
     await directus.items("mutasiTabungan").createMany(data);
     return res.status(200).json({});

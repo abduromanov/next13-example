@@ -53,6 +53,7 @@ const ModalCreateKredit = forwardRef<
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
   const submitHandler: SubmitHandler<TSimpananKreditRequest> = (value) => {
+    value.idAnggota = String(id);
     // console.log(value)
     simpananMutation.mutate(value, {
       onSuccess() {
@@ -111,10 +112,10 @@ const ModalCreateKredit = forwardRef<
                   form.setValue(
                     "nominal",
                     e.target.value &&
-                      parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
+                    parseInt(
+                      e.target.value.replace(/\D/g, ""),
+                      10
+                    ).toLocaleString("id-ID")
                   );
 
                   return e.target.value;
