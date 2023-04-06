@@ -11,9 +11,14 @@ import { useMemo } from "react";
 
 import toIDR from "@/services/utils/toIDR";
 
+import { TMurobahah, TMurobahahRelations } from "@/types";
+
 type Props = {
-  item: any;
+  item: TMurobahah & TMurobahahRelations & {
+    totalTerbayar?: number;
+  };
   modalHandler?: () => void;
+  canDelete?: boolean;
 };
 
 export default function TableMurobahah(props: Props) {
@@ -49,11 +54,13 @@ export default function TableMurobahah(props: Props) {
             </Tooltip>
           </Button>
         </Link>
-        <Button variant="link" onClick={props.modalHandler}>
-          <Tooltip hasArrow label="Hapus Data">
-            <Icon as={TrashIcon} color="red.600" fontSize="lg" />
-          </Tooltip>
-        </Button>
+        {props.canDelete && (
+          <Button variant="link" onClick={props.modalHandler}>
+            <Tooltip hasArrow label="Hapus Data">
+              <Icon as={TrashIcon} color="red.600" fontSize="lg" />
+            </Tooltip>
+          </Button>
+        )}
       </Td>
     </Tr>
   );
