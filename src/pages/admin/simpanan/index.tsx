@@ -87,7 +87,12 @@ export default function Page() {
 
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
-          <Flex alignItems="center" justifyContent="space-between" gap="4" flexWrap="wrap">
+          <Flex
+            alignItems="center"
+            justifyContent="space-between"
+            gap="4"
+            flexWrap="wrap"
+          >
             <Heading size="lg">Simpanan Anggota</Heading>
             <InputGroup w={["full", "270px"]}>
               <InputLeftElement pointerEvents="none">

@@ -96,7 +96,7 @@ export default function Page() {
       jenisSimpanan: jenisTabungan,
       tglDibuatAwal: tglDibuatAwal,
       tglDibuatAkhir: tglDibuatAkhir,
-      sort: [isSortByDesc ? "-tglTransaksi" : "tglTransaksi"]
+      sort: [isSortByDesc ? "-tglTransaksi" : "tglTransaksi"],
     },
   });
 
@@ -211,7 +211,12 @@ export default function Page() {
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
           <Box mb={5}>
-            <Flex gap="4" alignItems="center" display={["grid", "flex"]} flexWrap="wrap" >
+            <Flex
+              gap="4"
+              alignItems="center"
+              display={["grid", "flex"]}
+              flexWrap="wrap"
+            >
               <Box>
                 <Text fontWeight="bold" mb="10px">
                   Filter Tanggal
@@ -278,7 +283,12 @@ export default function Page() {
                 <Tr>
                   <Th>
                     Tanggal
-                    <IconButton icon={<Icon as={ChevronUpDownIcon} fontSize="20px" />} aria-label="sort tanggal" variant="ghost" onClick={() => setIsSortByDesc(!isSortByDesc)} />
+                    <IconButton
+                      icon={<Icon as={ChevronUpDownIcon} fontSize="20px" />}
+                      aria-label="sort tanggal"
+                      variant="ghost"
+                      onClick={() => setIsSortByDesc(!isSortByDesc)}
+                    />
                   </Th>
                   <Th>Tipe</Th>
                   <Th>Nominal</Th>

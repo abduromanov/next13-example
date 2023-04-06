@@ -83,9 +83,18 @@ const ModalCreateDebit = forwardRef<
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
   const submitHandler: SubmitHandler<TSimpananDebitRequest> = (value) => {
-    const nominalWajib: any = parseInt(value.nominalWajib.replace(/\D/g, ""), 10);
-    const nominalKhusus: any = parseInt(value.nominalKhusus.replace(/\D/g, ""), 10);
-    const nominalSukarela: any = parseInt(value.nominalSukarela.replace(/\D/g, ""), 10);
+    const nominalWajib: any = parseInt(
+      value.nominalWajib.replace(/\D/g, ""),
+      10
+    );
+    const nominalKhusus: any = parseInt(
+      value.nominalKhusus.replace(/\D/g, ""),
+      10
+    );
+    const nominalSukarela: any = parseInt(
+      value.nominalSukarela.replace(/\D/g, ""),
+      10
+    );
 
     const listReq = [];
 
@@ -96,7 +105,7 @@ const ModalCreateDebit = forwardRef<
         saldo: value.nominalSukarela,
         catatan: value.catatan,
         jenisTabungan: "sukarela",
-        tglTransaksi: value.tglTransaksi
+        tglTransaksi: value.tglTransaksi,
       });
     }
     if (nominalWajib > 0) {
@@ -106,7 +115,7 @@ const ModalCreateDebit = forwardRef<
         saldo: value.nominalWajib,
         catatan: value.catatan,
         jenisTabungan: "wajib",
-        tglTransaksi: value.tglTransaksi
+        tglTransaksi: value.tglTransaksi,
       });
     }
     if (nominalKhusus > 0) {
@@ -116,7 +125,7 @@ const ModalCreateDebit = forwardRef<
         saldo: value.nominalKhusus,
         catatan: value.catatan,
         jenisTabungan: "khusus",
-        tglTransaksi: value.tglTransaksi
+        tglTransaksi: value.tglTransaksi,
       });
     }
 
@@ -181,9 +190,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -201,9 +210,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -220,9 +229,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -240,7 +249,6 @@ const ModalCreateDebit = forwardRef<
               placeholder="masukkan keterangan simpanan"
               register={{ ...form.register("catatan") }}
             />
-
           </Stack>
         </ModalBody>
         <ModalFooter>
