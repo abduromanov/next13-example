@@ -96,6 +96,7 @@ const ModalCreateDebit = forwardRef<
         saldo: value.nominalSukarela,
         catatan: value.catatan,
         jenisTabungan: "sukarela",
+        tglTransaksi: value.tglTransaksi
       });
     }
     if (nominalWajib > 0) {
@@ -105,6 +106,7 @@ const ModalCreateDebit = forwardRef<
         saldo: value.nominalWajib,
         catatan: value.catatan,
         jenisTabungan: "wajib",
+        tglTransaksi: value.tglTransaksi
       });
     }
     if (nominalKhusus > 0) {
@@ -114,6 +116,7 @@ const ModalCreateDebit = forwardRef<
         saldo: value.nominalKhusus,
         catatan: value.catatan,
         jenisTabungan: "khusus",
+        tglTransaksi: value.tglTransaksi
       });
     }
 
@@ -225,19 +228,19 @@ const ModalCreateDebit = forwardRef<
                 },
               }}
             />
+            <InputText
+              type="date"
+              register={{
+                ...form.register("tglTransaksi"),
+              }}
+              label="Tanggal Transaksi"
+            />
             <InputTextarea
               label="Keterangan"
               placeholder="masukkan keterangan simpanan"
               register={{ ...form.register("catatan") }}
             />
-            {/* <Box>
-              <Text fontWeight="bold">Keterangan</Text>
-              <Textarea
-                placeholder="masukkan keterangan simpanan"
-                h="150px"
-                onChange={(e) => form.setValue("catatan", e.target.value)}
-              />
-            </Box> */}
+
           </Stack>
         </ModalBody>
         <ModalFooter>

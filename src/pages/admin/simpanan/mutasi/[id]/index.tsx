@@ -10,6 +10,7 @@ import {
   GridItem,
   HStack,
   Icon,
+  IconButton,
   Input,
   InputGroup,
   Progress,
@@ -33,6 +34,7 @@ import {
   ArrowDownIcon,
   ArrowRightIcon,
   ChevronUpDownIcon,
+  ChevronUpIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
@@ -74,7 +76,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
 export default function Page() {
   // TODO: Fix issues below
-  //  - Pagination cropped in mobile screen
   //  - add field tanggal transaksi on create Debit
   //  - change tanggal dibuat to tanggal transaksi
   //  - ubah filter tanggaldibuat ke tanggal transaksi
@@ -84,6 +85,7 @@ export default function Page() {
   const [jenisTabungan, setJenisTabungan] = useState<string>();
   const [tglDibuatAwal, settglDibuatAwal] = useState<string>();
   const [tglDibuatAkhir, settglDibuatAkhir] = useState<string>();
+  const [isSortByDesc, setIsSortByDesc] = useState<boolean>(true);
 
   const router = useRouter();
   const { id } = router.query;
@@ -106,6 +108,7 @@ export default function Page() {
       jenisSimpanan: jenisTabungan,
       tglDibuatAwal: tglDibuatAwal,
       tglDibuatAkhir: tglDibuatAkhir,
+      sort: [isSortByDesc ? "-tglTransaksi" : "tglTransaksi"]
     },
   });
 
@@ -286,11 +289,8 @@ export default function Page() {
               <Thead>
                 <Tr>
                   <Th>
-                    Tanggal&nbsp;
-                    <ChevronUpDownIcon
-                      width="15px"
-                      style={{ display: "inline-flex" }}
-                    />
+                    Tanggal
+                    <IconButton icon={<Icon as={ChevronUpDownIcon} fontSize="20px" />} aria-label="sort tanggal" variant="ghost" onClick={() => setIsSortByDesc(!isSortByDesc)} />
                   </Th>
                   <Th>Tipe</Th>
                   <Th>Nominal</Th>

@@ -123,6 +123,13 @@ const ModalCreateKredit = forwardRef<
               }}
               errors={form.formState.errors.nominal as FieldError}
             />
+            <InputText
+              type="date"
+              register={{
+                ...form.register("tglTransaksi"),
+              }}
+              label="Tanggal Transaksi"
+            />
 
             <InputTextarea
               label="Catatan"

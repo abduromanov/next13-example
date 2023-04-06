@@ -83,11 +83,21 @@ export default async function handler(
         v.idAnggota = parseInt(v.idAnggota);
         v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
         v.saldo = 0;
+        v.tglTransaksi = moment(v.tglTransaksi || new Date())
+          .set({
+            h: moment().hour(),
+            m: moment().minute(),
+            s: moment().second(),
+          })
+          .toISOString();
       });
     } else {
       data.idAnggota = parseInt(data.idAnggota);
       data.nominal = parseInt(data.nominal.replace(/\D/g, ""), 10) * -1;
       data.saldo = 0;
+      data.tglTransaksi = moment(data.tglTransaksi || new Date())
+        .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
+        .toISOString();
     }
 
     await directus.items("mutasiTabungan").createMany(data);

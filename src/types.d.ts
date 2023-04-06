@@ -47,6 +47,7 @@ export interface TSimpanan {
   saldo: number;
   tglDibuat: string;
   tglDiubah: string;
+  tglTransaksi: string;
 }
 
 export interface TTotalSimpanan {
