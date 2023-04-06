@@ -25,8 +25,9 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useMemo, useState } from "react";
 
+import TableMutasi from "@/components/pages/simpanan/TableMutasi";
+
 import TablePagination from "@/layouts/components/TablePagination";
-import TableMutasi from "@/pages/admin/simpanan/components/TableMutasi";
 import {
   useSimpananDetail,
   useTotalSimpanan,
