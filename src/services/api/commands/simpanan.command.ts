@@ -32,6 +32,7 @@ export type TSimpananKreditRequest = {
   saldo: string;
   jenisTabungan: string;
   catatan: string;
+  tglTransaksi: string;
 };
 
 export type TSimpananDebitRequest = {
@@ -43,6 +44,7 @@ export type TSimpananDebitRequest = {
   idAnggota: string;
   saldo: string;
   jenisTabungan: string;
+  tglTransaksi: string;
 };
 
 export const useSimpanan = () =>

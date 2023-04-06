@@ -9,6 +9,7 @@ import {
   GridItem,
   HStack,
   Icon,
+  IconButton,
   Input,
   InputGroup,
   Progress,
@@ -74,14 +75,11 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 };
 
 export default function Page() {
-  // TODO: Fix issues below
-  //  - Searchbar unresponsive
-  //  - Filter not inline in mobile screen
-
   const [total, setTotal] = useState<number>();
   const [jenisTabungan, setJenisTabungan] = useState<string>();
   const [tglDibuatAwal, settglDibuatAwal] = useState<string>();
   const [tglDibuatAkhir, settglDibuatAkhir] = useState<string>();
+  const [isSortByDesc, setIsSortByDesc] = useState<boolean>(true);
 
   const router = useRouter();
   const { id } = router.query;
@@ -98,6 +96,7 @@ export default function Page() {
       jenisSimpanan: jenisTabungan,
       tglDibuatAwal: tglDibuatAwal,
       tglDibuatAkhir: tglDibuatAkhir,
+      sort: [isSortByDesc ? "-tglTransaksi" : "tglTransaksi"]
     },
   });
 
@@ -212,7 +211,7 @@ export default function Page() {
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader>
           <Box mb={5}>
-            <Flex gap="4" alignItems="center">
+            <Flex gap="4" alignItems="center" display={["grid", "flex"]} flexWrap="wrap" >
               <Box>
                 <Text fontWeight="bold" mb="10px">
                   Filter Tanggal
@@ -253,7 +252,7 @@ export default function Page() {
                   </InputGroup>
                 </HStack>
               </Box>
-              <Box mr="20px">
+              <Box w={["full", "200px"]}>
                 <Text fontWeight="bold" mb="10px">
                   Filter jenis simpanan
                 </Text>
@@ -273,16 +272,13 @@ export default function Page() {
           <Progress size="xs" isIndeterminate />
         )}
         <CardBody>
-          <TableContainer p={0} pb={5}>
+          <TableContainer p={0} mb="5">
             <Table mb={3}>
               <Thead>
                 <Tr>
                   <Th>
-                    Tanggal&nbsp;
-                    <ChevronUpDownIcon
-                      width="15px"
-                      style={{ display: "inline-flex" }}
-                    />
+                    Tanggal
+                    <IconButton icon={<Icon as={ChevronUpDownIcon} fontSize="20px" />} aria-label="sort tanggal" variant="ghost" onClick={() => setIsSortByDesc(!isSortByDesc)} />
                   </Th>
                   <Th>Tipe</Th>
                   <Th>Nominal</Th>
@@ -296,10 +292,10 @@ export default function Page() {
                 ))}
               </Tbody>
             </Table>
-            <Skeleton w="full" isLoaded={!simpananDetailQuery.isLoading}>
-              <TablePagination pagination={pagination} />
-            </Skeleton>
           </TableContainer>
+          <Skeleton w="full" isLoaded={!simpananDetailQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton>
         </CardBody>
       </Card>
 

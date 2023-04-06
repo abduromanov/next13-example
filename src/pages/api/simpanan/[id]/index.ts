@@ -80,26 +80,24 @@ export default async function handler(
     const data = req.body;
     if (isArray(data)) {
       data.map((v: any) => {
-        if (v.jenisTabungan == "khusus") {
-          v.idAnggota = parseInt(v.idAnggota);
-          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
-          v.saldo = 0;
-        }
-        if (v.jenisTabungan == "sukarela") {
-          v.idAnggota = parseInt(v.idAnggota);
-          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
-          v.saldo = 0;
-        }
-        if (v.jenisTabungan == "wajib") {
-          v.idAnggota = parseInt(v.idAnggota);
-          v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
-          v.saldo = 0;
-        }
+        v.idAnggota = parseInt(v.idAnggota);
+        v.nominal = parseInt(v.nominal.replace(/\D/g, ""), 10);
+        v.saldo = 0;
+        v.tglTransaksi = moment(v.tglTransaksi || new Date())
+          .set({
+            h: moment().hour(),
+            m: moment().minute(),
+            s: moment().second(),
+          })
+          .toISOString();
       });
     } else {
+      data.idAnggota = parseInt(data.idAnggota);
       data.nominal = parseInt(data.nominal.replace(/\D/g, ""), 10) * -1;
-      data.idAnggota = parseInt(req.query.id as string);
       data.saldo = 0;
+      data.tglTransaksi = moment(data.tglTransaksi || new Date())
+        .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
+        .toISOString();
     }
 
     await directus.items("mutasiTabungan").createMany(data);

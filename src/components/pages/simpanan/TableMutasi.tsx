@@ -12,8 +12,8 @@ type Props = {
 
 export default function TableMutasi(props: Props) {
   const tglDibuat = useMemo(
-    () => moment(props.item?.tglDibuat).format("DD MMMM YYYY"),
-    [props.item?.tglDibuat]
+    () => moment(props.item?.tglTransaksi).format("DD MMMM YYYY"),
+    [props.item?.tglTransaksi]
   );
 
   return (
