@@ -55,7 +55,9 @@ export default function Header(props: Props) {
         <MenuButton
           as={IconButton}
           aria-label="Options"
-          icon={<Avatar name={props.anggota?.nama} bg="brand.500" color="white" />}
+          icon={
+            <Avatar name={props.anggota?.nama} bg="brand.500" color="white" />
+          }
           variant="ghost"
           borderRadius={"full"}
         />
