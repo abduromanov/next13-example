@@ -23,7 +23,7 @@ export default function Layouts(props: Props) {
         w={{ lg: "calc(100% - 16rem)", base: "full" }}
         ml={{ base: 0, lg: "64" }}
       >
-        <Header disclosure={disclosure} />
+        <Header disclosure={disclosure} anggota={anggota} />
         {props.children}
       </VStack>
     </section>

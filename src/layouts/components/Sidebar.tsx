@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -23,16 +24,14 @@ type Props = {
 };
 
 const MenuItem = (props: { route: string; onClose?: () => void }) => (
-  <VStack textColor={"white"} spacing={8}>
-    {/* 
-    TODO: Change logo
-     */}
+  <VStack textColor={"white"} spacing={6}>
     <Image
-      src={require("@/assets/circle.png")}
+      src={require("@/assets/logo.jpg")}
       alt=""
-      className="max-w-[70%]"
+      className="max-w-[6rem] rounded-md"
       priority
     />
+    <Divider />
     {Object.keys(menus).map((item, index) => (
       <VStack w={"full"} alignItems={"start"} key={index}>
         <Text fontSize={"sm"}>{item}</Text>
