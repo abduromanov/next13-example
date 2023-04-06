@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Card,
   CardBody,
@@ -24,12 +23,13 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
+
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import TableSimpananAnggota from "@/components/pages/simpanan/TableSimpanan";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useSimpanan } from "@/services/api/commands/simpanan.command";
-
-import TableSimpananAnggota from "./components/TableSimpanan";
 
 import { TAnggota } from "@/types";
 
@@ -51,17 +51,20 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
   };
 };
 
-export default function PageSimpanan() {
+export default function Page() {
+  // TODO: Fix issues below
+  //  - Searchbar unresponsive
+  //  - Make searchbar full width in mobile screen
+
+  //  - change tanggal dibuat to tanggal tranaksi
+  //  - ubah filter tanggaldibuat ke tanggal transaksi
+  //  - sorting tanngal
+  //  - benerin create debit -> harusnya create 3 record  data (wajib, sukarela, khusus) tapi khusus nya belom
+
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const listSimpananAnggotaQuery = useSimpanan().paginate({
     params: {
@@ -130,10 +133,11 @@ export default function PageSimpanan() {
                 ))}
               </Tbody>
             </Table>
-            <Skeleton w="full" isLoaded={!listSimpananAnggotaQuery.isLoading}>
-              <TablePagination pagination={pagination} />
-            </Skeleton>
           </TableContainer>
+
+          <Skeleton w="full" isLoaded={!listSimpananAnggotaQuery.isLoading}>
+            <TablePagination pagination={pagination} />
+          </Skeleton>
         </CardBody>
       </Card>
     </Stack>

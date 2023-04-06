@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -12,6 +11,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Portal,
   Progress,
   Skeleton,
   Stack,
@@ -28,14 +28,15 @@ import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useRef, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
+
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalConfirmDeleteMurobahah from "@/components/pages/pinjaman/murobahah/ModalConfirmDeleteMurobahah";
+import ModalTambahPinjaman from "@/components/pages/pinjaman/murobahah/ModalTambahPinjaman";
+import TableMurobahah from "@/components/pages/pinjaman/murobahah/TableMurobahah";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useMurobahah } from "@/services/api/commands/murobahah.command";
-
-import ModalConfirmDeleteMurobahah from "./components/ModalConfirmDeleteMurobahah";
-import ModalTambahPinjaman from "./components/ModalTambahPinjaman";
-import TableMurobahah from "./components/TableMurobahah";
 
 import { TAnggota, TMurobahah } from "@/types";
 
@@ -57,7 +58,7 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
   };
 };
 
-export default function PageMurobahah() {
+export default function Page() {
   const [total, setTotal] = useState<number>();
   const [idMurobahah, setIdMurobahah] = useState<number>();
   const [searchNama, setSearchNama] = useState<string>("");
@@ -67,18 +68,9 @@ export default function PageMurobahah() {
   const modalConfirmDeleteMurobahahRef =
     useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
-  const listMurobahahQuery = useMurobahah([
-    searchNama,
-    searchIdAnggota,
-    searchTglMulai,
-  ]).paginate({
+  const pagination = useCustomPagination(total);
+
+  const listMurobahahQuery = useMurobahah().paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
@@ -110,7 +102,13 @@ export default function PageMurobahah() {
       <Box>
         <BreadcrumbSection data={breadcrumbData} />
       </Box>
-      <Flex alignItems="center" justify="space-between" mx={5}>
+      <Flex
+        alignItems="center"
+        justify="space-between"
+        mx={5}
+        flexWrap="wrap"
+        gap={3}
+      >
         <Heading size="lg">Pinjaman Murobahah</Heading>
         <Button
           as="span"
@@ -198,15 +196,19 @@ export default function PageMurobahah() {
           </Skeleton>
         </CardBody>
       </Card>
-      <ModalTambahPinjaman
-        ref={modalTambahPinjamanRef}
-        refetchFn={refetchQuery}
-      />
-      <ModalConfirmDeleteMurobahah
-        ref={modalConfirmDeleteMurobahahRef}
-        refetchFn={refetchQuery}
-        id={idMurobahah || 0}
-      />
+
+      <Portal>
+        <ModalTambahPinjaman
+          ref={modalTambahPinjamanRef}
+          refetchFn={refetchQuery}
+        />
+
+        <ModalConfirmDeleteMurobahah
+          ref={modalConfirmDeleteMurobahahRef}
+          refetchFn={refetchQuery}
+          id={idMurobahah || 0}
+        />
+      </Portal>
     </Stack>
   );
 }

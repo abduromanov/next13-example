@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -39,7 +38,12 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
+
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalCreateDebit from "@/components/pages/simpanan/ModalCreateDebit";
+import ModalCreateKredit from "@/components/pages/simpanan/ModalCreateKredit";
+import TableMutasi from "@/components/pages/simpanan/TableMutasi";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useAnggotaDetail } from "@/services/api/commands/anggota.command";
@@ -48,10 +52,6 @@ import {
   useTotalSimpanan,
 } from "@/services/api/commands/simpanan.command";
 import toIDR from "@/services/utils/toIDR";
-
-import ModalCreateDebit from "../../components/ModalCreateDebit";
-import ModalCreateKredit from "../../components/ModalCreateKredit";
-import TableMutasi from "../../components/TableMutasi";
 
 import { TAnggota, TSimpanan } from "@/types";
 
@@ -73,7 +73,11 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
   };
 };
 
-export default function PageMutasi() {
+export default function Page() {
+  // TODO: Fix issues below
+  //  - Searchbar unresponsive
+  //  - Filter not inline in mobile screen
+
   const [total, setTotal] = useState<number>();
   const [jenisTabungan, setJenisTabungan] = useState<string>();
   const [tglDibuatAwal, settglDibuatAwal] = useState<string>();
@@ -85,13 +89,7 @@ export default function PageMutasi() {
   const modalCreateDebitRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalCreateKreditRef = useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const simpananDetailQuery = useSimpananDetail(Number(id)).paginate({
     params: {

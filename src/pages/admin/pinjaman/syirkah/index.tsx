@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Button,
   Card,
@@ -26,13 +25,14 @@ import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useRef, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
+
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalCreateSyirkah from "@/components/pages/pinjaman/syirkah/ModalCreateSyirkah";
+import TableSyirkah from "@/components/pages/pinjaman/syirkah/TableSyirkah";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import { useSyirkah } from "@/services/api/commands/syirkah.command";
-
-import ModalCreateSyirkah from "./components/ModalCreateSyirkah";
-import TableSyirkah from "./components/TableSyirkah";
 
 import { TAnggota } from "@/types";
 
@@ -69,13 +69,7 @@ export default function Page() {
     },
   ];
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const listSyirkahQuery = useSyirkah().paginate({
     params: {
@@ -98,7 +92,7 @@ export default function Page() {
     <Stack spacing="8" px="8" pb="10">
       <BreadcrumbSection data={breadcrumbData} />
 
-      <Flex alignItems="center" justify="space-between">
+      <Flex alignItems="center" justify="space-between" flexWrap="wrap" gap={3}>
         <Heading size="lg">Pinjaman Syirkah</Heading>
         <Button
           leftIcon={<Icon as={PlusIcon} />}
@@ -110,7 +104,7 @@ export default function Page() {
 
       <Card m={5} variant="outline" shadow="sm">
         <CardHeader display="flex" justifyContent="flex-end">
-          <InputGroup w="25%">
+          <InputGroup w={["full", "270px"]}>
             <InputLeftElement pointerEvents="none">
               <Icon as={MagnifyingGlassIcon} color="gray" />
             </InputLeftElement>

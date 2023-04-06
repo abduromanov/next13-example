@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Box,
   Button,
@@ -28,15 +27,16 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
 import { useFormCallback } from "@/hooks/useFormCallback";
+
+import ModalCreatePengumuman from "@/components/pages/pengumuman/ModalCreatePengumuman";
 
 import TablePagination from "@/layouts/components/TablePagination";
 import {
   useMutatePengumuman,
   usePengumuman,
 } from "@/services/api/commands/pengumuman.command";
-
-import ModalCreatePengumuman from "./components/ModalCreatePengumuman";
 
 import { TAnggota, TPengumuman } from "@/types";
 
@@ -115,13 +115,7 @@ export default function Page() {
   const [total, setTotal] = useState<number>();
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const pengumumanQuery = usePengumuman().paginate({
     params: {
@@ -141,7 +135,7 @@ export default function Page() {
 
   return (
     <Stack spacing="8" px="8" pb="10">
-      <Flex alignItems="center" justify="space-between">
+      <Flex alignItems="center" justify="space-between" flexWrap="wrap" gap={3}>
         <Heading size="lg">Pengumuman</Heading>
         <Button
           as="span"

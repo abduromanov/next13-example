@@ -1,7 +1,9 @@
 import {
   Button,
+  HStack,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -20,6 +22,7 @@ type Props = {
   idMutasi: number;
   refetchFn?: () => void;
 };
+
 const ModalConfirmDeleteMutasi = forwardRef<
   Partial<ReturnType<typeof useDisclosure>> | undefined,
   Props
@@ -30,6 +33,7 @@ const ModalConfirmDeleteMutasi = forwardRef<
     props.id,
     props.idMutasi
   ).mutate("DELETE");
+
   useImperativeHandle(
     ref,
     () => ({
@@ -59,21 +63,27 @@ const ModalConfirmDeleteMutasi = forwardRef<
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Apakah Anda Yakin ?</ModalHeader>
+        <ModalCloseButton />
         <ModalBody>
-          <Text>Anda akan menghapus data secara permanen</Text>
+          <Text>Anda akan menghapus data ini secara permanen</Text>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={disclosure.onClose} variant="ghost">
-            Batalkan
-          </Button>
-          <Button
-            colorScheme="red"
-            variant="ghost"
-            onClick={submitHandler}
-            isLoading={mutasiMurobahahQuery.isLoading}
-          >
-            Ya, Hapus data
-          </Button>
+          <HStack spacing={3}>
+            <Button
+              onClick={disclosure.onClose}
+              variant="outline"
+              colorScheme="blackAlpha"
+            >
+              Batal
+            </Button>
+            <Button
+              colorScheme="red"
+              onClick={submitHandler}
+              isLoading={mutasiMurobahahQuery.isLoading}
+            >
+              Hapus
+            </Button>
+          </HStack>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -1,4 +1,3 @@
-import { usePagination } from "@ajna/pagination";
 import {
   Button,
   Card,
@@ -34,12 +33,14 @@ import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import useCustomPagination from "@/hooks/useCustomPagination";
+
+import ModalCreateAnggota from "@/components/pages/anggota/ModalCreateAnggota";
+import ModalDeleteAnggota from "@/components/pages/anggota/ModalDeleteAnggota";
+import ModalEditAnggota from "@/components/pages/anggota/ModalEditAnggota";
+
 import TablePagination from "@/layouts/components/TablePagination";
 import { useAnggota } from "@/services/api/commands/anggota.command";
-
-import ModalCreateAnggota from "./components/ModalCreateAnggota";
-import ModalDeleteAnggota from "./components/ModalDeleteAnggota";
-import ModalEditAnggota from "./components/ModalEditAnggota";
 
 import { TAnggota } from "@/types";
 
@@ -94,6 +95,9 @@ const TableRow = (props: {
 };
 
 export default function Page() {
+  // TODO: Fix issues below
+  //  - Make search bar full width in mobile screen
+
   const [total, setTotal] = useState<number>();
   const [idAnggota, setIdAnggota] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -102,13 +106,7 @@ export default function Page() {
   const modalEditRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalDeleteRef = useRef<ReturnType<typeof useDisclosure>>();
 
-  const pagination = usePagination({
-    total: total,
-    initialState: {
-      currentPage: 1,
-      pageSize: 10,
-    },
-  });
+  const pagination = useCustomPagination(total);
 
   const listAnggotaQuery = useAnggota().paginate({
     params: {

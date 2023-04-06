@@ -10,6 +10,7 @@ import {
   Heading,
   HStack,
   Icon,
+  Portal,
   Progress,
   Select,
   Skeleton,
@@ -22,6 +23,7 @@ import {
   TagLabel,
   TagLeftIcon,
   Tbody,
+  Td,
   Text,
   Tfoot,
   Th,
@@ -40,7 +42,14 @@ import { useMemo, useRef, useState } from "react";
 import { useFormCallback } from "@/hooks/useFormCallback";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalCatatan from "@/components/pages/pinjaman/murobahah/detail/ModalCatatan";
+import ModalConfirmDeleteMutasi from "@/components/pages/pinjaman/murobahah/detail/ModalConfirmDeleteMutasi";
+import ModalTambahPembayaran from "@/components/pages/pinjaman/murobahah/detail/ModalTambahPembayaran";
+import TableCatatanPembayaran from "@/components/pages/pinjaman/murobahah/detail/TableCatatanPembayaran";
+import TableRangkumanPembayaran from "@/components/pages/pinjaman/murobahah/detail/TableRangkumanPembayaran";
+import TableRincianPembayaran from "@/components/pages/pinjaman/murobahah/detail/TableRincianPembayaran";
 
+import Custom404 from "@/pages/404";
 import {
   useListTahunMutasiMurobahah,
   useMurobahahDetail,
@@ -48,13 +57,6 @@ import {
   useUpdateMurobahah,
 } from "@/services/api/commands/murobahah.command";
 import toIDR from "@/services/utils/toIDR";
-
-import ModalCatatan from "../components/ModalCatatan";
-import ModalConfirmDeleteMutasi from "../components/ModalConfirmDeleteMutasi";
-import ModalTambahPembayaran from "../components/ModalTambahPembayaran";
-import { TableCatatanPembayaran } from "../components/TableCatatanPembayaran";
-import TableRangkumanPembayaran from "../components/TableRangkumanPembayaran";
-import TableRincianPembayaran from "../components/TableRincianPembayaran";
 
 import { TAnggota } from "@/types";
 
@@ -70,13 +72,13 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 
   return {
     props: {
-      pageTitle: "Detil Murobahah",
+      pageTitle: "Detail Murobahah",
       anggota: anggota,
     },
   };
 };
 
-export default function PageDetailMurobahah() {
+export default function Page() {
   const [catatanDate, setCatatanDate] = useState<string>();
   const [idMutasi, setIdMutasi] = useState<number>();
   const [selectedTahun, setSelectedTahun] = useState<string>();
@@ -148,23 +150,41 @@ export default function PageDetailMurobahah() {
     sisaCicilan: {
       cicilan: useMemo(
         () =>
-          (detailMurobahah?.totalPinjaman || 0) -
-          rincianPembayaranTotal.cicilan,
-        [detailMurobahah?.totalPinjaman, rincianPembayaranTotal.cicilan]
+          detailMurobahah?.lunas
+            ? 0
+            : (detailMurobahah?.totalPinjaman || 0) -
+              rincianPembayaranTotal.cicilan,
+        [detailMurobahah, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
         () =>
-          (detailMurobahah?.totalMargin || 0) - rincianPembayaranTotal.margin,
-        [detailMurobahah?.totalMargin, rincianPembayaranTotal.margin]
+          detailMurobahah?.lunas
+            ? 0
+            : (detailMurobahah?.totalMargin || 0) -
+              rincianPembayaranTotal.margin,
+        [detailMurobahah, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
-        () => (detailMurobahah?.total || 0) - rincianPembayaranTotal.total,
-        [detailMurobahah?.total, rincianPembayaranTotal.total]
+        () =>
+          detailMurobahah?.lunas
+            ? 0
+            : (detailMurobahah?.total || 0) - rincianPembayaranTotal.total,
+        [detailMurobahah, rincianPembayaranTotal.total]
       ),
     },
     totalTenor: useMemo(
-      () => (detailMurobahah?.tenor || 0) - rincianPembayaranTotal.tenorBayar,
-      [detailMurobahah?.tenor, rincianPembayaranTotal.tenorBayar]
+      () =>
+        detailMurobahah?.lunas
+          ? 0
+          : (detailMurobahah?.tenor || 0) - rincianPembayaranTotal.tenorBayar,
+      [detailMurobahah, rincianPembayaranTotal.tenorBayar]
+    ),
+    bulanTidakSesuai: useMemo(
+      () =>
+        detailMurobahah?.lunas
+          ? 0
+          : _.sumBy(mutasiMurobahah, "sum.bulanTidakSesuai"),
+      [detailMurobahah, mutasiMurobahah]
     ),
   };
 
@@ -175,14 +195,16 @@ export default function PageDetailMurobahah() {
 
   const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");
   const handleLunasChange = (lunas: boolean) => {
+    // console.log({ lunas })
     murobahahMutation.mutate(
       { lunas },
       {
         onSuccess() {
+          detailMurobahahQuery.refetch();
           if (lunas) {
-            formCallback.onSuccess("muroobahah telah lunas");
+            formCallback.onSuccess("Murobahah Telah Lunas");
           } else {
-            formCallback.onSuccess("muroobahah belum lunas");
+            formCallback.onError("Murobahah Belum Lunas");
           }
         },
         onError() {
@@ -201,20 +223,23 @@ export default function PageDetailMurobahah() {
       url: "/admin/pinjaman/murobahah",
     },
     {
-      name: "Detail",
+      name: "Detail Murobahah",
     },
   ];
 
   if (detailMurobahahQuery?.isError) {
-    return <Text>Forbidden</Text>;
+    return <Custom404 />;
   }
 
   return (
     <Stack spacing="8" px="8" pb="10">
-      <Box>
-        <BreadcrumbSection data={breadcrumbData} />
-      </Box>
-      <Flex mx={5} p={3} mt={-2} gap="3" flexWrap="wrap">
+      <BreadcrumbSection data={breadcrumbData} />
+      <Flex
+        alignItems="center"
+        justify="space-between"
+        display={["grid", "flex"]}
+        gap={3}
+      >
         <Box>
           <Skeleton isLoaded={!detailMurobahahQuery.isLoading} w="300px">
             <Heading size="md">
@@ -223,13 +248,13 @@ export default function PageDetailMurobahah() {
           </Skeleton>
         </Box>
         <Spacer />
-        <Flex gap="2" flexWrap="wrap">
+        <Flex gap="4" flexWrap="wrap">
           <Center>
             <Skeleton isLoaded={!detailMurobahahQuery?.isLoading}>
               <HStack mr={3}>
                 <Switch
                   size="md"
-                  defaultChecked={detailMurobahah?.lunas}
+                  isChecked={detailMurobahah?.lunas}
                   onChange={(e) => handleLunasChange(e.target.checked)}
                 />
                 <Text>Pembayaran Lunas</Text>
@@ -241,175 +266,200 @@ export default function PageDetailMurobahah() {
               onClick={() => {
                 modalTambahPembayaranRef.current?.onOpen();
               }}
+              leftIcon={<Icon as={PlusIcon} />}
             >
-              <Icon as={PlusIcon} />
-              &nbsp;Tambah Pembayaran
+              Tambah Pembayaran
             </Button>
           </Box>
         </Flex>
       </Flex>
 
-      <Flex
-        flexWrap="wrap"
-        gap={5}
-        mx={5}
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Box rounded="md" boxShadow="md" p={5}>
-          <Box mb={3}>
-            <Heading size="md">Rincian Cicilan</Heading>
-          </Box>
-          <Divider />
-          {detailMurobahahQuery.isLoading && (
-            <Progress size="xs" isIndeterminate />
-          )}
-          <Box my={3} mr={40}>
-            <VStack spacing={3} alignItems="start">
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr={40}>
-                  Nama
-                </Text>
-                <Skeleton isLoaded={!detailMurobahahQuery.isLoading}>
+      <Stack direction={["column", "row"]} spacing={5}>
+        <Card variant="outline" shadow="sm" w={["full", "50%"]} p={5}>
+          <VStack spacing={3} divider={<Divider />}>
+            <Heading mb={3} size="md">
+              Rincian Cicilan
+            </Heading>
+
+            <VStack spacing={3} alignItems="start" w="full">
+              <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                <Text fontWeight="bold">Nama</Text>
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
                   <Text>{detailMurobahah?.anggota?.nama}</Text>
                 </Skeleton>
               </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr={28}>
-                  Pembiayaan
-                </Text>
-                <Skeleton isLoaded={!detailMurobahahQuery.isLoading}>
+              <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                <Text fontWeight="bold">Pembiayaan</Text>
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
                   <Text>{detailMurobahah?.pembiayaan}</Text>
                 </Skeleton>
               </HStack>
             </VStack>
-          </Box>
-          <Divider />
-          {detailMurobahahQuery.isLoading && (
-            <Progress size="xs" isIndeterminate />
-          )}
-          <Box my={3} mr={40}>
-            <VStack alignItems="start" spacing={3}>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="133px">
-                  Pinjaman
-                </Text>
-                <Text>{toIDR(detailMurobahah?.totalPinjaman)}</Text>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="150px">
-                  Margin
-                </Text>
-                <Text>{toIDR(detailMurobahah?.totalMargin)}</Text>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="184px">
-                  DP
-                </Text>
-                <Text>{toIDR(detailMurobahah?.dp)}</Text>
-              </HStack>
-            </VStack>
-          </Box>
-          <Divider />
-          {detailMurobahahQuery.isLoading && (
-            <Progress size="xs" isIndeterminate />
-          )}
-          <Box mt={3} mr={40} color="teal.400">
-            <VStack alignItems="start" spacing={3}>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="170px">
-                  Total
-                </Text>
-                <Text>{toIDR(detailMurobahah?.total)}</Text>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="165px">
-                  Tenor
-                </Text>
-                <Text>{detailMurobahah?.tenor}</Text>
-              </HStack>
-            </VStack>
-          </Box>
-        </Box>
-        <Box rounded="md" boxShadow="md" h={72} p={5}>
-          <Box mb={3}>
-            <Heading size="md">Cicilan Perbulan</Heading>
-          </Box>
-          <Divider />
-          {detailMurobahahQuery.isLoading && (
-            <Progress size="xs" isIndeterminate />
-          )}
-          <Box my={3}>
-            <VStack alignItems="start" spacing={3}>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr={48}>
-                  Pinjaman/bulan
-                </Text>
-                <Text>{toIDR(detailMurobahah?.pinjaman)}</Text>
-              </HStack>
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="208px">
-                  Margin/bulan
-                </Text>
-                <Text>{toIDR(detailMurobahah?.margin)}</Text>
-              </HStack>
-              <HStack spacing={4}>
-                {detailMurobahah?.lunas ? (
-                  <Tag colorScheme="green" rounded="md" variant="solid">
-                    <TagLeftIcon boxSize="12px" as={CheckIcon} />
-                    <TagLabel>Lunas</TagLabel>
-                  </Tag>
-                ) : (
-                  <Tag colorScheme="yellow" rounded="md" variant="solid">
-                    <TagLeftIcon boxSize="12px" as={XMarkIcon} />
-                    <TagLabel>Belum Lunas</TagLabel>
-                  </Tag>
-                )}
-              </HStack>
-            </VStack>
-          </Box>
-          <Divider />
-          {detailMurobahahQuery.isLoading && (
-            <Progress size="xs" isIndeterminate />
-          )}
-          <Box mt={3} color="teal.400">
-            <VStack spacing={3} alignItems="start">
-              <HStack spacing={2} flexWrap="wrap">
-                <Text fontWeight="bold" mr="275px">
-                  Total
-                </Text>
-                <Text>{toIDR(detailMurobahah?.cicilan)}</Text>
-              </HStack>
-            </VStack>
-          </Box>
-        </Box>
-      </Flex>
 
-      <Card boxShadow="md" mx={5} my={7}>
-        <CardHeader mb={-3}>
-          <Heading size="md" mb={3}>
-            Rincian Pembayaran
-          </Heading>
-          <Divider />
-          <VStack alignItems="start" w={200} mt={5}>
-            <Text>Tahun</Text>
-            <Select
-              onChange={(e) => setSelectedTahun(e.target.value)}
-              placeholder="Semua"
-            >
-              {(listTahunMutasi || []).map((v: any) => (
-                <option value={v} key={v}>
-                  {v}
-                </option>
-              ))}
-            </Select>
+            <VStack spacing={3} alignItems="start" w="full">
+              <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                <Text fontWeight="bold">Pinjaman</Text>
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
+                  <Text>{toIDR(detailMurobahah?.totalPinjaman)}</Text>
+                </Skeleton>
+              </HStack>
+              <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                <Text fontWeight="bold">Margin</Text>
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
+                  <Text>{toIDR(detailMurobahah?.totalMargin)}</Text>
+                </Skeleton>
+              </HStack>
+              <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                <Text fontWeight="bold">DP</Text>
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
+                  <Text>{toIDR(detailMurobahah?.dp)}</Text>
+                </Skeleton>
+              </HStack>
+            </VStack>
+
+            <VStack spacing={3} alignItems="start" w="full" color="brand.500">
+              <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                <Text fontWeight="bold">Total</Text>
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
+                  <Text>{toIDR(detailMurobahah?.total)}</Text>
+                </Skeleton>
+              </HStack>
+              <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                <Text fontWeight="bold">Tenor</Text>
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
+                  <Text>{detailMurobahah?.tenor}</Text>
+                </Skeleton>
+              </HStack>
+            </VStack>
           </VStack>
+        </Card>
+
+        <Card variant="outline" shadow="sm" w={["full", "50%"]} p={5}>
+          <VStack
+            justify="space-between"
+            alignItems="stretch"
+            w="full"
+            h="full"
+            spacing={3}
+          >
+            <VStack spacing={3} divider={<Divider />}>
+              <Heading mb={3} size="md">
+                Cicilan Perbulan
+              </Heading>
+
+              <VStack spacing={3} alignItems="start" w="full">
+                <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                  <Text fontWeight="bold">Pinjaman/bulan</Text>
+                  <Skeleton
+                    isLoaded={!detailMurobahahQuery.isLoading}
+                    minW="40%"
+                    textAlign="right"
+                  >
+                    <Text>{toIDR(detailMurobahah?.pinjaman)}</Text>
+                  </Skeleton>
+                </HStack>
+                <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                  <Text fontWeight="bold">Margin/bulan</Text>
+                  <Skeleton
+                    isLoaded={!detailMurobahahQuery.isLoading}
+                    minW="40%"
+                    textAlign="right"
+                  >
+                    <Text>{toIDR(detailMurobahah?.margin)}</Text>
+                  </Skeleton>
+                </HStack>
+              </VStack>
+            </VStack>
+
+            <VStack spacing={3} alignItems="start" w="full">
+              <Divider />
+              <HStack flexWrap="wrap" w="full" justifyContent="space-between">
+                <Text fontWeight="bold">Total</Text>
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
+                  <Text>{toIDR(~~(detailMurobahah?.cicilan || 0))}</Text>
+                </Skeleton>
+              </HStack>
+              <Flex justify="end" w="full">
+                <Skeleton
+                  isLoaded={!detailMurobahahQuery.isLoading}
+                  minW="40%"
+                  textAlign="right"
+                >
+                  <Tag
+                    colorScheme={detailMurobahah?.lunas ? "green" : "yellow"}
+                    rounded="md"
+                    variant="solid"
+                  >
+                    <TagLeftIcon
+                      boxSize="12px"
+                      as={detailMurobahah?.lunas ? CheckIcon : XMarkIcon}
+                    />
+                    <TagLabel>
+                      {detailMurobahah?.lunas ? "Lunas" : "Belum Lunas"}
+                    </TagLabel>
+                  </Tag>
+                </Skeleton>
+              </Flex>
+            </VStack>
+          </VStack>
+        </Card>
+      </Stack>
+
+      <Card variant="outline" m={5}>
+        <CardHeader>
+          <Heading size="md">Rincian Pembayaran</Heading>
         </CardHeader>
         <Divider />
         {mutasiMurobahahQuery.isLoading && (
           <Progress size="xs" isIndeterminate />
         )}
         <CardBody>
+          <VStack alignItems="start" w={200} mb={5}>
+            <Text fontSize="sm">Tahun</Text>
+            <Select
+              onChange={(e) => setSelectedTahun(e.target.value)}
+              placeholder="Semua"
+            >
+              {(listTahunMutasi || []).map((tahun: any) => (
+                <option value={tahun} key={tahun}>
+                  {tahun}
+                </option>
+              ))}
+            </Select>
+          </VStack>
+
           <TableContainer>
             <Table mb={3}>
               <Thead>
@@ -437,46 +487,17 @@ export default function PageDetailMurobahah() {
                     }}
                   />
                 ))}
-                <ModalCatatan
-                  ref={modalCatatanRef}
-                  item={catatanPembayaran
-                    ?.filter(
-                      (v: any) =>
-                        moment(v.tglBayar).format("M-YYYY") == catatanDate
-                    )
-                    .map((item_2: any) => (
-                      <>
-                        <TableCatatanPembayaran
-                          key={item_2.id}
-                          item={item_2}
-                          modalHandler={() => {
-                            modalDeleteRef.current?.onOpen();
-                            setIdMutasi(item_2.id);
-                          }}
-                        />
-                      </>
-                    ))}
-                />
-                <ModalConfirmDeleteMutasi
-                  ref={modalDeleteRef}
-                  refetchFn={refetchQuery}
-                  id={Number(id) || 0}
-                  idMutasi={idMutasi || 0}
-                />
-                <ModalTambahPembayaran
-                  ref={modalTambahPembayaranRef}
-                  refetchFn={refetchQuery}
-                />
               </Tbody>
               <Tfoot>
-                <Tr>
-                  <Th>Total</Th>
-                  <Th></Th>
-                  <Th>{rincianPembayaranTotal.tenorBayar}</Th>
-                  <Th>{rincianPembayaranTotal.bulanTidakSesuai}</Th>
-                  <Th>{toIDR(rincianPembayaranTotal.cicilan)}</Th>
-                  <Th>{toIDR(rincianPembayaranTotal.margin)}</Th>
-                  <Th>{toIDR(rincianPembayaranTotal.total)}</Th>
+                <Tr fontWeight="semibold">
+                  <Td textTransform="uppercase">Total</Td>
+                  <Td></Td>
+                  <Td>{rincianPembayaranTotal.tenorBayar}</Td>
+                  <Td>{rincianPembayaranTotal.bulanTidakSesuai}</Td>
+                  <Td>{toIDR(rincianPembayaranTotal.cicilan)}</Td>
+                  <Td>{toIDR(rincianPembayaranTotal.margin)}</Td>
+                  <Td>{toIDR(rincianPembayaranTotal.total)}</Td>
+                  <Td></Td>
                 </Tr>
               </Tfoot>
             </Table>
@@ -485,10 +506,8 @@ export default function PageDetailMurobahah() {
       </Card>
 
       <Card boxShadow="md" mx={5} mb={5}>
-        <CardHeader mb={-3}>
-          <Heading size="md" mb={3}>
-            Rangkuman Pembayaran
-          </Heading>
+        <CardHeader>
+          <Heading size="md">Rangkuman Pembayaran</Heading>
         </CardHeader>
         <Divider />
         <CardBody>
@@ -503,12 +522,46 @@ export default function PageDetailMurobahah() {
                 </Tr>
               </Thead>
               <Tbody>
-                <TableRangkumanPembayaran item={rangkumanPembayaranTotal} />
+                <TableRangkumanPembayaran
+                  itemSelisih={rangkumanPembayaranTotal}
+                  itemTerbayar={rincianPembayaranTotal}
+                />
               </Tbody>
             </Table>
           </TableContainer>
         </CardBody>
       </Card>
+
+      <Portal>
+        <ModalCatatan ref={modalCatatanRef}>
+          {catatanPembayaran
+            ?.filter(
+              (v: any) => moment(v.tglBayar).format("M-YYYY") == catatanDate
+            )
+            .map((item: any) => (
+              <TableCatatanPembayaran
+                key={item.id}
+                item={item}
+                modalHandler={() => {
+                  modalDeleteRef.current?.onOpen();
+                  setIdMutasi(item.id);
+                }}
+              />
+            ))}
+        </ModalCatatan>
+
+        <ModalConfirmDeleteMutasi
+          ref={modalDeleteRef}
+          refetchFn={refetchQuery}
+          id={Number(id) || 0}
+          idMutasi={idMutasi || 0}
+        />
+
+        <ModalTambahPembayaran
+          ref={modalTambahPembayaranRef}
+          refetchFn={refetchQuery}
+        />
+      </Portal>
     </Stack>
   );
 }
