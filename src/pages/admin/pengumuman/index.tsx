@@ -138,7 +138,6 @@ export default function Page() {
       <Flex alignItems="center" justify="space-between" flexWrap="wrap" gap={3}>
         <Heading size="lg">Pengumuman</Heading>
         <Button
-          as="span"
           leftIcon={<Icon as={PlusIcon} />}
           onClick={modalCreateRef.current?.onOpen}
         >

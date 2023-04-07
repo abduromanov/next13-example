@@ -111,7 +111,6 @@ export default function Page() {
       >
         <Heading size="lg">Pinjaman Murobahah</Heading>
         <Button
-          as="span"
           leftIcon={<Icon as={PlusIcon} />}
           onClick={() => {
             modalTambahPinjamanRef.current?.onOpen();
