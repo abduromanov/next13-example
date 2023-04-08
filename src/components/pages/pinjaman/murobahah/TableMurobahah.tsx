@@ -18,6 +18,7 @@ type Props = {
     totalTerbayar?: number;
   };
   modalHandler?: () => void;
+  showRoute: string;
   canDelete?: boolean;
 };
 
@@ -47,7 +48,7 @@ export default function TableMurobahah(props: Props) {
         {props.item.lunas ? <Icon as={CheckIcon} /> : <Icon as={XMarkIcon} />}
       </Td>
       <Td>
-        <Link href={`/admin/pinjaman/murobahah/${props.item.id}`}>
+        <Link href={props.showRoute}>
           <Button variant="link">
             <Tooltip hasArrow label="Lihat Detail">
               <Icon as={EyeIcon} color="teal" fontSize="lg" />

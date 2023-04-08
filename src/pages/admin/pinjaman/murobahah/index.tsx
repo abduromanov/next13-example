@@ -186,6 +186,7 @@ export default function Page() {
                       modalConfirmDeleteMurobahahRef.current?.onOpen();
                       setIdMurobahah(Number(item.id));
                     }}
+                    showRoute={`/admin/pinjaman/murobahah/${item.id}`}
                     canDelete
                   />
                 ))}
