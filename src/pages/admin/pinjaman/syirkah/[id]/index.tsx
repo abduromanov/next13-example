@@ -88,6 +88,8 @@ export default function PageDetailSyirkah() {
   const router = useRouter();
   const [total, setTotal] = useState(0);
   const [idMutasi, setIdMutasi] = useState(0);
+  const [tglBayarAwal, settglBayarAwal] = useState<string>();
+  const [tglBayarAkhir, settglBayarAkhir] = useState<string>();
 
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalEditRef = useRef<ReturnType<typeof useDisclosure>>();
@@ -104,6 +106,8 @@ export default function PageDetailSyirkah() {
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
+      tglBayarAwal: tglBayarAwal,
+      tglBayarAkhir: tglBayarAkhir
     },
   });
 
@@ -224,6 +228,7 @@ export default function PageDetailSyirkah() {
                 w={["100%", "200px"]}
                 border={0}
                 focusBorderColor="none"
+                onChange={(e) => settglBayarAwal(e.target.value)}
               />
               <Flex justifyContent="center" alignItems="center">
                 <Icon
@@ -238,6 +243,7 @@ export default function PageDetailSyirkah() {
                 w={["100%", "200px"]}
                 border={0}
                 focusBorderColor="none"
+                onChange={(e) => settglBayarAkhir(e.target.value)}
               />
             </InputGroup>
           </Box>

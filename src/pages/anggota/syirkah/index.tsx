@@ -1,15 +1,11 @@
 import {
-  Box,
   Divider,
-  Flex,
-  Input,
   Progress,
   Skeleton,
   Stack,
   Table,
   TableContainer,
   Tbody,
-  Text,
   Th,
   Thead,
   Tr,
@@ -48,7 +44,6 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 export default function Page(props: TPageProps) {
   const [total, setTotal] = useState<number>();
   const pagination = useCustomPagination(total);
-  const [searchTglMulai, setSearchTglMulai] = useState<string>("");
 
   const listSyirkahQuery = useSyirkah().paginate({
     params: {
@@ -74,17 +69,6 @@ export default function Page(props: TPageProps) {
   }, [metadata]);
   return (
     <Stack pb={10}>
-      <Flex gap="4" alignItems="center" flexWrap="wrap" my={5} px={4}>
-        <Box w={["full", "200px"]}>
-          <Text fontSize="sm">Filter tgl mulai</Text>
-          <Input
-            type="date"
-            focusBorderColor="brand.500"
-            mt={2}
-            onChange={(e) => setSearchTglMulai(e.target.value)}
-          />
-        </Box>
-      </Flex>
       <Divider />
       {listSyirkahQuery.isLoading && <Progress size="xs" isIndeterminate />}
       <TableContainer p="3" mb={3}>

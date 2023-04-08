@@ -60,6 +60,8 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 export default function Page() {
   const router = useRouter();
   const [total, setTotal] = useState(0);
+  const [tglBayarAwal, settglBayarAwal] = useState<string>();
+  const [tglBayarAkhir, settglBayarAkhir] = useState<string>();
 
   const pagination = useCustomPagination(total);
 
@@ -68,10 +70,14 @@ export default function Page() {
   ).query();
   const detailSyirkah = detailSyirkahQuery.data?.data?.data;
 
+
+
   const listMutasiQuery = useMutasiSyirkah(router.query.id as string).paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
+      tglBayarAwal: tglBayarAwal,
+      tglBayarAkhir: tglBayarAkhir
     },
   });
 
@@ -91,6 +97,7 @@ export default function Page() {
   useEffect(() => {
     setTotal(metadata?.filter_count || 0);
   }, [metadata?.filter_count]);
+
 
   return (
     <Stack spacing="8" px={{ base: 8, lg: 0 }} mt="8" pb="10">
@@ -188,6 +195,7 @@ export default function Page() {
                 w={["100%", "200px"]}
                 border={0}
                 focusBorderColor="none"
+                onChange={(e) => settglBayarAwal(e.target.value)}
               />
               <Flex justifyContent="center" alignItems="center">
                 <Icon
@@ -202,6 +210,7 @@ export default function Page() {
                 w={["100%", "200px"]}
                 border={0}
                 focusBorderColor="none"
+                onChange={(e) => settglBayarAkhir(e.target.value)}
               />
             </InputGroup>
           </Box>

@@ -25,7 +25,7 @@ export default async function handler(
   }
 
   async function get() {
-    const filter = {
+    const filter: any = {
       _and: [
         {
           syirkah: {
@@ -35,9 +35,31 @@ export default async function handler(
       ],
     };
 
-    if (req.query.filter) {
-      filter._and.push(JSON.parse(req.query.filter as string));
+    if (req.query.tglBayarAwal && req.query.tglBayarAkhir) {
+      filter._and.push({
+        tglBayar: {
+          _between: [
+            moment(req.query.tglBayarAwal)
+              .set({
+                h: 0,
+                m: 0,
+                s: 0,
+              })
+              .toISOString(),
+            moment(req.query.tglBayarAkhir)
+              .set({
+                h: 23,
+                m: 59,
+                s: 59,
+              })
+              .toISOString(),
+          ],
+        },
+      });
     }
+    // if (req.query.filter) {
+    //   filter._and.push(JSON.parse(req.query.filter as string));
+    // }
 
     delete req.query.filter;
 
