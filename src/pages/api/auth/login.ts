@@ -22,6 +22,8 @@ export default async function login(
         "alamat",
         "isPasswordBaru",
         "status",
+        "tglDibuat",
+        "tglDihapus",
         "role",
         "password",
       ],

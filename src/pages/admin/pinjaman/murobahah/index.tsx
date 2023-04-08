@@ -38,7 +38,7 @@ import TableMurobahah from "@/components/pages/pinjaman/murobahah/TableMurobahah
 import TablePagination from "@/layouts/components/TablePagination";
 import { useMurobahah } from "@/services/api/commands/murobahah.command";
 
-import { TAnggota, TMurobahah } from "@/types";
+import { TAnggota } from "@/types";
 
 type TPageProps = {
   pageTitle: string;
@@ -177,7 +177,7 @@ export default function Page() {
                 </Tr>
               </Thead>
               <Tbody>
-                {(listMurobahah || []).map((item: TMurobahah) => (
+                {(listMurobahah || []).map((item) => (
                   <TableMurobahah
                     item={item}
                     key={item.id}
@@ -185,6 +185,8 @@ export default function Page() {
                       modalConfirmDeleteMurobahahRef.current?.onOpen();
                       setIdMurobahah(Number(item.id));
                     }}
+                    showRoute={`/admin/pinjaman/murobahah/${item.id}`}
+                    canDelete
                   />
                 ))}
               </Tbody>

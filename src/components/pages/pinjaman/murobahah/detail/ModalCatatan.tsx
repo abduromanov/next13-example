@@ -35,7 +35,10 @@ const ModalCatatan = forwardRef<
     <Modal
       isOpen={disclosure.isOpen}
       onClose={disclosure.onClose}
-      size={["full", "6xl"]}
+      size={{
+        base: 'full',
+        lg: '6xl'
+      }}
     >
       <ModalOverlay />
       <ModalContent>
@@ -53,7 +56,6 @@ const ModalCatatan = forwardRef<
                   <Th>Tenor Bayar</Th>
                   <Th>Bulan Tidak Sesuai</Th>
                   <Th>Catatan</Th>
-                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>{props.children}</Tbody>

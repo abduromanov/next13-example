@@ -44,6 +44,7 @@ export default async function handler(
         },
       });
     }
+
     if (req.query.idAnggota) {
       filter._and.push({
         anggota: {
@@ -53,6 +54,7 @@ export default async function handler(
         },
       });
     }
+
     if (req.query.tglMulai) {
       filter._and.push({
         tglMulai: {
@@ -69,6 +71,17 @@ export default async function handler(
         },
       });
     }
+
+    if (req.query.anggota) {
+      filter._and.push({
+        anggota: {
+          id: {
+            _eq: req.query.anggota
+          }
+        }
+      })
+    }
+
     const data = await directus.items("murobahah").readByQuery({
       fields: [
         "*",
@@ -81,6 +94,7 @@ export default async function handler(
       meta: "*",
       ...req.query,
     });
+
     data.data?.map((item) => {
       item.totalTerbayar = item.mutasiMurobahah
         .map((v: any) => v.total)

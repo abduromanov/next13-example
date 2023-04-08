@@ -182,7 +182,7 @@ export default function Page() {
                 </Tr>
               </Thead>
               <Tbody>
-                {(listAnggota || []).map((item: TAnggota) => (
+                {(listAnggota || []).map((item) => (
                   <TableRow
                     key={item.id}
                     item={item}

@@ -1,6 +1,10 @@
-import { Container, useDisclosure, VStack } from "@chakra-ui/react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/display-name */
+import { Box, Container, useDisclosure, VStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
+import AnggotaCardProfile from "./components/AnggotaCardProfile";
+import AnggotaTabs from "./components/AnggotaTabs";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 
@@ -28,6 +32,13 @@ export default function Layouts(props: Props) {
       </VStack>
     </section>
   ) : (
-    <Container>{props.children}</Container>
+    <Box as="section" position="relative" pt="16">
+      <Box h="32" bg="brand.500" w="full" pos="absolute" inset="0" />
+      <AnggotaCardProfile anggota={anggota} />
+      <Container maxW="container.lg" px={0} pb="8">
+        <AnggotaTabs />
+        {props.children}
+      </Container>
+    </Box>
   );
 }
