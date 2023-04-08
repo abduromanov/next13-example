@@ -14,9 +14,10 @@ import toIDR from "@/services/utils/toIDR";
 import { TMurobahah, TMurobahahRelations } from "@/types";
 
 type Props = {
-  item: TMurobahah & TMurobahahRelations & {
-    totalTerbayar?: number;
-  };
+  item: TMurobahah &
+    TMurobahahRelations & {
+      totalTerbayar?: number;
+    };
   modalHandler?: () => void;
   showRoute: string;
   canDelete?: boolean;

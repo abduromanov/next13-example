@@ -1,4 +1,19 @@
-import { Box, Divider, Flex, Input, Progress, Skeleton, Stack, Table, TableContainer, Tbody, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Flex,
+  Input,
+  Progress,
+  Skeleton,
+  Stack,
+  Table,
+  TableContainer,
+  Tbody,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 
@@ -40,7 +55,7 @@ export default function Page(props: TPageProps) {
       page: pagination.currentPage,
       limit: pagination.pageSize,
       tglMulai: searchTglMulai,
-      anggota: props.anggota.id
+      anggota: props.anggota.id,
     },
   });
 
@@ -94,6 +109,6 @@ export default function Page(props: TPageProps) {
       <Skeleton w="full" isLoaded={!listMurobahahQuery.isLoading}>
         <TablePagination pagination={pagination} />
       </Skeleton>
-    </Stack >
+    </Stack>
   );
 }

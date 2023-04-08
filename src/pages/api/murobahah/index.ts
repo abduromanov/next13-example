@@ -76,10 +76,10 @@ export default async function handler(
       filter._and.push({
         anggota: {
           id: {
-            _eq: req.query.anggota
-          }
-        }
-      })
+            _eq: req.query.anggota,
+          },
+        },
+      });
     }
 
     const data = await directus.items("murobahah").readByQuery({

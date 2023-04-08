@@ -36,8 +36,8 @@ const ModalCatatan = forwardRef<
       isOpen={disclosure.isOpen}
       onClose={disclosure.onClose}
       size={{
-        base: 'full',
-        lg: '6xl'
+        base: "full",
+        lg: "6xl",
       }}
     >
       <ModalOverlay />
