@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -23,36 +22,23 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import {
-  ArrowDownIcon,
-  ArrowRightIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowDownIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import useCustomPagination from "@/hooks/useCustomPagination";
 
-import BreadcrumbSection from "@/components/BreadcrumbSection";
-import ModalCreateMutasiSyirkah from "@/components/pages/pinjaman/syirkah/detail/ModalCreateMutasiSyirkah";
-import ModalDeleteMutasiSyirkah from "@/components/pages/pinjaman/syirkah/detail/ModalDeleteMutasiSyirkah";
-import ModalEditMutasiSyirkah from "@/components/pages/pinjaman/syirkah/detail/ModalEditMutasiSyirkah";
 import TableDetilSyirkah from "@/components/pages/pinjaman/syirkah/TableDetilSyirkah";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import {
-  useDetailSyirkah,
-  useMutasiSyirkah,
-} from "@/services/api/commands/syirkah.command";
+import { useDetailSyirkah, useMutasiSyirkah } from "@/services/api/commands/syirkah.command";
 import toIDR from "@/services/utils/toIDR";
 
 import { TAnggota } from "@/types";
-
 type TPageProps = {
   pageTitle: string;
   anggota: TAnggota;
@@ -71,27 +57,9 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
   };
 };
 
-export default function PageDetailSyirkah() {
-  const breadcrumbData = [
-    {
-      name: "Pinjaman",
-    },
-    {
-      name: "Syirkah",
-      url: "/admin/pinjaman/syirkah",
-    },
-    {
-      name: "Detil Syirkah",
-    },
-  ];
-
+export default function Page() {
   const router = useRouter();
   const [total, setTotal] = useState(0);
-  const [idMutasi, setIdMutasi] = useState(0);
-
-  const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
-  const modalEditRef = useRef<ReturnType<typeof useDisclosure>>();
-  const modalDeleteRef = useRef<ReturnType<typeof useDisclosure>>();
 
   const pagination = useCustomPagination(total);
 
@@ -119,30 +87,26 @@ export default function PageDetailSyirkah() {
     [detailSyirkah?.tglSelesai]
   );
 
-  const refetchQuery = () => listMutasiQuery.refetch();
 
   useEffect(() => {
     setTotal(metadata?.filter_count || 0);
   }, [metadata?.filter_count]);
 
   return (
-    <Stack spacing="8" px="8" pb="10">
-      <BreadcrumbSection data={breadcrumbData} />
+    <Stack spacing="8" px={{ base: 8, lg: 0 }} mt="8" pb="10">
       <Flex
         alignItems="center"
         justify="space-between"
         display={["grid", "flex"]}
         gap={3}
       >
-        <Skeleton isLoaded={!detailSyirkahQuery.isLoading}>
-          <Heading size="lg">{detailSyirkah?.namaBc}</Heading>
-        </Skeleton>
-        <Button
-          leftIcon={<Icon as={PlusIcon} />}
-          onClick={modalCreateRef.current?.onOpen}
-        >
-          Tambah Pembayaran
-        </Button>
+        <Box>
+          <Skeleton isLoaded={!detailSyirkahQuery.isLoading} w="300px">
+            <Heading size="md">
+              {detailSyirkah?.namaBc}
+            </Heading>
+          </Skeleton>
+        </Box>
       </Flex>
       <Card m={5} variant="outline" shadow="sm">
         <CardBody>
@@ -255,7 +219,6 @@ export default function PageDetailSyirkah() {
                   <Th>Presentasi Bagi Hasil</Th>
                   <Th>Bagi Hasil Hamasah</Th>
                   <Th>Catatan</Th>
-                  <Th>Aksi</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -263,15 +226,6 @@ export default function PageDetailSyirkah() {
                   <TableDetilSyirkah
                     item={item}
                     key={item.id}
-                    editHandler={() => {
-                      modalEditRef.current?.onOpen();
-                      setIdMutasi(item.id);
-                    }}
-                    deleteHandler={() => {
-                      modalDeleteRef.current?.onOpen();
-                      setIdMutasi(item.id);
-                    }}
-                    canEditDelete
                   />
                 ))}
               </Tbody>
@@ -283,18 +237,6 @@ export default function PageDetailSyirkah() {
           </Skeleton>
         </CardBody>
       </Card>
-
-      <ModalCreateMutasiSyirkah ref={modalCreateRef} refetchFn={refetchQuery} />
-      <ModalEditMutasiSyirkah
-        ref={modalEditRef}
-        refetchFn={refetchQuery}
-        idMutasi={idMutasi}
-      />
-      <ModalDeleteMutasiSyirkah
-        ref={modalDeleteRef}
-        refetchFn={refetchQuery}
-        idMutasi={idMutasi}
-      />
     </Stack>
-  );
+  )
 }

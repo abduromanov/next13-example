@@ -10,6 +10,8 @@ import { TSyirkah, TSyirkahRelations } from "@/types";
 
 type Props = {
   item: TSyirkah & TSyirkahRelations;
+  showRoute: string;
+  canDelete?: boolean;
 };
 
 export default function TableSyirkah(props: Props) {
@@ -39,16 +41,19 @@ export default function TableSyirkah(props: Props) {
       <Td>{tglSelesai}</Td>
       <Td>
         <Flex gap={3}>
-          <Link href={`/admin/pinjaman/syirkah/${props.item.id}`}>
+          <Link href={props.showRoute}>
             <Tooltip hasArrow label="Lihat Detail" fontSize="xs">
               <Icon as={EyeIcon} color="teal" />
             </Tooltip>
           </Link>
-          <Link href={`/admin/pinjaman/syirkah/${props.item.id}`}>
-            <Tooltip hasArrow label="Hapus" fontSize="xs">
-              <Icon as={TrashIcon} color="red" />
-            </Tooltip>
-          </Link>
+          {props.canDelete && (
+            <Link href={`/admin/pinjaman/syirkah/${props.item.id}`}>
+              <Tooltip hasArrow label="Hapus" fontSize="xs">
+                <Icon as={TrashIcon} color="red" />
+              </Tooltip>
+            </Link>
+          )}
+
         </Flex>
       </Td>
     </Tr>
