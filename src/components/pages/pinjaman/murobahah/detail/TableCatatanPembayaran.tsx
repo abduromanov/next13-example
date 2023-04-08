@@ -10,6 +10,7 @@ import { TMutasiMurobahah } from "@/types";
 export default function TableCatatanPembayaran(props: {
   modalHandler?: () => void;
   item: TMutasiMurobahah;
+  canDelete?: boolean
 }) {
   const tglBayar = useMemo(
     () => moment(props.item?.tglBayar).format("DD MMMM YYYY"),
@@ -24,13 +25,15 @@ export default function TableCatatanPembayaran(props: {
       <Td>{props.item.tenorTerbayar}</Td>
       <Td>{props.item.bulanTidakSesuai}</Td>
       <Td>{props.item.catatan}</Td>
-      <Td>
-        <Button onClick={props.modalHandler} variant="link">
-          <Tooltip hasArrow label="hapus data" fontSize="xs">
-            <Icon as={TrashIcon} color="red" />
-          </Tooltip>
-        </Button>
-      </Td>
+      {props.canDelete && (
+        <Td>
+          <Button onClick={props.modalHandler} variant="link">
+            <Tooltip hasArrow label="hapus data" fontSize="xs">
+              <Icon as={TrashIcon} color="red" />
+            </Tooltip>
+          </Button>
+        </Td>
+      )}
     </Tr>
   );
 }

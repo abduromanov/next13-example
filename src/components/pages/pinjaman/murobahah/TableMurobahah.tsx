@@ -11,9 +11,15 @@ import { useMemo } from "react";
 
 import toIDR from "@/services/utils/toIDR";
 
+import { TMurobahah, TMurobahahRelations } from "@/types";
+
 type Props = {
-  item: any;
+  item: TMurobahah & TMurobahahRelations & {
+    totalTerbayar?: number;
+  };
   modalHandler?: () => void;
+  showRoute: string;
+  canDelete?: boolean;
 };
 
 export default function TableMurobahah(props: Props) {
@@ -42,18 +48,20 @@ export default function TableMurobahah(props: Props) {
         {props.item.lunas ? <Icon as={CheckIcon} /> : <Icon as={XMarkIcon} />}
       </Td>
       <Td>
-        <Link href={`/admin/pinjaman/murobahah/${props.item.id}`}>
+        <Link href={props.showRoute}>
           <Button variant="link">
             <Tooltip hasArrow label="Lihat Detail">
               <Icon as={EyeIcon} color="teal" fontSize="lg" />
             </Tooltip>
           </Button>
         </Link>
-        <Button variant="link" onClick={props.modalHandler}>
-          <Tooltip hasArrow label="Hapus Data">
-            <Icon as={TrashIcon} color="red.600" fontSize="lg" />
-          </Tooltip>
-        </Button>
+        {props.canDelete && (
+          <Button variant="link" onClick={props.modalHandler}>
+            <Tooltip hasArrow label="Hapus Data">
+              <Icon as={TrashIcon} color="red.600" fontSize="lg" />
+            </Tooltip>
+          </Button>
+        )}
       </Td>
     </Tr>
   );

@@ -35,7 +35,7 @@ export default function AnggotaTabs() {
           <Link href="/anggota/simpanan">
             <Box
               borderColor={
-                router.pathname.endsWith("simpanan") ? "brand.500" : "white"
+                router.pathname.match(/simpanan\|*/) ? "brand.500" : "white"
               }
               borderBottomWidth="medium"
               py="3"
@@ -48,7 +48,7 @@ export default function AnggotaTabs() {
           <Link href="/anggota/murobahah">
             <Box
               borderColor={
-                router.pathname.endsWith("murobahah") ? "brand.500" : "white"
+                router.pathname.match(/murobahah\|*/) ? "brand.500" : "white"
               }
               borderBottomWidth="medium"
               py="3"
@@ -61,7 +61,7 @@ export default function AnggotaTabs() {
           <Link href="/anggota/syirkah">
             <Box
               borderColor={
-                router.pathname.endsWith("syirkah") ? "brand.500" : "white"
+                router.pathname.match(/syirkah|\*/) ? "brand.500" : "white"
               }
               borderBottomWidth="medium"
               py="3"
