@@ -72,7 +72,15 @@ export default function Page(props: TPageProps) {
 
   return (
     <Stack pb={10}>
-      <Flex gap="4" alignItems={["start", "end"]} justifyContent="space-between" flexDirection={["column-reverse", "row"]} flexWrap="wrap" my={5} px={4}>
+      <Flex
+        gap="4"
+        alignItems={["start", "end"]}
+        justifyContent="space-between"
+        flexDirection={["column-reverse", "row"]}
+        flexWrap="wrap"
+        my={5}
+        px={4}
+      >
         <Box w={["full", "200px"]}>
           <Text fontSize="sm">Filter tgl mulai</Text>
           <Input
@@ -83,9 +91,7 @@ export default function Page(props: TPageProps) {
           />
         </Box>
         <Link href="/anggota/form?type=murobahah">
-          <Button
-            leftIcon={<Icon as={DocumentPlusIcon} />}
-          >
+          <Button leftIcon={<Icon as={DocumentPlusIcon} />}>
             Buat Form Pengajuan
           </Button>
         </Link>

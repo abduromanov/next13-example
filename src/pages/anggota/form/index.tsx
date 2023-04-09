@@ -1,4 +1,19 @@
-import { Box, Button, Card, CardBody, CardHeader, Container, Divider, GridItem, Heading, ListItem, OrderedList, SimpleGrid, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  Divider,
+  GridItem,
+  Heading,
+  ListItem,
+  OrderedList,
+  SimpleGrid,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -35,15 +50,19 @@ export default function Page() {
   const submitHandler = (value: TFormRequest) => {
     sessionStorage.setItem("requestData", JSON.stringify(value));
     router.push("/anggota/form/print");
-  }
+  };
 
   return (
     <Container maxW="container.lg" pt={8} pb={10}>
       <Stack spacing={8}>
-        <Heading className="capitalize">Form Pengajuan {router.query.type}</Heading>
+        <Heading className="capitalize">
+          Form Pengajuan {router.query.type}
+        </Heading>
         <Card>
           <CardHeader>
-            <Heading size="md" textAlign="center">Permohonan dan Pengajuan Pembiayaan Koperasi Syariah Hamasah</Heading>
+            <Heading size="md" textAlign="center">
+              Permohonan dan Pengajuan Pembiayaan Koperasi Syariah Hamasah
+            </Heading>
           </CardHeader>
           <Divider />
           <CardBody>
@@ -54,7 +73,7 @@ export default function Page() {
                     label="Nama Anggota"
                     value={form.getValues("nama")}
                     register={{
-                      ...form.register("nama")
+                      ...form.register("nama"),
                     }}
                   />
                 </GridItem>
@@ -63,7 +82,7 @@ export default function Page() {
                     label="Alamat Email"
                     value={form.getValues("email")}
                     register={{
-                      ...form.register("email")
+                      ...form.register("email"),
                     }}
                     type="email"
                   />
@@ -73,7 +92,7 @@ export default function Page() {
                     label="Nomor ID HNI"
                     value={form.getValues("idHNI")}
                     register={{
-                      ...form.register("idHNI")
+                      ...form.register("idHNI"),
                     }}
                     inputMode="numeric"
                   />
@@ -83,7 +102,7 @@ export default function Page() {
                     label="Nomor Telp Rumah"
                     value={form.getValues("telpRumah")}
                     register={{
-                      ...form.register("telpRumah")
+                      ...form.register("telpRumah"),
                     }}
                     type="tel"
                   />
@@ -93,7 +112,7 @@ export default function Page() {
                     label="Alamat"
                     value={form.getValues("alamat")}
                     register={{
-                      ...form.register("alamat")
+                      ...form.register("alamat"),
                     }}
                     rows={6}
                   />
@@ -103,7 +122,7 @@ export default function Page() {
                     label="Nomor HP/WA"
                     value={form.getValues("telpWA")}
                     register={{
-                      ...form.register("telpWA")
+                      ...form.register("telpWA"),
                     }}
                     type="tel"
                   />
@@ -113,7 +132,7 @@ export default function Page() {
                     label="Nama Mentor"
                     value={form.getValues("nama")}
                     register={{
-                      ...form.register("nama")
+                      ...form.register("nama"),
                     }}
                   />
                 </GridItem>
@@ -133,9 +152,9 @@ export default function Page() {
                               "jumlah",
                               !isNaN(parseInt(e.target.value))
                                 ? parseInt(
-                                  e.target.value.replace(/\D/g, ""),
-                                  10
-                                ).toLocaleString("id-ID")
+                                    e.target.value.replace(/\D/g, ""),
+                                    10
+                                  ).toLocaleString("id-ID")
                                 : ""
                             );
                             return e.target.value;
@@ -149,7 +168,7 @@ export default function Page() {
                         label="Jangka Waktu (Bulan)"
                         value={form.getValues("jangkaWaktu")}
                         register={{
-                          ...form.register("jangkaWaktu")
+                          ...form.register("jangkaWaktu"),
                         }}
                         type="number"
                       />
@@ -159,14 +178,14 @@ export default function Page() {
                         label="Keperluan"
                         value={form.getValues("keperluan")}
                         register={{
-                          ...form.register("keperluan")
+                          ...form.register("keperluan"),
                         }}
                         rows={6}
                       />
                     </Box>
                   </Stack>
                 </GridItem>
-                {router.query.type === 'syirkah' && (
+                {router.query.type === "syirkah" && (
                   <GridItem>
                     <Stack spacing={5}>
                       <Box>
@@ -174,7 +193,7 @@ export default function Page() {
                           label="Nama Usaha"
                           value={form.getValues("namaUsaha")}
                           register={{
-                            ...form.register("namaUsaha")
+                            ...form.register("namaUsaha"),
                           }}
                           inputMode="numeric"
                         />
@@ -184,7 +203,7 @@ export default function Page() {
                           label="Pembiayaan Musyarokah"
                           value={form.getValues("musyarakah")}
                           register={{
-                            ...form.register("musyarakah")
+                            ...form.register("musyarakah"),
                           }}
                         />
                       </Box>
@@ -199,9 +218,9 @@ export default function Page() {
                                 "modalAwal",
                                 !isNaN(parseInt(e.target.value))
                                   ? parseInt(
-                                    e.target.value.replace(/\D/g, ""),
-                                    10
-                                  ).toLocaleString("id-ID")
+                                      e.target.value.replace(/\D/g, ""),
+                                      10
+                                    ).toLocaleString("id-ID")
                                   : ""
                               );
                               return e.target.value;
@@ -216,26 +235,37 @@ export default function Page() {
               </SimpleGrid>
               <Divider />
               <Box>
-                <Text fontWeight="bold" fontSize="lg" mb={3}>Syarat Pengajuan Permohonan Pembiayaan :</Text>
+                <Text fontWeight="bold" fontSize="lg" mb={3}>
+                  Syarat Pengajuan Permohonan Pembiayaan :
+                </Text>
                 <OrderedList mb={3} spacing={1}>
-                  <ListItem>Mengisi formulir permohonan pengajuan pembiayaan</ListItem>
+                  <ListItem>
+                    Mengisi formulir permohonan pengajuan pembiayaan
+                  </ListItem>
                   <ListItem>Foto Copy KTP</ListItem>
                   <ListItem>Foto Copy KTP Suami, Istri/Orang Tua</ListItem>
-                  <ListItem>Statement BONUS PENDAPATAN BERSIH HNI 4 Bulan Terakhir</ListItem>
+                  <ListItem>
+                    Statement BONUS PENDAPATAN BERSIH HNI 4 Bulan Terakhir
+                  </ListItem>
                   <ListItem>Surat Rekomendasi dari LED Mentor</ListItem>
                   <ListItem>RAB dan Kontraktor*</ListItem>
                 </OrderedList>
                 <Text mb={3}>*Untuk Pembiayaan Renovasi</Text>
-                <Text fontWeight="bold" fontSize="lg">Dengan pengajuan ini saya bersedia mentaati segala ketentuan dan peraturan yang berlaku di KOPERASI SYARIAH HAMASAH.</Text>
+                <Text fontWeight="bold" fontSize="lg">
+                  Dengan pengajuan ini saya bersedia mentaati segala ketentuan
+                  dan peraturan yang berlaku di KOPERASI SYARIAH HAMASAH.
+                </Text>
               </Box>
-              <Button onClick={form.handleSubmit(submitHandler)}>Cetak Formulir</Button>
+              <Button onClick={form.handleSubmit(submitHandler)}>
+                Cetak Formulir
+              </Button>
             </Stack>
           </CardBody>
         </Card>
       </Stack>
     </Container>
   );
-};
+}
 
 Page.getLayout = function getLayout(page: NextPageWithLayout) {
   return page;
