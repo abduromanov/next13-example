@@ -129,3 +129,19 @@ export interface TPengumuman {
   date_created: string;
   active: boolean;
 }
+
+export interface TFormRequest {
+  nama: string;
+  email: string;
+  idHNI: string;
+  telpRumah: string;
+  alamat: string;
+  telpWA: string;
+  mentor: string;
+  jumlah: string;
+  jangkaWaktu: string;
+  keperluan: string;
+  namaUsaha: string;
+  musyarakah: string;
+  modalAwal: string;
+}

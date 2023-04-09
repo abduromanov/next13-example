@@ -1,10 +1,14 @@
-import { Box, Button, Card, CardBody, CardHeader, Container, Divider, FormLabel, GridItem, Heading, Input, ListItem, OrderedList, SimpleGrid, Stack, Text, Textarea } from "@chakra-ui/react";
+import { Box, Button, Card, CardBody, CardHeader, Container, Divider, GridItem, Heading, ListItem, OrderedList, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+
+import { InputText } from "@/components/Forms/InputText";
+import { InputTextarea } from "@/components/Forms/InputTextarea";
 
 import { NextPageWithLayout } from "@/pages/_app";
 
-import { TAnggota } from "@/types";
+import { TAnggota, TFormRequest } from "@/types";
 
 interface TPageProps {
   anggota: TAnggota;
@@ -19,13 +23,19 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
   return {
     props: {
       anggota: anggota,
-      pageTitle: "Anggota",
+      pageTitle: "Form Pengajuan",
     },
   };
 };
 
 export default function Page() {
   const router = useRouter();
+  const form = useForm<TFormRequest>();
+
+  const submitHandler = (value: TFormRequest) => {
+    sessionStorage.setItem("requestData", JSON.stringify(value));
+    router.push("/anggota/form/print");
+  }
 
   return (
     <Container maxW="container.lg" pt={8} pb={10}>
@@ -40,60 +50,71 @@ export default function Page() {
             <Stack spacing={8}>
               <SimpleGrid columns={[1, 2]} gap={5}>
                 <GridItem>
-                  <FormLabel>
-                    Nama Anggota
-                  </FormLabel>
-                  <Input
-                    variant="outline"
+                  <InputText
+                    label="Nama Anggota"
+                    value={form.getValues("nama")}
+                    register={{
+                      ...form.register("nama")
+                    }}
                   />
                 </GridItem>
                 <GridItem>
-                  <FormLabel>
-                    Alamat Email
-                  </FormLabel>
-                  <Input
-                    variant="outline"
+                  <InputText
+                    label="Alamat Email"
+                    value={form.getValues("email")}
+                    register={{
+                      ...form.register("email")
+                    }}
+                    type="email"
                   />
                 </GridItem>
                 <GridItem>
-                  <FormLabel>
-                    Nomor ID HNI
-                  </FormLabel>
-                  <Input
-                    variant="outline"
+                  <InputText
+                    label="Nomor ID HNI"
+                    value={form.getValues("idHNI")}
+                    register={{
+                      ...form.register("idHNI")
+                    }}
+                    inputMode="numeric"
                   />
                 </GridItem>
                 <GridItem>
-                  <FormLabel>
-                    Nomor Telp Rumah
-                  </FormLabel>
-                  <Input
-                    variant="outline"
+                  <InputText
+                    label="Nomor Telp Rumah"
+                    value={form.getValues("telpRumah")}
+                    register={{
+                      ...form.register("telpRumah")
+                    }}
+                    type="tel"
                   />
                 </GridItem>
                 <GridItem rowSpan={2}>
-                  <FormLabel>
-                    Alamat
-                  </FormLabel>
-                  <Textarea
-                    variant="outline"
-                    rows={5}
+                  <InputTextarea
+                    label="Alamat"
+                    value={form.getValues("alamat")}
+                    register={{
+                      ...form.register("alamat")
+                    }}
+                    rows={6}
                   />
                 </GridItem>
                 <GridItem>
-                  <FormLabel>
-                    Nomor HP/WA
-                  </FormLabel>
-                  <Input
-                    variant="outline"
+                  <InputText
+                    label="Nomor HP/WA"
+                    value={form.getValues("telpWA")}
+                    register={{
+                      ...form.register("telpWA")
+                    }}
+                    type="tel"
                   />
                 </GridItem>
                 <GridItem>
-                  <FormLabel>
-                    Nama Mentor
-                  </FormLabel>
-                  <Input
-                    variant="outline"
+                  <InputText
+                    label="Nama Mentor"
+                    value={form.getValues("nama")}
+                    register={{
+                      ...form.register("nama")
+                    }}
                   />
                 </GridItem>
               </SimpleGrid>
@@ -102,28 +123,44 @@ export default function Page() {
                 <GridItem>
                   <Stack spacing={5}>
                     <Box>
-                      {/* TODO: add currency formatter */}
-                      <FormLabel>
-                        Jumlah
-                      </FormLabel>
-                      <Input
-                        variant="outline"
+                      <InputText
+                        label="Jumlah"
+                        value={form.getValues("jumlah")}
+                        register={{
+                          ...form.register("jumlah"),
+                          onChange: (e) => {
+                            form.setValue(
+                              "jumlah",
+                              !isNaN(parseInt(e.target.value))
+                                ? parseInt(
+                                  e.target.value.replace(/\D/g, ""),
+                                  10
+                                ).toLocaleString("id-ID")
+                                : ""
+                            );
+                            return e.target.value;
+                          },
+                        }}
+                        inputMode="numeric"
                       />
                     </Box>
                     <Box>
-                      <FormLabel>
-                        Jangka Waktu (Bulan)
-                      </FormLabel>
-                      <Input
-                        variant="outline"
+                      <InputText
+                        label="Jangka Waktu (Bulan)"
+                        value={form.getValues("jangkaWaktu")}
+                        register={{
+                          ...form.register("jangkaWaktu")
+                        }}
+                        type="number"
                       />
                     </Box>
                     <Box>
-                      <FormLabel>
-                        Keperluan
-                      </FormLabel>
-                      <Textarea
-                        variant="outline"
+                      <InputTextarea
+                        label="Keperluan"
+                        value={form.getValues("keperluan")}
+                        register={{
+                          ...form.register("keperluan")
+                        }}
                         rows={6}
                       />
                     </Box>
@@ -133,28 +170,44 @@ export default function Page() {
                   <GridItem>
                     <Stack spacing={5}>
                       <Box>
-                        <FormLabel>
-                          Nama Usaha
-                        </FormLabel>
-                        <Input
-                          variant="outline"
+                        <InputText
+                          label="Nama Usaha"
+                          value={form.getValues("namaUsaha")}
+                          register={{
+                            ...form.register("namaUsaha")
+                          }}
+                          inputMode="numeric"
                         />
                       </Box>
                       <Box>
-                        <FormLabel>
-                          Pembiyaan Musyarakah
-                        </FormLabel>
-                        <Input
-                          variant="outline"
+                        <InputText
+                          label="Pembiayaan Musyarokah"
+                          value={form.getValues("musyarakah")}
+                          register={{
+                            ...form.register("musyarakah")
+                          }}
                         />
                       </Box>
                       <Box>
-                        {/* TODO: add currency formatter */}
-                        <FormLabel>
-                          Modal Awal
-                        </FormLabel>
-                        <Input
-                          variant="outline"
+                        <InputText
+                          label="Modal Awal"
+                          value={form.getValues("modalAwal")}
+                          register={{
+                            ...form.register("modalAwal"),
+                            onChange: (e) => {
+                              form.setValue(
+                                "modalAwal",
+                                !isNaN(parseInt(e.target.value))
+                                  ? parseInt(
+                                    e.target.value.replace(/\D/g, ""),
+                                    10
+                                  ).toLocaleString("id-ID")
+                                  : ""
+                              );
+                              return e.target.value;
+                            },
+                          }}
+                          inputMode="numeric"
                         />
                       </Box>
                     </Stack>
@@ -175,7 +228,7 @@ export default function Page() {
                 <Text mb={3}>*Untuk Pembiayaan Renovasi</Text>
                 <Text fontWeight="bold" fontSize="lg">Dengan pengajuan ini saya bersedia mentaati segala ketentuan dan peraturan yang berlaku di KOPERASI SYARIAH HAMASAH.</Text>
               </Box>
-              <Button>Cetak Formulir</Button>
+              <Button onClick={form.handleSubmit(submitHandler)}>Cetak Formulir</Button>
             </Stack>
           </CardBody>
         </Card>

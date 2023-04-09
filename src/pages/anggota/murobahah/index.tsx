@@ -86,7 +86,7 @@ export default function Page(props: TPageProps) {
           <Button
             leftIcon={<Icon as={DocumentPlusIcon} />}
           >
-            Ajukan Pinjaman
+            Buat Form Pengajuan
           </Button>
         </Link>
       </Flex>
