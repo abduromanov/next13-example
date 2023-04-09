@@ -27,7 +27,6 @@ import { useSyirkah } from "@/services/api/commands/syirkah.command";
 
 import { TAnggota } from "@/types";
 
-
 interface TPageProps {
   anggota: TAnggota;
   pageTitle: string;
@@ -57,17 +56,15 @@ export default function Page(props: TPageProps) {
       filter: {
         anggota: {
           id: {
-            _eq: props.anggota.id
-          }
-        }
-      }
-
+            _eq: props.anggota.id,
+          },
+        },
+      },
     },
   });
 
   const listSyirkah = listSyirkahQuery.data?.data?.data;
   const metadata = listSyirkahQuery.data?.data?.meta;
-
 
   useEffect(() => {
     setTotal(metadata?.filter_count);

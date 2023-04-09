@@ -107,7 +107,7 @@ export default function PageDetailSyirkah() {
       page: pagination.currentPage,
       limit: pagination.pageSize,
       tglBayarAwal: tglBayarAwal,
-      tglBayarAkhir: tglBayarAkhir
+      tglBayarAkhir: tglBayarAkhir,
     },
   });
 

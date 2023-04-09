@@ -58,7 +58,6 @@ export default function Page() {
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
 
   const breadcrumbData = [
@@ -137,7 +136,12 @@ export default function Page() {
               </Thead>
               <Tbody>
                 {(listSyirkah || []).map((item) => (
-                  <TableSyirkah key={item.id} item={item} showRoute={`/admin/pinjaman/syirkah/${item.id}`} canDelete />
+                  <TableSyirkah
+                    key={item.id}
+                    item={item}
+                    showRoute={`/admin/pinjaman/syirkah/${item.id}`}
+                    canDelete
+                  />
                 ))}
               </Tbody>
             </Table>

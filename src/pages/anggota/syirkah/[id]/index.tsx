@@ -35,7 +35,10 @@ import useCustomPagination from "@/hooks/useCustomPagination";
 import TableDetilSyirkah from "@/components/pages/pinjaman/syirkah/TableDetilSyirkah";
 
 import TablePagination from "@/layouts/components/TablePagination";
-import { useDetailSyirkah, useMutasiSyirkah } from "@/services/api/commands/syirkah.command";
+import {
+  useDetailSyirkah,
+  useMutasiSyirkah,
+} from "@/services/api/commands/syirkah.command";
 import toIDR from "@/services/utils/toIDR";
 
 import { TAnggota } from "@/types";
@@ -70,14 +73,12 @@ export default function Page() {
   ).query();
   const detailSyirkah = detailSyirkahQuery.data?.data?.data;
 
-
-
   const listMutasiQuery = useMutasiSyirkah(router.query.id as string).paginate({
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
       tglBayarAwal: tglBayarAwal,
-      tglBayarAkhir: tglBayarAkhir
+      tglBayarAkhir: tglBayarAkhir,
     },
   });
 
@@ -93,11 +94,9 @@ export default function Page() {
     [detailSyirkah?.tglSelesai]
   );
 
-
   useEffect(() => {
     setTotal(metadata?.filter_count || 0);
   }, [metadata?.filter_count]);
-
 
   return (
     <Stack spacing="8" px={{ base: 8, lg: 0 }} mt="8" pb="10">
@@ -109,9 +108,7 @@ export default function Page() {
       >
         <Box>
           <Skeleton isLoaded={!detailSyirkahQuery.isLoading} w="300px">
-            <Heading size="md">
-              {detailSyirkah?.namaBc}
-            </Heading>
+            <Heading size="md">{detailSyirkah?.namaBc}</Heading>
           </Skeleton>
         </Box>
       </Flex>
@@ -232,10 +229,7 @@ export default function Page() {
               </Thead>
               <Tbody>
                 {(listMutasi || []).map((item) => (
-                  <TableDetilSyirkah
-                    item={item}
-                    key={item.id}
-                  />
+                  <TableDetilSyirkah item={item} key={item.id} />
                 ))}
               </Tbody>
             </Table>
@@ -247,5 +241,5 @@ export default function Page() {
         </CardBody>
       </Card>
     </Stack>
-  )
+  );
 }

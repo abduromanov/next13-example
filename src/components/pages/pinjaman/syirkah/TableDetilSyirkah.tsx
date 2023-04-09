@@ -47,7 +47,6 @@ export default function TableDetilSyirkah(props: Props) {
           </Flex>
         </Td>
       )}
-
     </Tr>
   );
 }

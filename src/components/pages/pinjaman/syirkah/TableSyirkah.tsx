@@ -53,7 +53,6 @@ export default function TableSyirkah(props: Props) {
               </Tooltip>
             </Link>
           )}
-
         </Flex>
       </Td>
     </Tr>
