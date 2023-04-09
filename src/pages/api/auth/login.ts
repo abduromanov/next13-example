@@ -32,6 +32,9 @@ export default async function login(
         idAnggota: {
           _eq: req.body.idAnggota,
         },
+        tglDihapus: {
+          _null: true,
+        },
       },
     });
 
