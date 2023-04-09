@@ -1,5 +1,9 @@
 import {
+  Button,
   Divider,
+  Flex,
+  Icon,
+  Link,
   Progress,
   Skeleton,
   Stack,
@@ -10,6 +14,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { DocumentPlusIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 
@@ -69,6 +74,20 @@ export default function Page(props: TPageProps) {
   }, [metadata]);
   return (
     <Stack pb={10}>
+      <Flex
+        gap="4"
+        justifyContent="right"
+        flexDirection={["column-reverse", "row"]}
+        flexWrap="wrap"
+        my={5}
+        px={4}
+      >
+        <Link href="/anggota/form?type=syirkah">
+          <Button leftIcon={<Icon as={DocumentPlusIcon} />}>
+            Buat Form Pengajuan
+          </Button>
+        </Link>
+      </Flex>
       <Divider />
       {listSyirkahQuery.isLoading && <Progress size="xs" isIndeterminate />}
       <TableContainer p="3" mb={3}>
