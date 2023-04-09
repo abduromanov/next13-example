@@ -113,15 +113,17 @@ const ModalCreateAnggota = forwardRef<
               label="Simpanan Pokok"
               errors={form.formState.errors.simpananPokok}
               register={{
-                ...form.register("simpananPokok", { ...validators().required() }),
+                ...form.register("simpananPokok", {
+                  ...validators().required(),
+                }),
                 onChange: (e) => {
                   form.setValue(
                     "simpananPokok",
                     e.target.value &&
-                    parseInt(
-                      e.target.value.replace(/\D/g, ""),
-                      10
-                    ).toLocaleString("id-ID")
+                      parseInt(
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
 
                   return e.target.value;

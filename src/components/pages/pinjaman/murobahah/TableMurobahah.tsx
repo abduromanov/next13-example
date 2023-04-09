@@ -1,4 +1,13 @@
-import { Button, Icon, Tag, TagLabel, TagLeftIcon, Td, Tooltip, Tr } from "@chakra-ui/react";
+import {
+  Button,
+  Icon,
+  Tag,
+  TagLabel,
+  TagLeftIcon,
+  Td,
+  Tooltip,
+  Tr,
+} from "@chakra-ui/react";
 import {
   CheckIcon,
   EyeIcon,
@@ -15,9 +24,9 @@ import { TMurobahah, TMurobahahRelations } from "@/types";
 
 type Props = {
   item: TMurobahah &
-  TMurobahahRelations & {
-    totalTerbayar?: number;
-  };
+    TMurobahahRelations & {
+      totalTerbayar?: number;
+    };
   modalHandler?: () => void;
   showRoute: string;
   canDelete?: boolean;
@@ -55,9 +64,7 @@ export default function TableMurobahah(props: Props) {
             boxSize="12px"
             as={props.item?.lunas ? CheckIcon : XMarkIcon}
           />
-          <TagLabel>
-            {props.item?.lunas ? "Lunas" : "Belum Lunas"}
-          </TagLabel>
+          <TagLabel>{props.item?.lunas ? "Lunas" : "Belum Lunas"}</TagLabel>
         </Tag>
       </Td>
       <Td>
