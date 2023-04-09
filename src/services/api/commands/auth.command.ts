@@ -9,7 +9,7 @@ export type TLoginRequest = {
 
 export type TUpdatePasswordRequest = {
   password: string;
-}
+};
 
 export const useLogin = () =>
   queryMutation<TLoginRequest, TAnggota>("/api/auth/login");

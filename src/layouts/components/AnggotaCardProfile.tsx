@@ -17,7 +17,11 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ArrowLeftOnRectangleIcon, KeyIcon, UserIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftOnRectangleIcon,
+  KeyIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
 import Cookies from "js-cookie";
 import moment from "moment";
 import { useRouter } from "next/router";
@@ -66,10 +70,7 @@ export default function AnggotaCardProfile({ anggota }: { anggota: TAnggota }) {
       />
       <Box position="absolute" top={4} right={6}>
         <Menu>
-          <MenuButton
-            as={Button}
-            leftIcon={<Icon as={UserIcon} />}
-          >
+          <MenuButton as={Button} leftIcon={<Icon as={UserIcon} />}>
             Akun
           </MenuButton>
           <MenuList>
