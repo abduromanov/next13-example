@@ -99,6 +99,7 @@ export default function Page() {
                       ...validators().required(),
                     }),
                   }}
+                  inputMode="numeric"
                 />
                 <InputPassword
                   label="Password"
