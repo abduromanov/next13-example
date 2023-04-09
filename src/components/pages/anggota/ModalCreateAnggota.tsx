@@ -40,6 +40,7 @@ const ModalCreateAnggota = forwardRef<
       nama: "",
       idAnggota: "",
       alamat: "",
+      simpananPokok: "",
       password: generator.generate({ length: 10 }),
     },
   });
@@ -106,6 +107,25 @@ const ModalCreateAnggota = forwardRef<
               errors={form.formState.errors.alamat}
               register={{
                 ...form.register("alamat", { ...validators().required() }),
+              }}
+            />
+            <InputText
+              label="Simpanan Pokok"
+              errors={form.formState.errors.simpananPokok}
+              register={{
+                ...form.register("simpananPokok", { ...validators().required() }),
+                onChange: (e) => {
+                  form.setValue(
+                    "simpananPokok",
+                    e.target.value &&
+                    parseInt(
+                      e.target.value.replace(/\D/g, ""),
+                      10
+                    ).toLocaleString("id-ID")
+                  );
+
+                  return e.target.value;
+                },
               }}
             />
             <HStack alignItems="end">

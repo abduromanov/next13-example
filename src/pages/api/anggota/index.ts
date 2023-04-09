@@ -55,7 +55,9 @@ export default async function handler(
   }
 
   async function post() {
-    await directus.items<string, TAnggota>("anggota").createOne(req.body);
+    const data = req.body;
+    data.simpananPokok = parseInt(data.simpananPokok.replace(/\D/g, ""), 10);
+    await directus.items<string, TAnggota>("anggota").createOne(data);
 
     return res.status(200).json({});
   }

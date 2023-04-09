@@ -153,7 +153,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalPinjaman || 0) -
-              rincianPembayaranTotal.cicilan,
+            rincianPembayaranTotal.cicilan,
         [detailMurobahah, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
@@ -161,7 +161,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalMargin || 0) -
-              rincianPembayaranTotal.margin,
+            rincianPembayaranTotal.margin,
         [detailMurobahah, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
@@ -191,6 +191,7 @@ export default function Page() {
   const refetchQuery = () => {
     mutasiMurobahahQuery.refetch();
     catatanPembayaranQuery.refetch();
+    listTahunMutasiQuery.refetch();
   };
 
   const murobahahMutation = useUpdateMurobahah(Number(id)).mutate("PUT");

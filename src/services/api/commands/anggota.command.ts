@@ -7,6 +7,7 @@ export type TAnggotaRequest = {
   nama: string;
   password: string;
   alamat: string;
+  simpananPokok: string;
 };
 
 export const useAnggota = (key?: string[]) => {
