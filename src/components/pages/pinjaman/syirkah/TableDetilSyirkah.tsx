@@ -11,6 +11,7 @@ type Props = {
   item: TMutasiSyirkah;
   editHandler?: () => void;
   deleteHandler?: () => void;
+  canEditDelete?: boolean;
 };
 
 export default function TableDetilSyirkah(props: Props) {
@@ -30,20 +31,23 @@ export default function TableDetilSyirkah(props: Props) {
       </Td>
       <Td>{toIDR(props.item.bagiHasil)}</Td>
       <Td>{props.item.catatan}</Td>
-      <Td>
-        <Flex gap={3}>
-          <Button variant="link" onClick={props.editHandler}>
-            <Tooltip hasArrow label="Ubah Data" fontSize="xs">
-              <Icon as={PencilSquareIcon} color="teal" fontSize="lg" />
-            </Tooltip>
-          </Button>
-          <Button variant="link" onClick={props.deleteHandler}>
-            <Tooltip hasArrow label="Hapus" fontSize="xs">
-              <Icon as={TrashIcon} color="red" fontSize="lg" />
-            </Tooltip>
-          </Button>
-        </Flex>
-      </Td>
+      {props.canEditDelete && (
+        <Td>
+          <Flex gap={3}>
+            <Button variant="link" onClick={props.editHandler}>
+              <Tooltip hasArrow label="Ubah Data" fontSize="xs">
+                <Icon as={PencilSquareIcon} color="teal" fontSize="lg" />
+              </Tooltip>
+            </Button>
+            <Button variant="link" onClick={props.deleteHandler}>
+              <Tooltip hasArrow label="Hapus" fontSize="xs">
+                <Icon as={TrashIcon} color="red" fontSize="lg" />
+              </Tooltip>
+            </Button>
+          </Flex>
+        </Td>
+      )}
+
     </Tr>
   );
 }

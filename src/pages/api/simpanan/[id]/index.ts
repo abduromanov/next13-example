@@ -49,16 +49,16 @@ export default async function handler(
           _between: [
             moment(req.query.tglDibuatAwal)
               .set({
-                h: moment().hour(),
-                m: moment().minute(),
-                s: moment().second(),
+                h: 0,
+                m: 0,
+                s: 0,
               })
               .toISOString(),
             moment(req.query.tglDibuatAkhir)
               .set({
-                h: moment().hour(),
-                m: moment().minute(),
-                s: moment().second(),
+                h: 23,
+                m: 59,
+                s: 59,
               })
               .toISOString(),
           ],
