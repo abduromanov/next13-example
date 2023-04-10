@@ -1,0 +1,26 @@
+name: Production Deployment
+on:
+  push:
+    branches:
+      - production
+jobs:
+  build:
+    name: Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Scripts
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          timeout: 90s
+          script: |
+            cd ${{ secrets.DIRECTORY }}
+            pm2 stop 0
+            pm2 stop 1
+            git pull
+            yarn install
+            npx next build
+            pm2 start 0
+            pm2 start 1
