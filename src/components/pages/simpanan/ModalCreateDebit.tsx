@@ -57,8 +57,8 @@ const ModalCreateDebit = forwardRef<
     );
     const wajib = nominal >= 100000 ? 100000 : 0;
     const sisaValue = nominal - wajib;
-    const khusus = (sisaValue * 70) / 100;
-    const sukarela = (sisaValue * 30) / 100;
+    const khusus = Math.floor((sisaValue * 70) / 100);
+    const sukarela = Math.floor((sisaValue * 30) / 100);
     form.setValue(
       "nominalWajib",
       isNaN(wajib)
@@ -190,9 +190,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -210,9 +210,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -229,9 +229,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
