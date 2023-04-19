@@ -10,6 +10,7 @@ import { TSimpanan } from "@/types";
 type Props = {
   item: TSimpanan;
   modalHandler?: () => void;
+  canDelete?: boolean;
 };
 
 export default function TableMutasi(props: Props) {
@@ -32,11 +33,13 @@ export default function TableMutasi(props: Props) {
       <Td>{props.item.catatan}</Td>
       <Td textTransform="uppercase">{props.item.jenisTabungan}</Td>
       <Td>
-        <Button variant="link" onClick={props.modalHandler}>
-          <Tooltip hasArrow label="Hapus Data">
-            <Icon as={TrashIcon} color="red.600" fontSize="lg" />
-          </Tooltip>
-        </Button>
+        {props.canDelete && (
+          <Button variant="link" onClick={props.modalHandler}>
+            <Tooltip hasArrow label="Hapus Data">
+              <Icon as={TrashIcon} color="red.600" fontSize="lg" />
+            </Tooltip>
+          </Button>
+        )}
       </Td>
     </Tr>
   );

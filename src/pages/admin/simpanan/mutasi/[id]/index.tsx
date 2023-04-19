@@ -309,6 +309,7 @@ export default function Page() {
                       modalDeleteMutasiRef.current?.onOpen();
                       setIdMutasi(item.id);
                     }}
+                    canDelete
                   />
                 ))}
               </Tbody>
