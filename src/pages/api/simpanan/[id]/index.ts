@@ -10,6 +10,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<TResponse | TMurobahah>
 ) {
+  const id = req.query.id as string;
+
   try {
     switch (req.method) {
       case "GET":
@@ -17,6 +19,9 @@ export default async function handler(
 
       case "POST":
         return post();
+
+      case "DELETE":
+        return destroy();
 
       default:
         return res.status(405).end();
@@ -30,7 +35,7 @@ export default async function handler(
       _and: [
         {
           idAnggota: {
-            _eq: parseInt(req.query.id as string),
+            _eq: parseInt(id),
           },
         },
       ],
@@ -94,6 +99,7 @@ export default async function handler(
     } else {
       data.idAnggota = parseInt(data.idAnggota);
       data.nominal = parseInt(data.nominal.replace(/\D/g, ""), 10) * -1;
+      data.idAnggota = parseInt(id);
       data.saldo = 0;
       data.tglTransaksi = moment(data.tglTransaksi || new Date())
         .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
@@ -101,6 +107,12 @@ export default async function handler(
     }
 
     await directus.items("mutasiTabungan").createMany(data);
+    return res.status(200).json({});
+  }
+
+  async function destroy() {
+    await directus.items("mutasiTabungan").deleteOne(id);
+
     return res.status(200).json({});
   }
 }
