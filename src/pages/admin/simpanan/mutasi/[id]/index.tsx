@@ -307,7 +307,7 @@ export default function Page() {
                     key={item.id}
                     modalHandler={() => {
                       modalDeleteMutasiRef.current?.onOpen();
-                      setIdMutasi(item.id)
+                      setIdMutasi(item.id);
                     }}
                   />
                 ))}
@@ -322,7 +322,11 @@ export default function Page() {
 
       <ModalCreateDebit ref={modalCreateDebitRef} refetchFn={refetchQuery} />
       <ModalCreateKredit ref={modalCreateKreditRef} refetchFn={refetchQuery} />
-      <ModalDeleteMutasiSimpanan ref={modalDeleteMutasiRef} id={idMutasi} refetchFn={refetchQuery} />
+      <ModalDeleteMutasiSimpanan
+        ref={modalDeleteMutasiRef}
+        id={idMutasi}
+        refetchFn={refetchQuery}
+      />
     </Stack>
   );
 }

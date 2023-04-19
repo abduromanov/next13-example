@@ -71,4 +71,4 @@ export const useCreateSimpanan = (id: number) =>
   );
 
 export const useDeleteMutasi = (id: number) =>
-  queryMutation<any, unknown>(`/api/simpanan/${id}`)
+  queryMutation<any, unknown>(`/api/simpanan/${id}`);
