@@ -10,13 +10,13 @@ export default function TableRangkumanPembayaran(props: Props) {
   return (
     <>
       <Tr>
-        <Td>Tenor Terbayar</Td>
+        <Td>Hutang Terbayar</Td>
         <Td>{toIDR(props?.itemTerbayar?.cicilan)}</Td>
         <Td>{toIDR(props?.itemTerbayar?.margin)}</Td>
         <Td>{toIDR(props?.itemTerbayar?.total)}</Td>
       </Tr>
       <Tr>
-        <Td>Sisa Cicilan</Td>
+        <Td>Sisa Hutang</Td>
         <Td>
           <Text color="red">
             {toIDR(props?.itemSelisih?.sisaCicilan?.cicilan)}
@@ -34,7 +34,7 @@ export default function TableRangkumanPembayaran(props: Props) {
         </Td>
       </Tr>
       <Tr>
-        <Td>Tenor</Td>
+        <Td>Sisa Tenor</Td>
         <Td></Td>
         <Td></Td>
         <Td>

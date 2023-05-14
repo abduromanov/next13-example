@@ -28,6 +28,7 @@ import { useEffect, useRef, useState } from "react";
 import useCustomPagination from "@/hooks/useCustomPagination";
 
 import BreadcrumbSection from "@/components/BreadcrumbSection";
+import ModalConfirmDeleteSyirkah from "@/components/pages/pinjaman/syirkah/ModalConfirmDeleteSyirkah";
 import ModalCreateSyirkah from "@/components/pages/pinjaman/syirkah/ModalCreateSyirkah";
 import TableSyirkah from "@/components/pages/pinjaman/syirkah/TableSyirkah";
 
@@ -57,8 +58,11 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 export default function Page() {
   const [total, setTotal] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [idSirkah, setIdSyirkah] = useState<number>();
 
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
+  const modalConfirmDeleteRef = useRef<ReturnType<typeof useDisclosure>>();
+
 
   const breadcrumbData = [
     {
@@ -76,6 +80,11 @@ export default function Page() {
       page: pagination.currentPage,
       limit: pagination.pageSize,
       search: searchTerm,
+      filter: {
+        tglDihapus: {
+          _null: true
+        }
+      }
     },
   });
 
@@ -141,6 +150,7 @@ export default function Page() {
                     item={item}
                     showRoute={`/admin/pinjaman/syirkah/${item.id}`}
                     canDelete
+                    modalHandler={() => { modalConfirmDeleteRef?.current?.onOpen(); setIdSyirkah(item.id) }}
                   />
                 ))}
               </Tbody>
@@ -154,6 +164,7 @@ export default function Page() {
       </Card>
 
       <ModalCreateSyirkah ref={modalCreateRef} refetchFn={refetchQuery} />
+      <ModalConfirmDeleteSyirkah ref={modalConfirmDeleteRef} refetchFn={refetchQuery} id={idSirkah || 0} />
     </Stack>
   );
 }

@@ -72,6 +72,7 @@ export default function Page(props: TPageProps) {
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
+      sort: '-tglDibuat'
     },
   });
 

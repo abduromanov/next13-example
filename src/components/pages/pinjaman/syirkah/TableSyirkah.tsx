@@ -1,4 +1,4 @@
-import { Flex, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { Button, Flex, Icon, Td, Tooltip, Tr } from "@chakra-ui/react";
 import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
 import moment from "moment";
 import Link from "next/link";
@@ -12,6 +12,7 @@ type Props = {
   item: TSyirkah & TSyirkahRelations;
   showRoute: string;
   canDelete?: boolean;
+  modalHandler?: () => void;
 };
 
 export default function TableSyirkah(props: Props) {
@@ -47,11 +48,11 @@ export default function TableSyirkah(props: Props) {
             </Tooltip>
           </Link>
           {props.canDelete && (
-            <Link href={`/admin/pinjaman/syirkah/${props.item.id}`}>
+            <Button variant="link" onClick={props.modalHandler}>
               <Tooltip hasArrow label="Hapus" fontSize="xs">
                 <Icon as={TrashIcon} color="red" />
               </Tooltip>
-            </Link>
+            </Button>
           )}
         </Flex>
       </Td>
