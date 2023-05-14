@@ -63,7 +63,6 @@ export default function Page() {
   const modalCreateRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalConfirmDeleteRef = useRef<ReturnType<typeof useDisclosure>>();
 
-
   const breadcrumbData = [
     {
       name: "Pinjaman",
@@ -82,9 +81,9 @@ export default function Page() {
       search: searchTerm,
       filter: {
         tglDihapus: {
-          _null: true
-        }
-      }
+          _null: true,
+        },
+      },
     },
   });
 
@@ -150,7 +149,10 @@ export default function Page() {
                     item={item}
                     showRoute={`/admin/pinjaman/syirkah/${item.id}`}
                     canDelete
-                    modalHandler={() => { modalConfirmDeleteRef?.current?.onOpen(); setIdSyirkah(item.id) }}
+                    modalHandler={() => {
+                      modalConfirmDeleteRef?.current?.onOpen();
+                      setIdSyirkah(item.id);
+                    }}
                   />
                 ))}
               </Tbody>
@@ -164,7 +166,11 @@ export default function Page() {
       </Card>
 
       <ModalCreateSyirkah ref={modalCreateRef} refetchFn={refetchQuery} />
-      <ModalConfirmDeleteSyirkah ref={modalConfirmDeleteRef} refetchFn={refetchQuery} id={idSirkah || 0} />
+      <ModalConfirmDeleteSyirkah
+        ref={modalConfirmDeleteRef}
+        refetchFn={refetchQuery}
+        id={idSirkah || 0}
+      />
     </Stack>
   );
 }
