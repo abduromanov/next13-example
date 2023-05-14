@@ -69,3 +69,6 @@ export const useCreateSimpanan = (id: number) =>
   queryMutation<TSimpananRequest | TSimpananKreditRequest, TSimpanan>(
     `/api/simpanan/${id}`
   );
+
+export const useDeleteMutasi = (id: number) =>
+  queryMutation<any, unknown>(`/api/simpanan/${id}`);

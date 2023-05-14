@@ -44,6 +44,7 @@ import useCustomPagination from "@/hooks/useCustomPagination";
 import BreadcrumbSection from "@/components/BreadcrumbSection";
 import ModalCreateDebit from "@/components/pages/simpanan/ModalCreateDebit";
 import ModalCreateKredit from "@/components/pages/simpanan/ModalCreateKredit";
+import ModalDeleteMutasiSimpanan from "@/components/pages/simpanan/ModalDeleteMutasiSimpanan";
 import TableMutasi from "@/components/pages/simpanan/TableMutasi";
 
 import TablePagination from "@/layouts/components/TablePagination";
@@ -80,12 +81,14 @@ export default function Page() {
   const [tglDibuatAwal, settglDibuatAwal] = useState<string>();
   const [tglDibuatAkhir, settglDibuatAkhir] = useState<string>();
   const [isSortByDesc, setIsSortByDesc] = useState<boolean>(true);
+  const [idMutasi, setIdMutasi] = useState(0);
 
   const router = useRouter();
   const { id } = router.query;
 
   const modalCreateDebitRef = useRef<ReturnType<typeof useDisclosure>>();
   const modalCreateKreditRef = useRef<ReturnType<typeof useDisclosure>>();
+  const modalDeleteMutasiRef = useRef<ReturnType<typeof useDisclosure>>();
 
   const pagination = useCustomPagination(total);
 
@@ -294,11 +297,20 @@ export default function Page() {
                   <Th>Nominal</Th>
                   <Th>Keterangan</Th>
                   <Th>jenis simpanan</Th>
+                  <Th></Th>
                 </Tr>
               </Thead>
               <Tbody>
                 {(simpananDetail || []).map((item: TSimpanan) => (
-                  <TableMutasi item={item} key={item.id} />
+                  <TableMutasi
+                    item={item}
+                    key={item.id}
+                    modalHandler={() => {
+                      modalDeleteMutasiRef.current?.onOpen();
+                      setIdMutasi(item.id);
+                    }}
+                    canDelete
+                  />
                 ))}
               </Tbody>
             </Table>
@@ -311,6 +323,11 @@ export default function Page() {
 
       <ModalCreateDebit ref={modalCreateDebitRef} refetchFn={refetchQuery} />
       <ModalCreateKredit ref={modalCreateKreditRef} refetchFn={refetchQuery} />
+      <ModalDeleteMutasiSimpanan
+        ref={modalDeleteMutasiRef}
+        id={idMutasi}
+        refetchFn={refetchQuery}
+      />
     </Stack>
   );
 }

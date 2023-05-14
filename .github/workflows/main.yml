@@ -2,10 +2,10 @@ name: Production Deployment
 on:
   push:
     branches:
-      - production
+      - main
 jobs:
   build:
-    name: Production
+    name: Deployment
     runs-on: ubuntu-latest
     steps:
       - name: SSH Scripts
