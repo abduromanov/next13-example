@@ -190,9 +190,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -200,7 +200,7 @@ const ModalCreateDebit = forwardRef<
             />
 
             <InputText
-              label="Simpanan Khusus"
+              label="Simpanan Mudhorobah"
               register={{
                 ...form.register("nominalKhusus"),
                 onChange: (e) => {
@@ -210,9 +210,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -229,9 +229,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },

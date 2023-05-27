@@ -23,6 +23,7 @@ export default async function handler(
   } catch (error: any) {
     return res.status(error.response?.status || 500).json(error);
   }
+
   async function get() {
     const filter: any = {
       _and: [
@@ -59,11 +60,12 @@ export default async function handler(
 
     return res.status(200).json(data);
   }
+
   async function post() {
     const data = req.body;
-    data.cicilan = parseInt(data.cicilan.replace(/\D/g, ""), 10);
-    data.margin = parseInt(data.margin.replace(/\D/g, ""), 10);
-    data.total = parseInt(data.total.replace(/\D/g, ""), 10);
+    data.cicilan = parseInt(data.cicilan.replace(/\D/g, ""));
+    data.margin = parseInt(data.margin.replace(/\D/g, ""));
+    data.total = parseInt(data.total.replace(/\D/g, ""));
     data.tglBayar = moment(data.tglBayar)
       .set({ h: moment().hour(), m: moment().minute(), s: moment().second() })
       .toISOString();

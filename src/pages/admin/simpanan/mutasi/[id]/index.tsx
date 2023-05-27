@@ -192,7 +192,7 @@ export default function Page() {
                   <StatNumber>{toIDR(totalSimpanan?.wajib)}</StatNumber>
                 </Stat>
                 <Stat>
-                  <StatLabel>Simpanan Khusus</StatLabel>
+                  <StatLabel>Simpanan Mudhorobah</StatLabel>
                   <StatNumber>{toIDR(totalSimpanan?.khusus)}</StatNumber>
                 </Stat>
                 <Stat>

@@ -91,7 +91,6 @@ export default function Page() {
       },
       groupBy: ["month(tglBayar)", "year(tglBayar)"],
       tahun: selectedTahun,
-      // filter: { "tglBayar": { "_between": ["2023-01-01", "2023-12-30"] } }
     },
   });
 
@@ -138,7 +137,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalPinjaman || 0) -
-              rincianPembayaranTotal.cicilan,
+            rincianPembayaranTotal.cicilan,
         [detailMurobahah, rincianPembayaranTotal.cicilan]
       ),
       margin: useMemo(
@@ -146,7 +145,7 @@ export default function Page() {
           detailMurobahah?.lunas
             ? 0
             : (detailMurobahah?.totalMargin || 0) -
-              rincianPembayaranTotal.margin,
+            rincianPembayaranTotal.margin,
         [detailMurobahah, rincianPembayaranTotal.margin]
       ),
       total: useMemo(
