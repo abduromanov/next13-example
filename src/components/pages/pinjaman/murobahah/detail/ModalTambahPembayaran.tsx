@@ -126,9 +126,9 @@ const ModalTambahPembayaran = forwardRef<
                       "cicilan",
                       !isNaN(parseInt(e.target.value))
                         ? parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                            e.target.value.replace(/\D/g, ""),
+                            10
+                          ).toLocaleString("id-ID")
                         : ""
                     );
                     calculateTotal();
@@ -147,9 +147,9 @@ const ModalTambahPembayaran = forwardRef<
                       "margin",
                       !isNaN(parseInt(e.target.value))
                         ? parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                            e.target.value.replace(/\D/g, ""),
+                            10
+                          ).toLocaleString("id-ID")
                         : ""
                     );
                     calculateTotal();
