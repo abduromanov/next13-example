@@ -67,7 +67,7 @@ export default function AnggotaCardProfile({ anggota }: { anggota: TAnggota }) {
         borderWidth="6px"
         borderColor="gray.100"
       />
-      <Box position="absolute" top={4} right={6}>
+      <Box position={["unset", "absolute"]} top={4} right={6}>
         <Menu>
           <MenuButton as={Button} leftIcon={<Icon as={UserIcon} />}>
             Akun
