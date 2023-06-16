@@ -200,7 +200,7 @@ const ModalCreateDebit = forwardRef<
             />
 
             <InputText
-              label="Simpanan Khusus"
+              label="Simpanan Mudhorobah"
               register={{
                 ...form.register("nominalKhusus"),
                 onChange: (e) => {

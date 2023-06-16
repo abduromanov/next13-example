@@ -48,6 +48,7 @@ const ModalTambahPembayaran = forwardRef<
       catatan: "",
     },
   });
+
   useImperativeHandle(
     ref,
     () => ({
@@ -68,10 +69,11 @@ const ModalTambahPembayaran = forwardRef<
   const mutasiMurobahahMutation = useCreateMutasiMurobahah(Number(id)).mutate(
     "POST"
   );
+
   const submitHandler: SubmitHandler<TMutasiMurobahahRequest> = (values) => {
     values.murobahah = id as string;
     values.isBulat = false;
-    // console.log(values)
+
     mutasiMurobahahMutation.mutate(values, {
       onSuccess() {
         formCallback.onSuccess("Berhasil menambahkan data simpanan");
@@ -178,7 +180,7 @@ const ModalTambahPembayaran = forwardRef<
             <Box>
               <Text>Catatan</Text>
               <Textarea
-                placeholder="masukkan Catatan"
+                placeholder="Masukkan Catatan"
                 onChange={(e) => form.setValue("catatan", e.target.value)}
               />
             </Box>

@@ -153,7 +153,7 @@ export default function Page(props: TPageProps) {
             </GridItem>
             <GridItem>
               <Stat>
-                <StatLabel>Simpanan Khusus</StatLabel>
+                <StatLabel>Simpanan Mudhorobah</StatLabel>
                 <StatNumber>{toIDR(totalSimpanan?.khusus)}</StatNumber>
               </Stat>
             </GridItem>

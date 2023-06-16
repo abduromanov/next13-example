@@ -99,7 +99,7 @@ const ModalCreateKredit = forwardRef<
               <option value="" disabled hidden selected>
                 Pilih Jenis Simpanan
               </option>
-              <option value="khusus">Simpanan Khusus</option>
+              <option value="khusus">Simpanan Mudhorobah</option>
               <option value="sukarela">Simpanan Sukarela</option>
             </InputSelect>
 
