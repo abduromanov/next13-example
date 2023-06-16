@@ -12,13 +12,13 @@ export type TSimpananRequest = {
 
 export type Saldo = {
   saldoWajib: any;
-  saldoKhusus: any;
+  saldoInvestasi: any;
   saldoSukarela: any;
 };
 
 export type TotalSimpanan = {
   wajib: any;
-  khusus: any;
+  investasi: any;
   pokok: any;
   sukarela: any;
 };
@@ -26,7 +26,7 @@ export type TotalSimpanan = {
 export type TSimpananKreditRequest = {
   nominal: any;
   nominalWajib: string;
-  nominalKhusus: string;
+  nominalInvestasi: string;
   nominalSukarela: string;
   idAnggota: string;
   saldo: string;
@@ -38,7 +38,7 @@ export type TSimpananKreditRequest = {
 export type TSimpananDebitRequest = {
   nominal: string;
   nominalWajib: string;
-  nominalKhusus: string;
+  nominalInvestasi: string;
   nominalSukarela: string;
   catatan: string;
   idAnggota: string;

@@ -21,14 +21,14 @@ export default async function handler(
         },
       ],
     };
-    const filterKhusus = {
+    const filterInvestasi = {
       _and: [
         {
           idAnggota: {
             _eq: parseInt(req.query.id as string),
           },
           jenisTabungan: {
-            _eq: "khusus",
+            _eq: "investasi",
           },
         },
       ],
@@ -52,12 +52,14 @@ export default async function handler(
       filter: filterWajib,
       ...req.query,
     });
-    const dataSaldoKhusus = await directus.items("mutasiTabungan").readByQuery({
-      fields: ["saldo"],
-      meta: "*",
-      filter: filterKhusus,
-      ...req.query,
-    });
+    const dataSaldoInvestasi = await directus
+      .items("mutasiTabungan")
+      .readByQuery({
+        fields: ["saldo"],
+        meta: "*",
+        filter: filterInvestasi,
+        ...req.query,
+      });
     const dataSaldoSukarela = await directus
       .items("mutasiTabungan")
       .readByQuery({
@@ -68,7 +70,7 @@ export default async function handler(
       });
 
     const saldoWajib = dataSaldoWajib.data?.slice(-1).map((item) => item.saldo);
-    const saldoKhusus = dataSaldoKhusus.data
+    const saldoInvestasi = dataSaldoInvestasi.data
       ?.slice(-1)
       .map((item) => item.saldo);
     const saldoSukarela = dataSaldoSukarela.data
@@ -77,7 +79,7 @@ export default async function handler(
 
     const dataMerge = {
       saldoWajib,
-      saldoKhusus,
+      saldoInvestasi,
       saldoSukarela,
     };
 

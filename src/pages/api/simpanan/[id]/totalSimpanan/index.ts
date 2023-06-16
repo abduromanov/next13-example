@@ -40,8 +40,8 @@ export default async function handler(
         ?.filter((item) => item.jenisTabungan == "sukarela")
         .map((item) => item.nominal)
         .reduce((a, b) => a + b, 0),
-      khusus: data.data
-        ?.filter((item) => item.jenisTabungan == "khusus")
+      investasi: data.data
+        ?.filter((item) => item.jenisTabungan == "investasi")
         .map((item) => item.nominal)
         .reduce((a, b) => a + b, 0),
     };

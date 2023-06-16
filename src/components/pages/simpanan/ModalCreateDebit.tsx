@@ -57,7 +57,7 @@ const ModalCreateDebit = forwardRef<
     );
     const wajib = nominal >= 100000 ? 100000 : 0;
     const sisaValue = nominal - wajib;
-    const khusus = Math.floor((sisaValue * 70) / 100);
+    const investasi = Math.floor((sisaValue * 70) / 100);
     const sukarela = Math.floor((sisaValue * 30) / 100);
     form.setValue(
       "nominalWajib",
@@ -66,10 +66,10 @@ const ModalCreateDebit = forwardRef<
         : parseInt(`${wajib}`.replace(/\D/g, ""), 10).toLocaleString("id-ID")
     );
     form.setValue(
-      "nominalKhusus",
-      isNaN(khusus)
+      "nominalInvestasi",
+      isNaN(investasi)
         ? ""
-        : parseInt(`${khusus}`.replace(/\D/g, ""), 10).toLocaleString("id-ID")
+        : parseInt(`${investasi}`.replace(/\D/g, ""), 10).toLocaleString("id-ID")
     );
     form.setValue(
       "nominalSukarela",
@@ -78,7 +78,7 @@ const ModalCreateDebit = forwardRef<
         : parseInt(`${sukarela}`.replace(/\D/g, ""), 10).toLocaleString("id-ID")
     );
   };
-  form.watch(["nominal", "nominalWajib", "nominalKhusus", "nominalSukarela"]);
+  form.watch(["nominal", "nominalWajib", "nominalInvestasi", "nominalSukarela"]);
 
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
@@ -87,8 +87,8 @@ const ModalCreateDebit = forwardRef<
       value.nominalWajib.replace(/\D/g, ""),
       10
     );
-    const nominalKhusus: any = parseInt(
-      value.nominalKhusus.replace(/\D/g, ""),
+    const nominalInvestasi: any = parseInt(
+      value.nominalInvestasi.replace(/\D/g, ""),
       10
     );
     const nominalSukarela: any = parseInt(
@@ -118,13 +118,13 @@ const ModalCreateDebit = forwardRef<
         tglTransaksi: value.tglTransaksi,
       });
     }
-    if (nominalKhusus > 0) {
+    if (nominalInvestasi > 0) {
       listReq.push({
         idAnggota: String(id),
-        nominal: value.nominalKhusus,
-        saldo: value.nominalKhusus,
+        nominal: value.nominalInvestasi,
+        saldo: value.nominalInvestasi,
         catatan: value.catatan,
-        jenisTabungan: "khusus",
+        jenisTabungan: "investasi",
         tglTransaksi: value.tglTransaksi,
       });
     }
@@ -190,9 +190,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -200,19 +200,19 @@ const ModalCreateDebit = forwardRef<
             />
 
             <InputText
-              label="Simpanan Mudhorobah"
+              label="Simpanan Investasi"
               register={{
-                ...form.register("nominalKhusus"),
+                ...form.register("nominalInvestasi"),
                 onChange: (e) => {
                   form.setValue(
-                    "nominalKhusus",
+                    "nominalInvestasi",
                     isNaN(parseInt(e.target.value.replace(/\D/g, ""), 10)) ||
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -229,9 +229,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                          e.target.value.replace(/\D/g, ""),
-                          10
-                        ).toLocaleString("id-ID")
+                        e.target.value.replace(/\D/g, ""),
+                        10
+                      ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
