@@ -3,9 +3,13 @@ import {
   Box,
   Collapse,
   Divider,
+  Flex,
   GridItem,
   HStack,
   Icon,
+  Input,
+  InputGroup,
+  Select,
   SimpleGrid,
   Skeleton,
   Stack,
@@ -16,12 +20,13 @@ import {
   Table,
   TableContainer,
   Tbody,
+  Text,
   Th,
   Thead,
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import { ArrowDownIcon, ArrowRightIcon, ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useMemo, useState } from "react";
 
@@ -57,6 +62,9 @@ export const getServerSideProps: GetServerSideProps<TPageProps> = async ({
 export default function Page(props: TPageProps) {
   const [total, setTotal] = useState<number>();
   const disclosure = useDisclosure();
+  const [jenisTabungan, setJenisTabungan] = useState<string>();
+  const [tglDibuatAwal, settglDibuatAwal] = useState<string>();
+  const [tglDibuatAkhir, settglDibuatAkhir] = useState<string>();
 
   const pagination = usePagination({
     total: total,
@@ -72,6 +80,9 @@ export default function Page(props: TPageProps) {
     params: {
       page: pagination.currentPage,
       limit: pagination.pageSize,
+      jenisSimpanan: jenisTabungan,
+      tglDibuatAwal: tglDibuatAwal,
+      tglDibuatAkhir: tglDibuatAkhir,
       sort: "-tglDibuat",
     },
   });
@@ -156,6 +167,62 @@ export default function Page(props: TPageProps) {
           <Divider />
         </Collapse>
       </Box>
+      <Flex
+        gap="4"
+        px="4"
+        alignItems="center"
+        display={["grid", "flex"]}
+        flexWrap="wrap"
+      >
+        <Box mb={5}>
+          <Text fontSize="sm" mb={3}>
+            Filter Tanggal
+          </Text>
+          <InputGroup
+            borderRadius="md"
+            bg="gray.100"
+            w={["full", "fit-content"]}
+            display={["block", "flex"]}
+          >
+            <Input
+              type="date"
+              w={["100%", "200px"]}
+              border={0}
+              focusBorderColor="none"
+              onChange={(e) => settglDibuatAwal(e.target.value)}
+            />
+            <Flex justifyContent="center" alignItems="center">
+              <Icon
+                as={ArrowRightIcon}
+                w="20px"
+                display={["none", "block"]}
+              />
+              <Icon as={ArrowDownIcon} w="20px" display={["block", "none"]} />
+            </Flex>
+            <Input
+              type="date"
+              w={["100%", "200px"]}
+              border={0}
+              focusBorderColor="none"
+              onChange={(e) => settglDibuatAkhir(e.target.value)}
+            />
+          </InputGroup>
+        </Box>
+        <Box w={["full", "200px"]} mb={5}>
+          <Text fontSize="sm" mb={3}>
+            Filter jenis simpanan
+          </Text>
+          <Select
+            onChange={(e) => setJenisTabungan(e.target.value)}
+            placeholder="Semua Simpanan"
+          >
+            <option value="khusus">Khusus</option>
+            <option value="wajib">Wajib</option>
+            <option value="sukarela">Sukarela</option>
+          </Select>
+        </Box>
+      </Flex>
+
       <TableContainer p={0}>
         <Table mb={3}>
           <Thead>
