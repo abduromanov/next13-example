@@ -123,7 +123,7 @@ export default function Page() {
   const totalSimpananAll = useMemo(
     () =>
       (totalSimpanan?.wajib || 0) +
-      (totalSimpanan?.khusus || 0) +
+      (totalSimpanan?.investasi || 0) +
       (totalSimpanan?.sukarela || 0) +
       (totalSimpanan?.pokok || 0),
     [totalSimpanan]
@@ -192,8 +192,8 @@ export default function Page() {
                   <StatNumber>{toIDR(totalSimpanan?.wajib)}</StatNumber>
                 </Stat>
                 <Stat>
-                  <StatLabel>Simpanan Mudhorobah</StatLabel>
-                  <StatNumber>{toIDR(totalSimpanan?.khusus)}</StatNumber>
+                  <StatLabel>Simpanan Investasi</StatLabel>
+                  <StatNumber>{toIDR(totalSimpanan?.investasi)}</StatNumber>
                 </Stat>
                 <Stat>
                   <StatLabel>Simpanan Sukarela</StatLabel>
@@ -268,7 +268,7 @@ export default function Page() {
                   onChange={(e) => setJenisTabungan(e.target.value)}
                   placeholder="Semua Simpanan"
                 >
-                  <option value="khusus">Khusus</option>
+                  <option value="investasi">Investasi</option>
                   <option value="wajib">Wajib</option>
                   <option value="sukarela">Sukarela</option>
                 </Select>

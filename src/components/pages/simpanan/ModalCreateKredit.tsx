@@ -99,7 +99,7 @@ const ModalCreateKredit = forwardRef<
               <option value="" disabled hidden selected>
                 Pilih Jenis Simpanan
               </option>
-              <option value="khusus">Simpanan Mudhorobah</option>
+              <option value="investasi">Simpanan Investasi</option>
               <option value="sukarela">Simpanan Sukarela</option>
             </InputSelect>
 
@@ -112,10 +112,10 @@ const ModalCreateKredit = forwardRef<
                   form.setValue(
                     "nominal",
                     e.target.value &&
-                      parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
+                    parseInt(
+                      e.target.value.replace(/\D/g, ""),
+                      10
+                    ).toLocaleString("id-ID")
                   );
 
                   return e.target.value;

@@ -96,7 +96,7 @@ export default function Page(props: TPageProps) {
   const totalSimpananAll = useMemo(
     () =>
       (totalSimpanan?.wajib || 0) +
-      (totalSimpanan?.khusus || 0) +
+      (totalSimpanan?.investasi || 0) +
       (totalSimpanan?.sukarela || 0) +
       (totalSimpanan?.pokok || 0),
     [totalSimpanan]
@@ -153,8 +153,8 @@ export default function Page(props: TPageProps) {
             </GridItem>
             <GridItem>
               <Stat>
-                <StatLabel>Simpanan Mudhorobah</StatLabel>
-                <StatNumber>{toIDR(totalSimpanan?.khusus)}</StatNumber>
+                <StatLabel>Simpanan Investasi</StatLabel>
+                <StatNumber>{toIDR(totalSimpanan?.investasi)}</StatNumber>
               </Stat>
             </GridItem>
             <GridItem>

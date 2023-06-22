@@ -41,7 +41,7 @@ export interface TSimpanan {
   id: number;
   idAnggota: number;
   catatan: string;
-  jenisTabungan: "wajib" | "khusus" | "sukarela";
+  jenisTabungan: "wajib" | "investasi" | "sukarela";
   saldo: number;
   nominal: number;
   saldo: number;
@@ -52,7 +52,7 @@ export interface TSimpanan {
 
 export interface TTotalSimpanan {
   wajib: number;
-  khusus: number;
+  investasi: number;
   sukarela: number;
   pokok: number;
 }
