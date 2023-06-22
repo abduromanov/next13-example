@@ -69,7 +69,9 @@ const ModalCreateDebit = forwardRef<
       "nominalInvestasi",
       isNaN(investasi)
         ? ""
-        : parseInt(`${investasi}`.replace(/\D/g, ""), 10).toLocaleString("id-ID")
+        : parseInt(`${investasi}`.replace(/\D/g, ""), 10).toLocaleString(
+            "id-ID"
+          )
     );
     form.setValue(
       "nominalSukarela",
@@ -78,7 +80,12 @@ const ModalCreateDebit = forwardRef<
         : parseInt(`${sukarela}`.replace(/\D/g, ""), 10).toLocaleString("id-ID")
     );
   };
-  form.watch(["nominal", "nominalWajib", "nominalInvestasi", "nominalSukarela"]);
+  form.watch([
+    "nominal",
+    "nominalWajib",
+    "nominalInvestasi",
+    "nominalSukarela",
+  ]);
 
   const simpananMutation = useCreateSimpanan(Number(id)).mutate("POST");
 
@@ -190,9 +197,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -210,9 +217,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },
@@ -229,9 +236,9 @@ const ModalCreateDebit = forwardRef<
                       !e.target.value
                       ? "0"
                       : parseInt(
-                        e.target.value.replace(/\D/g, ""),
-                        10
-                      ).toLocaleString("id-ID")
+                          e.target.value.replace(/\D/g, ""),
+                          10
+                        ).toLocaleString("id-ID")
                   );
                   return e.target.value;
                 },

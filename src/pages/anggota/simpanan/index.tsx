@@ -26,7 +26,12 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ArrowDownIcon, ArrowRightIcon, ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownIcon,
+  ArrowRightIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { useEffect, useMemo, useState } from "react";
 
@@ -192,11 +197,7 @@ export default function Page(props: TPageProps) {
               onChange={(e) => settglDibuatAwal(e.target.value)}
             />
             <Flex justifyContent="center" alignItems="center">
-              <Icon
-                as={ArrowRightIcon}
-                w="20px"
-                display={["none", "block"]}
-              />
+              <Icon as={ArrowRightIcon} w="20px" display={["none", "block"]} />
               <Icon as={ArrowDownIcon} w="20px" display={["block", "none"]} />
             </Flex>
             <Input
