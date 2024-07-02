@@ -1,9 +1,7 @@
-import { Directus } from "@directus/sdk";
+import { createDirectus, rest, staticToken } from "@directus/sdk";
 
-const directus = new Directus(process.env.API_URL, {
-  auth: {
-    staticToken: process.env.API_TOKEN,
-  },
-});
+const directus = createDirectus(process.env.API_URL)
+  .with(rest())
+  .with(staticToken(process.env.API_TOKEN));
 
 export default directus;

@@ -1,3 +1,4 @@
+import { readItem, readItems } from "@directus/sdk";
 import _ from "lodash";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -13,8 +14,7 @@ export default async function login(
     if (req.method !== "POST") {
       return res.status(405).end();
     }
-
-    const data = await directus.items("anggota").readByQuery({
+    const params = {
       fields: [
         "id",
         "idAnggota",
@@ -36,7 +36,8 @@ export default async function login(
           _null: true,
         },
       },
-    });
+    };
+    const data = await directus.request(readItems("anggota", params));
 
     const dataAnggota: Partial<TAnggota> = _.head(data.data);
     const isPasswordTrue = await directus.utils.hash.verify(
