@@ -87,7 +87,7 @@ export default function Page() {
                   priority
                 />
                 <Heading size={useBreakpointValue({ base: "sm", md: "md" })}>
-                  {process.env.APP_NAME}
+                  {process.env.NEXT_PUBLIC_APP_NAME || ""}
                 </Heading>
               </Stack>
               <Stack spacing="5">

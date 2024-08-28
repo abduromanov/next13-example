@@ -1,8 +1,13 @@
+import { readItems } from "@directus/sdk";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
-import { DirectusResponse, TAnggota, TResponse } from "@/types";
+import { DirectusResponse, TAnggota, TAnggotaRelations, TResponse } from "@/types";
+
+interface Schema {
+  anggota: (TAnggota & TAnggotaRelations)[];
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,21 +26,25 @@ export default async function handler(
   }
 
   async function get() {
-    const data = await directus.items("anggota").readByQuery({
-      fields: [
-        "id",
-        "idAnggota",
-        "nama",
-        "alamat",
-        "mutasiTabungan.nominal",
-        "simpananPokok",
-      ],
-      meta: "*",
-      ...req.query,
-    });
+    const data = await directus<Schema>().request(
+      readItems("anggota", {
+        fields: [
+          "id",
+          "idAnggota",
+          "nama",
+          "alamat",
+          "mutasiTabungan.nominal",
+          "mutasiTabungan",
+          "simpananPokok",
+          "totalSimpanan"
+        ],
+        meta: "*",
+        ...req.query,
+      })
+    )
 
-    data.data?.map((item) => {
-      item.totalSimpanan = item.mutasiTabungan
+    data?.map((item) => {
+      item.totalSimpanan = item.mutasiTabungan || []
         .map((v: any) => v.nominal)
         .reduce((a: any, b: any) => a + b, 0);
 
@@ -45,6 +54,6 @@ export default async function handler(
       return item;
     });
 
-    return res.status(200).json(data);
+    return res.status(200).json(data as any);
   }
 }

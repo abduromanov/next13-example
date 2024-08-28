@@ -34,6 +34,7 @@ export interface TAnggota {
 
 export interface TAnggotaRelations {
   mutasiTabungan?: TSimpanan[];
+  totalSimpanan?: number;
   // murobahah?: TMurobahah[];
 }
 

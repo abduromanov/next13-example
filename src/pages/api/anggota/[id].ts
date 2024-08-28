@@ -1,9 +1,14 @@
+import { readItem, updateItem } from "@directus/sdk";
 import moment from "moment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
 import { DirectusResponse, TAnggota, TResponse } from "@/types";
+
+interface Schema {
+  anggota: TAnggota[];
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -35,15 +40,14 @@ export default async function handler(
   }
 
   async function get() {
-    const fields = [...((req.query.fields as string) || "").split(",")].filter(
-      (item) => item
-    );
+    // const fields = [...((req.query.fields as string) || "").split(",")].filter(
+    //   (item) => item
+    // );
 
-    delete req.query.fields;
+    // delete req.query.fields;
 
-    const data: TAnggota = await directus
-      .items("anggota")
-      .readOne(req.query.id as string, {
+    const data = await directus<Schema>().request(
+      readItem("anggota", req.query.id as string, {
         fields: [
           "id",
           "idAnggota",
@@ -53,9 +57,9 @@ export default async function handler(
           "status",
           "tglDibuat",
           "tglDihapus",
-          ...fields,
-        ],
-      });
+        ]
+      })
+    );
 
     return res.status(200).json({
       data: data,
@@ -69,15 +73,19 @@ export default async function handler(
       delete request.password;
     }
 
-    await directus.items("anggota").updateOne(req.query.id as string, request);
+    await directus<Schema>().request(
+      updateItem("anggota", req.query.id as string, request)
+    )
 
     return res.status(200).end();
   }
 
   async function destroy() {
-    await directus.items("anggota").updateOne(req.query.id as string, {
-      tglDihapus: moment(),
-    });
+    await directus<Schema>().request(
+      updateItem("anggota", req.query.id as string, {
+        tglDihapus: moment(),
+      })
+    );
 
     return res.status(200).end();
   }

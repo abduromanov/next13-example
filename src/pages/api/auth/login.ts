@@ -1,9 +1,13 @@
-import _ from "lodash";
+import { readItems, verifyHash } from "@directus/sdk";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
 import { TAnggota, TResponse } from "@/types";
+
+interface Schema {
+  anggota: TAnggota[];
+}
 
 export default async function login(
   req: NextApiRequest,
@@ -14,43 +18,39 @@ export default async function login(
       return res.status(405).end();
     }
 
-    const data = await directus.items("anggota").readByQuery({
-      fields: [
-        "id",
-        "idAnggota",
-        "nama",
-        "alamat",
-        "isPasswordBaru",
-        "status",
-        "tglDibuat",
-        "tglDihapus",
-        "role",
-        "password",
-      ],
-      limit: 1,
-      filter: {
-        idAnggota: {
-          _eq: req.body.idAnggota,
+    const data = await directus<Schema>().request(
+      readItems("anggota", {
+        fields: [
+          "id",
+          "idAnggota",
+          "nama",
+          "alamat",
+          "isPasswordBaru",
+          "status",
+          "tglDibuat",
+          "tglDihapus",
+          "role",
+        ],
+        filter: {
+          idAnggota: {
+            _eq: req.body.idAnggota,
+          },
+          tglDihapus: {
+            _null: true,
+          },
         },
-        tglDihapus: {
-          _null: true,
-        },
-      },
-    });
-
-    const dataAnggota: Partial<TAnggota> = _.head(data.data);
-    const isPasswordTrue = await directus.utils.hash.verify(
-      req.body.password,
-      dataAnggota?.password || ""
+        limit: 1,
+      })
     );
 
-    if (data.data?.length === 0 || !isPasswordTrue) {
+    const dataAnggota: Partial<TAnggota> = data[0];
+    const isPasswordTrue = await directus().request(verifyHash(req.body.password, dataAnggota?.password || ""));
+
+    if (data.length === 0 || isPasswordTrue) {
       return res.status(404).json({});
     }
 
-    delete dataAnggota?.password;
-
-    return res.status(200).json(dataAnggota);
+    return res.status(200).json(data[0]);
   } catch (error: any) {
     return res.status(error.response.status).json(error);
   }
