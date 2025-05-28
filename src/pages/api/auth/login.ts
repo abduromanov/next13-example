@@ -25,6 +25,7 @@ export default async function login(
           "idAnggota",
           "nama",
           "alamat",
+          "password",
           "isPasswordBaru",
           "status",
           "tglDibuat",
@@ -44,9 +45,12 @@ export default async function login(
     );
 
     const dataAnggota: Partial<TAnggota> = data[0];
-    const isPasswordTrue = await directus().request(verifyHash(req.body.password, dataAnggota?.password || ""));
 
-    if (data.length === 0 || isPasswordTrue) {
+    const isPasswordTrue = await directus().request(
+      verifyHash(req.body.password, dataAnggota?.password || "")
+    );
+
+    if (data.length === 0 || !isPasswordTrue) {
       return res.status(404).json({});
     }
 
