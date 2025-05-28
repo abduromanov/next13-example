@@ -68,6 +68,8 @@ export default function Page() {
   const listSimpananAnggota = listSimpananAnggotaQuery.data?.data?.data;
   const metadata = listSimpananAnggotaQuery.data?.data?.meta;
 
+
+
   useEffect(() => {
     setTotal(metadata?.filter_count);
   }, [metadata]);

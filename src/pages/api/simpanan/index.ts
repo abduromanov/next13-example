@@ -3,7 +3,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import directus from "@/services/api/directus";
 
-import { DirectusResponse, TAnggota, TAnggotaRelations, TResponse } from "@/types";
+import {
+  DirectusResponse,
+  TAnggota,
+  TAnggotaRelations,
+  TResponse,
+} from "@/types";
 
 interface Schema {
   anggota: (TAnggota & TAnggotaRelations)[];
@@ -36,24 +41,33 @@ export default async function handler(
           "mutasiTabungan.nominal",
           "mutasiTabungan",
           "simpananPokok",
-          "totalSimpanan"
+          "totalSimpanan",
         ],
         meta: "*",
         ...req.query,
       })
-    )
+    );
 
     data?.map((item) => {
-      item.totalSimpanan = item.mutasiTabungan || []
+      const totalMutasi = (item.mutasiTabungan || [])
         .map((v: any) => v.nominal)
         .reduce((a: any, b: any) => a + b, 0);
 
-      item.totalSimpanan = item.totalSimpanan + item.simpananPokok;
+      item.totalSimpanan = totalMutasi + item.simpananPokok;
+
       delete item.mutasiTabungan;
 
       return item;
     });
 
-    return res.status(200).json(data as any);
+    return res.status(200).json({
+      status: "success",
+      data: data || [],
+      meta: {
+        filter_count: data?.length || 0,
+        page: req.query.page ? parseInt(req.query.page as string) : 1,
+        limit: req.query.limit ? parseInt(req.query.limit as string) : 10,
+      },
+    } as any);
   }
 }

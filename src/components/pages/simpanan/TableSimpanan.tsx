@@ -14,7 +14,7 @@ export default function TableSimpananAnggota(props: Props) {
     <Tr>
       <Td>{props.item.nama}</Td>
       <Td>{props.item.idAnggota}</Td>
-      <Td textAlign="right">{toIDR(props.item.totalSimpanan)}</Td>
+      <Td textAlign="right">{toIDR(props.item?.totalSimpanan)}</Td>
       <Td textAlign="center">
         <Link
           href={{
